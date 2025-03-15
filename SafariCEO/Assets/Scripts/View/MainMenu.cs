@@ -1,0 +1,204 @@
+using System;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+
+public class MainMenu : MonoBehaviour
+{
+    private UIDocument uIDocument;
+    private Button startButton;
+    private Button loadButton;
+    private Button exitButton;
+    private Button easyButton;
+    private Button mediumButton;
+    private Button hardButton;
+    private Difficulty selectedDifficulty = Difficulty.None;
+
+    public event EventHandler<DifficultySelectedEventArgs> NewGame;
+    public event EventHandler LoadGame;
+    public event EventHandler ExitMenu;
+
+
+    void Start()
+    {
+        uIDocument = GetComponent<UIDocument>();
+        if (uIDocument == null)
+        {
+            Debug.LogError("UIDocument component not found.");
+            return;
+        }
+
+        startButton = uIDocument.rootVisualElement.Q<Button>("MenuStartButton");
+        if (startButton == null)
+        {
+            Debug.LogError("Start Button not found.");
+            return;
+        }
+        startButton.clickable.clicked += OnStartButtonClick;
+
+        loadButton = uIDocument.rootVisualElement.Q<Button>("MenuLoadButton");
+        if (loadButton == null)
+        {
+            Debug.LogError("Load Button not found.");
+            return;
+        }
+        loadButton.clickable.clicked += OnLoadButtonClick;
+
+        exitButton = uIDocument.rootVisualElement.Q<Button>("MenuExitButton");
+        if (exitButton == null)
+        {
+            Debug.LogError("Exit Button not found.");
+            return;
+        }
+        exitButton.clickable.clicked += OnExitButtonClick;
+
+        easyButton = uIDocument.rootVisualElement.Q<Button>("MenuEasyButton");
+        if (easyButton == null)
+        {
+            Debug.LogError("Easy Button not found.");
+            return;
+        }
+        easyButton.clickable.clicked += OnEasyButtonClick;
+
+        mediumButton = uIDocument.rootVisualElement.Q<Button>("MenuMediumButton");
+        if (mediumButton == null)
+        {
+            Debug.LogError("Medium Button not found.");
+            return;
+        }
+        mediumButton.clickable.clicked += OnMediumButtonClick;
+
+        hardButton = uIDocument.rootVisualElement.Q<Button>("MenuHardButton");
+        if (hardButton == null)
+        {
+            Debug.LogError("Hard Button not found.");
+            return;
+        }
+        hardButton.clickable.clicked += OnHardButtonClick;
+    }
+
+    private void OnDestroy()
+    {
+        if (startButton != null)
+        {
+            startButton.clickable.clicked -= OnStartButtonClick;
+        }
+        if (loadButton != null)
+        {
+            loadButton.clickable.clicked -= OnLoadButtonClick;
+        }
+        if (exitButton != null)
+        {
+            exitButton.clickable.clicked -= OnExitButtonClick;
+        }
+        if (easyButton != null)
+        {
+            easyButton.clickable.clicked -= OnEasyButtonClick;
+        }
+        if (mediumButton != null)
+        {
+            mediumButton.clickable.clicked -= OnMediumButtonClick;
+        }
+        if (hardButton != null)
+        {
+            hardButton.clickable.clicked -= OnHardButtonClick;
+        }
+    }
+
+    private void OnStartButtonClick()
+    {
+
+        if (selectedDifficulty == Difficulty.None)
+        {
+            Debug.LogError("No difficulty selected!");
+        }
+        else {
+            NewGame?.Invoke(this, new DifficultySelectedEventArgs(selectedDifficulty));
+            SceneManager.LoadScene("Game");
+        }
+
+    }
+
+    private void OnLoadButtonClick()
+    {
+    #if UNITY_EDITOR
+            string path = EditorUtility.OpenFilePanel("Select a file", "", "saf");
+            if (!string.IsNullOrEmpty(path))
+            {
+                Debug.Log("Selected file: " + path);
+                //LoadGameFromFile(path);
+            }
+    #else
+            string path = Application.persistentDataPath + "/savefile.saf";
+            if (System.IO.File.Exists(path))
+            {
+                Debug.Log("Loading from: " + path);
+                //LoadGameFromFile(path);
+            }
+            else
+            {
+                Debug.LogWarning("No save file found at: " + path);
+            }
+    #endif
+
+            LoadGame?.Invoke(this, EventArgs.Empty);
+    }
+    private void OnExitButtonClick()
+    {
+        Debug.Log("Quit");
+        ExitMenu?.Invoke(this, EventArgs.Empty);
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+
+    }
+
+    private void OnEasyButtonClick()
+    {
+        selectedDifficulty = Difficulty.Easy;
+        SetSelectedButton(easyButton);
+    }
+
+    private void OnMediumButtonClick()
+    {
+        selectedDifficulty = Difficulty.Medium;
+        SetSelectedButton(mediumButton);
+    }
+
+    private void OnHardButtonClick()
+    {
+        selectedDifficulty = Difficulty.Hard;
+        SetSelectedButton(hardButton);
+    }
+
+    private void SetSelectedButton(Button selectedButton)
+    {
+        easyButton.RemoveFromClassList("difficultybuttonSelected");
+        easyButton.RemoveFromClassList("diffcultybuttonBlurred");
+        mediumButton.RemoveFromClassList("difficultybuttonSelected");
+        mediumButton.RemoveFromClassList("diffcultybuttonBlurred");
+        hardButton.RemoveFromClassList("difficultybuttonSelected");
+        hardButton.RemoveFromClassList("diffcultybuttonBlurred");
+
+        selectedButton.AddToClassList("difficultybuttonSelected");
+
+        if (selectedButton != easyButton)
+        {
+            easyButton.AddToClassList("diffcultybuttonBlurred");
+        }
+        if (selectedButton != mediumButton)
+        {
+            mediumButton.AddToClassList("diffcultybuttonBlurred");
+        }
+        if (selectedButton != hardButton)
+        {
+            hardButton.AddToClassList("diffcultybuttonBlurred");
+        }
+    }
+}

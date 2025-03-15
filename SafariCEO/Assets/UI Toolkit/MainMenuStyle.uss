@@ -10,6 +10,7 @@
     justify-content: flex-start;
     align-self: flex-start;
     align-items: center;
+    transition-duration: 0.2s;
 }
 
 .difficultybutton {
@@ -24,4 +25,29 @@
     left: 700px;
     -unity-font-definition: initial;
     -unity-font: url("project://database/Assets/Thaleah_PixelFont/Materials/ThaleahFat_TTF.ttf?fileID=12800000&guid=585188cdc4600544eb408bee749e4b3a&type=3#ThaleahFat_TTF");
+    transition-duration: 0.2s;
+    background-color: rgb(255, 136, 5);
+    -unity-background-image-tint-color: rgb(238, 184, 17);
+    display: flex;
+}
+
+.button:hover {
+    scale: 1.1 1.1;
+    -unity-background-image-tint-color: rgb(255, 34, 0);
+    background-color: rgb(255, 80, 0);
+}
+
+.difficultybutton:hover {
+    scale: 1.1 1.1;
+    background-color: rgb(255, 80, 0);
+    -unity-background-image-tint-color: rgb(255, 80, 200);
+}
+
+.difficultybuttonSelected {
+    background-color: rgb(255, 80, 0);
+    -unity-background-image-tint-color: rgb(255, 80, 200);
+}
+
+.diffcultybuttonBlurred {
+    opacity: 0.5;
 }
