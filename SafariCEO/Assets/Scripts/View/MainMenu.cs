@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using SimpleFileBrowser;
+using System.Collections;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -122,31 +124,36 @@ public class MainMenu : MonoBehaviour
         }
 
     }
-
     private void OnLoadButtonClick()
     {
-    #if UNITY_EDITOR
-            string path = EditorUtility.OpenFilePanel("Select a file", "", "saf");
-            if (!string.IsNullOrEmpty(path))
-            {
-                Debug.Log("Selected file: " + path);
-                //LoadGameFromFile(path);
-            }
-    #else
-            string path = Application.persistentDataPath + "/savefile.saf";
-            if (System.IO.File.Exists(path))
-            {
-                Debug.Log("Loading from: " + path);
-                //LoadGameFromFile(path);
-            }
-            else
-            {
-                Debug.LogWarning("No save file found at: " + path);
-            }
-    #endif
-
-            LoadGame?.Invoke(this, EventArgs.Empty);
+        #if UNITY_EDITOR
+        string path = EditorUtility.OpenFilePanel("Select a file", "", "saf");
+        if (!string.IsNullOrEmpty(path))
+        {
+            Debug.Log("Selected file: " + path);
+            // LoadGameFromFile(path);
+        }
+        #else
+        StartCoroutine(ShowLoadDialog());
+        #endif
     }
+
+    private IEnumerator ShowLoadDialog()
+    {
+        SimpleFileBrowser.FileBrowser.SetFilters(true, new SimpleFileBrowser.FileBrowser.Filter("Save Files", ".saf"), new SimpleFileBrowser.FileBrowser.Filter("All Files", "*"));
+
+        SimpleFileBrowser.FileBrowser.ShowLoadDialog((paths) =>
+        {
+            if (paths.Length > 0)
+            {
+                Debug.Log("Selected file: " + paths[0]);
+                // LoadGameFromFile(paths[0]);
+            }
+        }, () => Debug.Log("File selection canceled"), SimpleFileBrowser.FileBrowser.PickMode.Files);
+
+        yield return null;
+    }
+
     private void OnExitButtonClick()
     {
         Debug.Log("Quit");
