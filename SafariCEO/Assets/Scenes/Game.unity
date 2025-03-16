@@ -157,6 +157,8 @@ MonoBehaviour:
   prefab_hills: {fileID: 2789227227117460037, guid: 7426ccf4f2bf9b74da8af069bd18703c, type: 3}
   prefab_river: {fileID: 3801515137209968492, guid: 85e90e9f99178dc458d4e061a934baeb, type: 3}
   prefab_lake: {fileID: 738230952863713163, guid: aaf809a511a4ee74bb28e9fef3e83a2b, type: 3}
+  prefab_bush: {fileID: 2789227227117460037, guid: 9a5d5649425e63b49897e3306125fcef, type: 3}
+  prefab_flowerbed: {fileID: 2789227227117460037, guid: 76c7584325a77e8489eb4793c46fb07d, type: 3}
   map_dimensions: {x: 160, y: 90}
 --- !u!4 &337380335
 Transform:
