@@ -1696,7 +1696,6 @@ GameObject:
   m_Component:
   - component: {fileID: 711214706}
   - component: {fileID: 711214705}
-  - component: {fileID: 711214707}
   m_Layer: 5
   m_Name: GameUI
   m_TagString: Untagged
