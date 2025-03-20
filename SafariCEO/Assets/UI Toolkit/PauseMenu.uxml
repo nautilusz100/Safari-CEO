@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/PauseMenuStyle.uss?fileID=7433441132597879392&amp;guid=04eb296f16f7bc64fb0e93044305969d&amp;type=3#PauseMenuStyle" />
+    <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1; justify-content: flex-start; align-items: auto;">
+        <ui:VisualElement name="menu" class="menu" style="flex-grow: 1; background-color: rgb(255, 136, 5); width: 800px; height: 100%; max-width: 800px; max-height: 100%; border-top-left-radius: 60px; border-top-right-radius: 60px; border-bottom-right-radius: 60px; border-bottom-left-radius: 60px; margin-bottom: 300px;">
+            <ui:Button text="Quit to menu" parse-escape-sequences="true" display-tooltip-when-elided="true" name="exitButton" class="buttons" style="margin-bottom: 400px;" />
+            <ui:Button text="SAve" parse-escape-sequences="true" display-tooltip-when-elided="true" name="saveButton" class="buttons" />
+            <ui:Label tabindex="-1" text="Safari CEO" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PauseLabel" style="-unity-text-align: upper-center; font-size: 100px; -unity-font: url(&quot;project://database/Assets/Thaleah_PixelFont/Materials/ThaleahFat_TTF.ttf?fileID=12800000&amp;guid=585188cdc4600544eb408bee749e4b3a&amp;type=3#ThaleahFat_TTF&quot;); -unity-font-definition: initial; margin-bottom: 4px; margin-top: 130px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
