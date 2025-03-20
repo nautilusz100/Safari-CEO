@@ -83,33 +83,7 @@ public class MainMenu : MonoBehaviour
         hardButton.clickable.clicked += OnHardButtonClick;
     }
 
-    private void OnDestroy()
-    {
-        if (startButton != null)
-        {
-            startButton.clickable.clicked -= OnStartButtonClick;
-        }
-        if (loadButton != null)
-        {
-            loadButton.clickable.clicked -= OnLoadButtonClick;
-        }
-        if (exitButton != null)
-        {
-            exitButton.clickable.clicked -= OnExitButtonClick;
-        }
-        if (easyButton != null)
-        {
-            easyButton.clickable.clicked -= OnEasyButtonClick;
-        }
-        if (mediumButton != null)
-        {
-            mediumButton.clickable.clicked -= OnMediumButtonClick;
-        }
-        if (hardButton != null)
-        {
-            hardButton.clickable.clicked -= OnHardButtonClick;
-        }
-    }
+
 
     private void OnStartButtonClick()
     {

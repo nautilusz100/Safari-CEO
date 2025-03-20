@@ -43,18 +43,6 @@ public class PauseMenu : MonoBehaviour
         exitButton.clickable.clicked += OnExitButtonClick;
     }
 
-    private void OnDestroy()
-    {
-        if (saveButton != null)
-        {
-            saveButton.clickable.clicked -= OnSaveButtonClick;
-        }
-        if (exitButton != null)
-        {
-            exitButton.clickable.clicked -= OnExitButtonClick;
-        }
-    }
-
     private void OnExitButtonClick()
     {
         ExitMenu?.Invoke(this, EventArgs.Empty);
