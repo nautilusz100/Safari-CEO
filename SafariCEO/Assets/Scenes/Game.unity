@@ -847,7 +847,7 @@ MonoBehaviour:
   prefab_lake: {fileID: 738230952863713163, guid: aaf809a511a4ee74bb28e9fef3e83a2b, type: 3}
   prefab_bush: {fileID: 2789227227117460037, guid: 9a5d5649425e63b49897e3306125fcef, type: 3}
   prefab_flowerbed: {fileID: 2789227227117460037, guid: 76c7584325a77e8489eb4793c46fb07d, type: 3}
-  prefab_road: {fileID: 2789227227117460037, guid: 76c7584325a77e8489eb4793c46fb07d, type: 3}
+  prefab_road: {fileID: 1952292556893769945, guid: 1e4ec3e8d5a57af49834e6b9a0a6bd2e, type: 3}
   map_dimensions: {x: 80, y: 80}
 --- !u!4 &337380335
 Transform:
@@ -1809,6 +1809,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1e647a84a50ece45b1a4b97cee04390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bushImage: {fileID: 21300000, guid: b35560607c1ded6429d28126803770ee, type: 3}
+  treeImage: {fileID: 21300000, guid: c5ddb8b67aa754a498eac47662115515, type: 3}
+  flowerImage: {fileID: 21300000, guid: 4f56a43563ff5ce4496ae89d8dd89c33, type: 3}
+  foxImage: {fileID: 21300000, guid: 5f30bcf1f8471354f9e18dd4c57e2002, type: 3}
+  lionImage: {fileID: 21300000, guid: e7579e000ab9e6b4a83ea1b84ad4a5cb, type: 3}
+  giraffeImage: {fileID: 21300000, guid: c1dd5b36b7804564c80d5adea2b9f6af, type: 3}
+  zebraImage: {fileID: 21300000, guid: acd8cd15eb63ca14290d49ad181fc82a, type: 3}
+  roadImage: {fileID: 21300000, guid: 751a5a0c75788374d8901f57116d4792, type: 3}
+  jeepImage: {fileID: 21300000, guid: a4eb84019e041084e85e9dcb0f12b7b5, type: 3}
   enableShop: {fileID: 1222289826}
   enableParkStat: {fileID: 2099654402}
 --- !u!1 &740736292
