@@ -538,6 +538,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 110277124}
   m_CullTransparentMesh: 1
+--- !u!1 &138372537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 138372539}
+  - component: {fileID: 138372538}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &138372538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138372537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e99fcbc8cd9cde54f8bce6312d9fcf74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  safariMapPrefab: {fileID: 337380334}
+--- !u!4 &138372539
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138372537}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1556.1014, y: 681.69055, z: -6.1415176}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &142015350
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,6 +847,7 @@ MonoBehaviour:
   prefab_lake: {fileID: 738230952863713163, guid: aaf809a511a4ee74bb28e9fef3e83a2b, type: 3}
   prefab_bush: {fileID: 2789227227117460037, guid: 9a5d5649425e63b49897e3306125fcef, type: 3}
   prefab_flowerbed: {fileID: 2789227227117460037, guid: 76c7584325a77e8489eb4793c46fb07d, type: 3}
+  prefab_road: {fileID: 2789227227117460037, guid: 76c7584325a77e8489eb4793c46fb07d, type: 3}
   map_dimensions: {x: 80, y: 80}
 --- !u!4 &337380335
 Transform:
@@ -2189,7 +2235,6 @@ GameObject:
   m_Component:
   - component: {fileID: 776654300}
   - component: {fileID: 776654299}
-  - component: {fileID: 776654298}
   - component: {fileID: 776654301}
   m_Layer: 0
   m_Name: Main Camera
@@ -2198,14 +2243,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &776654298
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 776654297}
-  m_Enabled: 1
 --- !u!20 &776654299
 Camera:
   m_ObjectHideFlags: 0
@@ -5219,3 +5256,4 @@ SceneRoots:
   - {fileID: 1934581973}
   - {fileID: 740736295}
   - {fileID: 1477383801}
+  - {fileID: 138372539}

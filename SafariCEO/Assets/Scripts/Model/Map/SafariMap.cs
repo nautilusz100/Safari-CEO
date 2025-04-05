@@ -14,6 +14,7 @@ public class SafariMap : MonoBehaviour
     public GameObject prefab_lake;
     public GameObject prefab_bush;
     public GameObject prefab_flowerbed;
+    public GameObject prefab_road;
 
     public Vector2 map_dimensions = new Vector2(160, 90);
  
@@ -26,12 +27,41 @@ public class SafariMap : MonoBehaviour
  
     int x_offset = 0; // <- +>
     int y_offset = 0; // v- +^
- 
-    void Start()
+
+    public void CreateMap()
     {
         x_offset = UnityEngine.Random.Range(0, 1000);
         y_offset = UnityEngine.Random.Range(0, 1000);
         GenerateMap();
+    }
+    public void ChangeTileToRoad(Vector2 vector)
+    {
+        // Kerekítés lefelé
+        int xIndex = Mathf.FloorToInt(vector.x); // lefelé kerekítjük az x koordinátát
+        int yIndex = Mathf.FloorToInt(vector.y); // lefelé kerekítjük az y koordinátát
+
+        if (xIndex >= 0 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid.Count)
+        {
+            // Az új kerekített indexeket használjuk
+            GameObject tile = tile_grid[xIndex+2][yIndex]; //+2 kell
+
+
+            if (tile != null)
+            {
+                Destroy(tile);
+                GameObject roadTile = Instantiate(prefab_road, tile.transform.position, Quaternion.identity);
+
+                // A lecserélt tile-t tárolhatod az új objektumban, ha szükséges
+                tile_grid[xIndex + 2][yIndex] = roadTile;
+
+                // Opció: A spriteRenderer beállítása, ha szükséges
+                SpriteRenderer roadSpriteRenderer = roadTile.GetComponent<SpriteRenderer>();
+                if (roadSpriteRenderer != null)
+                {
+                    roadSpriteRenderer.sortingOrder = Mathf.RoundToInt(-roadTile.transform.position.y * 10 + roadSpriteRenderer.sortingOrder);
+                }
+            }
+        }
     }
 
     /*Helper function for river generating, if river moves diagonally adds another tile so it looks better*/
