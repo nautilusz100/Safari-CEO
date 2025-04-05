@@ -40,7 +40,7 @@ public class SafariMap : MonoBehaviour
         int xIndex = Mathf.FloorToInt(vector.x); // lefelé kerekítjük az x koordinátát
         int yIndex = Mathf.FloorToInt(vector.y); // lefelé kerekítjük az y koordinátát
 
-        if (xIndex >= 0 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid.Count)
+        if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid.Count)
         {
             // Az új kerekített indexeket használjuk
             GameObject tile = tile_grid[xIndex+2][yIndex]; //+2 kell

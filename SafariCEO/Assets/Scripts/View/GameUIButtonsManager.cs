@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,6 +13,19 @@ public class gameUIButtonsManager : MonoBehaviour
     private Button jeepAndRoadButton;
     private Button parkStatButton;
 
+    private ShopTypes currentShopType = ShopTypes.NONE;
+    private List<Transform> shopElementPanels;
+
+    [SerializeField]private UnityEngine.Sprite bushImage;
+    [SerializeField]private UnityEngine.Sprite treeImage;
+    [SerializeField]private UnityEngine.Sprite flowerImage;
+    [SerializeField]private UnityEngine.Sprite foxImage;
+    [SerializeField]private UnityEngine.Sprite lionImage;
+    [SerializeField]private UnityEngine.Sprite giraffeImage;
+    [SerializeField]private UnityEngine.Sprite zebraImage;
+    [SerializeField]private UnityEngine.Sprite roadImage;
+    [SerializeField]private UnityEngine.Sprite jeepImage;
+    
     public GameObject enableShop;
     public GameObject enableParkStat;
 
@@ -19,6 +33,7 @@ public class gameUIButtonsManager : MonoBehaviour
     public event EventHandler AnimalShopClicked;
     public event EventHandler JeepShopClicked;
     public event EventHandler ParkStatClicked;
+
     void Start()
     {
         uIDocument = GetComponent<UIDocument>();
@@ -59,6 +74,18 @@ public class gameUIButtonsManager : MonoBehaviour
             return;
         }
         parkStatButton.clickable.clicked += OnParkStatButtonClick;
+
+        CreateShopElementPanelList();
+
+    }
+
+    private void CreateShopElementPanelList()
+    {
+        shopElementPanels = new List<Transform>();
+        for (int i = 0; i < 4; i++)
+        {
+            shopElementPanels.Add(enableShop.transform.GetChild(i).GetChild(0));
+        }
     }
 
     private void OnParkStatButtonClick()
@@ -67,21 +94,73 @@ public class gameUIButtonsManager : MonoBehaviour
         ParkStatClicked?.Invoke(this, EventArgs.Empty);
     }
 
+    private void ShopDisplayManager(ShopTypes shopType)
+    {
+        if (currentShopType == shopType)
+        {
+            enableShop.SetActive(false);
+            currentShopType = ShopTypes.NONE;
+        }
+        else
+        {
+            currentShopType = shopType;
+            enableShop.SetActive(true);
+            SetShopElements(shopType);
+        }
+    }
+
+    private void SetShopElements(ShopTypes currentShop)
+    {
+
+        switch (currentShop)
+        {
+            case ShopTypes.NATURE:
+
+                SetShopDetails(0, "Flowers", "$10", flowerImage);
+                SetShopDetails(1, "Bushes", "$20", bushImage);
+                SetShopDetails(2, "Trees", "$30", treeImage);
+                shopElementPanels[3].gameObject.SetActive(false);
+
+                break;
+            case ShopTypes.ANIMALS:
+                SetShopDetails(0, "Fox", "$10", foxImage);
+                SetShopDetails(1, "Lion", "$20", lionImage);
+                SetShopDetails(2, "Giraffe", "$30", giraffeImage);
+                SetShopDetails(3, "Zebra", "$40", zebraImage);
+                break;
+            case ShopTypes.JEEP:
+                SetShopDetails(0, "Road", "$10", roadImage);
+                SetShopDetails(1, "Jeep", "$20", jeepImage);
+                shopElementPanels[2].gameObject.SetActive(false);
+                shopElementPanels[3].gameObject.SetActive(false);
+                break;
+            default:
+                break;
+        }
+    }
+    private void SetShopDetails(int panelNumber, string panelName, string panelPrice, UnityEngine.Sprite shopSprite)
+    {
+        shopElementPanels[panelNumber].gameObject.SetActive(true);
+        shopElementPanels[panelNumber].Find("ShopElementName").GetComponent<TextMeshProUGUI>().text = panelName;
+        shopElementPanels[panelNumber].Find("ShopElementPrice").GetComponent<TextMeshProUGUI>().text = panelPrice;
+        shopElementPanels[panelNumber].Find("ShopElementImagePanel").Find("ShopElementImage").GetComponent<UnityEngine.UI.Image>().sprite = shopSprite;
+    }
+
     private void OnNautreButtonClick()
     {
-        enableShop.SetActive(!enableShop.activeSelf);
+        ShopDisplayManager(ShopTypes.NATURE);
         NatureShopClicked?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnAnimalButtonClick()
     {
-        enableShop.SetActive(!enableShop.activeSelf);
+        ShopDisplayManager(ShopTypes.ANIMALS);
         AnimalShopClicked?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnJeepButtonClick()
     {
-        enableShop.SetActive(!enableShop.activeSelf);
+        ShopDisplayManager(ShopTypes.JEEP);
         JeepShopClicked?.Invoke(this, EventArgs.Empty);
     }
 }
