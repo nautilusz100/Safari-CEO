@@ -30,6 +30,9 @@ public class SafariMap : MonoBehaviour
     public GameObject prefab_road0111; //fektetve le ágazás
     public GameObject prefab_road1111; // ágazás 4 irányba
 
+    //main building
+    public List<GameObject> maninBuildingTilePrefabs;
+
     public Vector2 map_dimensions = new Vector2(160, 90);
 
     List<List<int>> noise_grid = new List<List<int>>();
@@ -48,12 +51,93 @@ public class SafariMap : MonoBehaviour
         x_offset = UnityEngine.Random.Range(0, 1000);
         y_offset = UnityEngine.Random.Range(0, 1000);
         GenerateMap();
+        GenerateMainBuilding();
+    }
+    private void GenerateMainBuilding()
+    {
+        // Iterate through the grid to place buildings
+        int count = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                int x = 45 + (j % 4);
+                int y = 45 - (i % 4);
+
+                if (x < map_dimensions.x && y < map_dimensions.y) // Check if within bounds
+                {
+                    GameObject currentTile = tile_grid[x][y]; // Get the current tile
+
+                    if (currentTile != null)
+                    {
+                        Tile tileComponent = currentTile.GetComponent<Tile>(); // Get the tile component
+                        Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: (" + x + ", " + y + ")");
+
+                        if (tileComponent != null)
+                        {
+                            // Instantiate the building prefab at this position
+
+                            GameObject building = Instantiate(maninBuildingTilePrefabs[count], currentTile.transform.position, Quaternion.identity);
+                            building.transform.parent = gameObject.transform; // Set parent of the building
+                            Tile tileComponentBuilding = building.GetComponent<Tile>();
+                            if (tileComponentBuilding == null)
+                                tileComponentBuilding = building.AddComponent<Tile>(); // If no Tile component exists, add one
+
+                            tileComponentBuilding.Type = Tile.TileType.MainBuilding; // Set type to main building
+                        }
+                        Destroy(currentTile);
+                        count++;
+                    }
+                }
+            }
+            
+        }
     }
 
+
+<<<<<<< Updated upstream
+=======
+    internal void ChangeTileNature(Vector2 vector, int whichTileType)
+    {
+        int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
+        int yIndex = Mathf.FloorToInt(vector.y); // Lefelé kerekítés az y koordinátán
+        Debug.Log("xIndex: " + xIndex + ", yIndex: " + yIndex);
+        if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid[0].Count)
+        {
+            Vector2Int tilePosition = new Vector2Int(xIndex + 2, yIndex); // Kerekített indexek
+            GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y]; // Aktuális tile
+            if (currentTile != null)
+            {
+                Tile.TileType newType = Tile.TileType.Plains;
+                switch (whichTileType)
+                {
+                    case 0: //tree
+                        newType = Tile.TileType.Tree;
+                        break;
+                    case 1: //flower
+                        newType = Tile.TileType.Flowerbed;
+                        break;
+                    case 2: //bush
+                        newType = Tile.TileType.Bush;
+                        break;
+                    default:
+                        Debug.Log("Invalid tile type");
+                        break;
+                }
+                GameObject newTile = InstantiateTileOfType(newType, currentTile.transform.position);
+                newTile.transform.parent = currentTile.transform.parent;
+                tile_grid[tilePosition.x][tilePosition.y] = newTile; // Frissítjük a gridet
+                originalTileTypes.Remove(tilePosition);
+            }
+        }
+    }
+
+>>>>>>> Stashed changes
     public void ChangeTileToRoad(Vector2 vector)
     {
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
         int yIndex = Mathf.FloorToInt(vector.y); // Lefelé kerekítés az y koordinátán
+
 
         if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid[0].Count)
         {

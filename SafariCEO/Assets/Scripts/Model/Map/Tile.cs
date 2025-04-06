@@ -13,7 +13,8 @@ public class Tile : MonoBehaviour
         Lake,
         Bush,
         Flowerbed,
-        Road
+        Road,
+        MainBuilding
     }
 
     [SerializeField] private TileType initialType = TileType.Plains;
