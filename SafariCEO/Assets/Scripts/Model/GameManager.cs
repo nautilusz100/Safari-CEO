@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
-    public bool IsRoadBuildingMode { get; private set; } = true;
+    public bool IsRoadBuildingMode { get; private set; } = false;
+    public int IsNatureBuildingMode { get; private set; } = 0; //-1 nem épít, 0 tree épít, 1 flower épít, 2 bush épít
 
     // Singleton GameManager
     void Start()
@@ -49,6 +50,24 @@ public class GameManager : MonoBehaviour
                     // Opció: Ha rákattintunk, váltsunk tile-t
                     Vector2 tilePosition = hit.collider.gameObject.transform.position;
                     currentMap.ChangeTileToRoad(tilePosition);
+                }
+            }
+        }
+        else if (IsNatureBuildingMode > -1)
+        {
+            if (Input.GetMouseButtonDown(0)) // Bal kattintás
+            {
+                // Raycast a kamera pozíciójából
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+                if (hit.collider != null)
+                {
+                    // Debug üzenet a kattintott objektumról
+                    Debug.Log("Kattintott objektum: " + hit.collider.gameObject.name);
+
+                    // Opció: Ha rákattintunk, váltsunk tile-t
+                    Vector2 tilePosition = hit.collider.gameObject.transform.position;
+                    currentMap.ChangeTileNature(tilePosition, IsNatureBuildingMode);
                 }
             }
         }
