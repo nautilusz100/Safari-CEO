@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
-    public bool IsRoadBuildingMode { get; private set; } = false; // debug
+    public bool IsRoadBuildingMode { get; private set; } = false;
 
     // Singleton GameManager
     void Start()
