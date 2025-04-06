@@ -95,8 +95,6 @@ public class SafariMap : MonoBehaviour
     }
 
 
-<<<<<<< Updated upstream
-=======
     internal void ChangeTileNature(Vector2 vector, int whichTileType)
     {
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
@@ -132,7 +130,6 @@ public class SafariMap : MonoBehaviour
         }
     }
 
->>>>>>> Stashed changes
     public void ChangeTileToRoad(Vector2 vector)
     {
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
