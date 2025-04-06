@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        if (IsNatureBuildingMode > -1)
+        else if (IsNatureBuildingMode > -1)
         {
             if (Input.GetMouseButtonDown(0)) // Bal kattintás
             {
