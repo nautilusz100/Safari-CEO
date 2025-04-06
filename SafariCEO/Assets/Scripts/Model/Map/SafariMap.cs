@@ -130,40 +130,6 @@ public class SafariMap : MonoBehaviour
         }
     }
 
-    internal void ChangeTileNature(Vector2 vector, int whichTileType)
-    {
-        int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
-        int yIndex = Mathf.FloorToInt(vector.y); // Lefelé kerekítés az y koordinátán
-        if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid[0].Count)
-        {
-            Vector2Int tilePosition = new Vector2Int(xIndex + 2, yIndex); // Kerekített indexek
-            GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y]; // Aktuális tile
-            if (currentTile != null)
-            {
-                Tile.TileType newType = Tile.TileType.Plains;
-                switch (whichTileType)
-                {
-                    case 0: //tree
-                        newType = Tile.TileType.Tree;
-                        break;
-                    case 1: //flower
-                        newType = Tile.TileType.Flowerbed;
-                        break;
-                    case 2: //bush
-                        newType = Tile.TileType.Bush;
-                        break;
-                    default:
-                        Debug.Log("Invalid tile type");
-                        break;
-                }
-                GameObject newTile = InstantiateTileOfType(newType, currentTile.transform.position);
-                newTile.transform.parent = currentTile.transform.parent;
-                tile_grid[tilePosition.x][tilePosition.y] = newTile; // Frissítjük a gridet
-                originalTileTypes.Remove(tilePosition);
-            }
-        }
-    }
-
     public void ChangeTileToRoad(Vector2 vector)
     {
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
