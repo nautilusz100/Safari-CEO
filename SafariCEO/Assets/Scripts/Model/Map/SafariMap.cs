@@ -64,43 +64,50 @@ public class SafariMap : MonoBehaviour
             {
                 Tile tileComponent = currentTile.GetComponent<Tile>(); // A tile komponens beszerzése
                 Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: " + tilePosition);
-
-                if (tileComponent != null && tileComponent.Type == Tile.TileType.Road)
+                if (tileComponent != null && !(tileComponent.Type == Tile.TileType.River || tileComponent.Type == Tile.TileType.Lake || tileComponent.Type == Tile.TileType.Hills))
                 {
-                    // Ha már út, akkor visszaállítjuk az eredeti tile-t
-                    if (originalTileTypes.ContainsKey(tilePosition))
+                    if (tileComponent != null && tileComponent.Type == Tile.TileType.Road)
                     {
-                        Tile.TileType originalType = originalTileTypes[tilePosition]; // Eredeti típus
-                        GameObject restoredTile = InstantiateTileOfType(originalType, currentTile.transform.position); // Új tile létrehozása a tárolt típus alapján
-                        restoredTile.transform.parent = currentTile.transform.parent; // Szülő beállítása
-                        tile_grid[tilePosition.x][tilePosition.y] = restoredTile; // Frissítjük a gridet
-                        originalTileTypes.Remove(tilePosition); // Eredeti típus eltávolítása
+                        // Ha már út, akkor visszaállítjuk az eredeti tile-t
+                        if (originalTileTypes.ContainsKey(tilePosition))
+                        {
+                            Tile.TileType originalType = originalTileTypes[tilePosition]; // Eredeti típus
+                            GameObject restoredTile = InstantiateTileOfType(originalType, currentTile.transform.position); // Új tile létrehozása a tárolt típus alapján
+                            restoredTile.transform.parent = currentTile.transform.parent; // Szülő beállítása
+                            tile_grid[tilePosition.x][tilePosition.y] = restoredTile; // Frissítjük a gridet
+                            originalTileTypes.Remove(tilePosition); // Eredeti típus eltávolítása
+                        }
+                        Destroy(currentTile); // Eltávolítjuk a jelenlegi tile-t
                     }
-                    Destroy(currentTile); // Eltávolítjuk a jelenlegi tile-t
+                    else
+                    {
+                        // Tároljuk el az eredeti típusát
+                        if (!originalTileTypes.ContainsKey(tilePosition))
+                        {
+                            originalTileTypes[tilePosition] = tileComponent.Type; // Eredeti típus mentése
+                        }
+
+                        // Új út tile létrehozása
+                        GameObject roadTile = Instantiate(RoadChange(tilePosition), currentTile.transform.position, Quaternion.identity);
+                        roadTile.transform.parent = currentTile.transform.parent;
+
+                        Tile roadTileComponent = roadTile.GetComponent<Tile>();
+                        if (roadTileComponent == null)
+                            roadTileComponent = roadTile.AddComponent<Tile>();
+                        roadTileComponent.Type = Tile.TileType.Road; // Beállítjuk a típusát "Road"-ra
+
+                        Destroy(currentTile); // Eltávolítjuk az aktuális tile-t
+                        tile_grid[tilePosition.x][tilePosition.y] = roadTile; // Frissítjük a gridet
+
+                        // Frissítjük a környező tile-okat is
+                        UpdateSurroundingRoads(tilePosition);
+                    }
                 }
                 else
                 {
-                    // Tároljuk el az eredeti típusát
-                    if (!originalTileTypes.ContainsKey(tilePosition))
-                    {
-                        originalTileTypes[tilePosition] = tileComponent.Type; // Eredeti típus mentése
-                    }
-
-                    // Új út tile létrehozása
-                    GameObject roadTile = Instantiate(RoadChange(tilePosition), currentTile.transform.position, Quaternion.identity);
-                    roadTile.transform.parent = currentTile.transform.parent;
-
-                    Tile roadTileComponent = roadTile.GetComponent<Tile>();
-                    if (roadTileComponent == null)
-                        roadTileComponent = roadTile.AddComponent<Tile>();
-                    roadTileComponent.Type = Tile.TileType.Road; // Beállítjuk a típusát "Road"-ra
-
-                    Destroy(currentTile); // Eltávolítjuk az aktuális tile-t
-                    tile_grid[tilePosition.x][tilePosition.y] = roadTile; // Frissítjük a gridet
-
-                    // Frissítjük a környező tile-okat is
-                    UpdateSurroundingRoads(tilePosition);
+                    Debug.Log("Tile is river or lake or hills");
                 }
+               
             }
         }
     }
