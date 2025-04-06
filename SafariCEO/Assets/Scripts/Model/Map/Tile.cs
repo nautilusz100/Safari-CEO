@@ -1,20 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    // Start is called before the first frame update
     private SpriteRenderer spriteRenderer;
+
+    public enum TileType
+    {
+        Plains,
+        Tree,
+        Hills,
+        River,
+        Lake,
+        Bush,
+        Flowerbed,
+        Road
+    }
+
+    [SerializeField] private TileType initialType = TileType.Plains;
+    public TileType Type { get; set; }
+
+    void Awake()
+    {
+        Type = initialType;
+    }
 
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 10 + spriteRenderer.sortingOrder);
-    }
-
-    void Update()
-    {
-       
     }
 }
