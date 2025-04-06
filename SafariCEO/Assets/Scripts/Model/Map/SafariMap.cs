@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class SafariMap : MonoBehaviour
@@ -14,17 +15,31 @@ public class SafariMap : MonoBehaviour
     public GameObject prefab_lake;
     public GameObject prefab_bush;
     public GameObject prefab_flowerbed;
-    public GameObject prefab_road;
+    //sima 1
+    public GameObject prefab_road1010; //alap
+    public GameObject prefab_road1100; //fent bal kanyar
+    public GameObject prefab_road0101; //alap fektetve
+    public GameObject prefab_road0110; //jobbrol lefele kanyar
+    public GameObject prefab_road0011; //lentről bal kanyar
+    public GameObject prefab_road1001; //balrol fel kanyar
+
+    //elagazások
+    public GameObject prefab_road1110; //sima jobbra ágazás
+    public GameObject prefab_road1011; //sima balra ágazás
+    public GameObject prefab_road1101; //fektetve fel ágazás
+    public GameObject prefab_road0111; //fektetve le ágazás
+    public GameObject prefab_road1111; // ágazás 4 irányba
 
     public Vector2 map_dimensions = new Vector2(160, 90);
- 
+
     List<List<int>> noise_grid = new List<List<int>>();
     List<List<GameObject>> tile_grid = new List<List<GameObject>>();
     List<List<Vector2Int>> rivers = new List<List<Vector2Int>>();
+    private Dictionary<Vector2Int, Tile.TileType> originalTileTypes = new Dictionary<Vector2Int, Tile.TileType>();
 
     // recommend 4 to 20
     float magnification = 7.0f;
- 
+
     int x_offset = 0; // <- +>
     int y_offset = 0; // v- +^
 
@@ -34,38 +49,195 @@ public class SafariMap : MonoBehaviour
         y_offset = UnityEngine.Random.Range(0, 1000);
         GenerateMap();
     }
+
     public void ChangeTileToRoad(Vector2 vector)
     {
-        // Kerek�t�s lefel�
-        int xIndex = Mathf.FloorToInt(vector.x); // lefel� kerek�tj�k az x koordin�t�t
-        int yIndex = Mathf.FloorToInt(vector.y); // lefel� kerek�tj�k az y koordin�t�t
+        int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
+        int yIndex = Mathf.FloorToInt(vector.y); // Lefelé kerekítés az y koordinátán
 
-        if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid.Count)
+        if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid[0].Count)
         {
-            // Az �j kerek�tett indexeket haszn�ljuk
-            GameObject tile = tile_grid[xIndex+2][yIndex]; //+2 kell
+            Vector2Int tilePosition = new Vector2Int(xIndex + 2, yIndex); // Kerekített indexek
+            GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y]; // Aktuális tile
 
-
-            if (tile != null)
+            if (currentTile != null)
             {
-                Destroy(tile);
-                GameObject roadTile = Instantiate(prefab_road, tile.transform.position, Quaternion.identity);
+                Tile tileComponent = currentTile.GetComponent<Tile>(); // A tile komponens beszerzése
+                Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: " + tilePosition);
 
-                // A lecser�lt tile-t t�rolhatod az �j objektumban, ha sz�ks�ges
-                tile_grid[xIndex + 2][yIndex] = roadTile;
-
-                // Opci�: A spriteRenderer be�ll�t�sa, ha sz�ks�ges
-                SpriteRenderer roadSpriteRenderer = roadTile.GetComponent<SpriteRenderer>();
-                if (roadSpriteRenderer != null)
+                if (tileComponent != null && tileComponent.Type == Tile.TileType.Road)
                 {
-                    roadSpriteRenderer.sortingOrder = Mathf.RoundToInt(-roadTile.transform.position.y * 10 + roadSpriteRenderer.sortingOrder);
+                    // Ha már út, akkor visszaállítjuk az eredeti tile-t
+                    if (originalTileTypes.ContainsKey(tilePosition))
+                    {
+                        Tile.TileType originalType = originalTileTypes[tilePosition]; // Eredeti típus
+                        GameObject restoredTile = InstantiateTileOfType(originalType, currentTile.transform.position); // Új tile létrehozása a tárolt típus alapján
+                        restoredTile.transform.parent = currentTile.transform.parent; // Szülő beállítása
+                        tile_grid[tilePosition.x][tilePosition.y] = restoredTile; // Frissítjük a gridet
+                        originalTileTypes.Remove(tilePosition); // Eredeti típus eltávolítása
+                    }
+                    Destroy(currentTile); // Eltávolítjuk a jelenlegi tile-t
+                }
+                else
+                {
+                    // Tároljuk el az eredeti típusát
+                    if (!originalTileTypes.ContainsKey(tilePosition))
+                    {
+                        originalTileTypes[tilePosition] = tileComponent.Type; // Eredeti típus mentése
+                    }
+
+                    // Új út tile létrehozása
+                    GameObject roadTile = Instantiate(RoadChange(tilePosition), currentTile.transform.position, Quaternion.identity);
+                    roadTile.transform.parent = currentTile.transform.parent;
+
+                    Tile roadTileComponent = roadTile.GetComponent<Tile>();
+                    if (roadTileComponent == null)
+                        roadTileComponent = roadTile.AddComponent<Tile>();
+                    roadTileComponent.Type = Tile.TileType.Road; // Beállítjuk a típusát "Road"-ra
+
+                    Destroy(currentTile); // Eltávolítjuk az aktuális tile-t
+                    tile_grid[tilePosition.x][tilePosition.y] = roadTile; // Frissítjük a gridet
+
+                    // Frissítjük a környező tile-okat is
+                    UpdateSurroundingRoads(tilePosition);
                 }
             }
         }
     }
 
-    /*Helper function for river generating, if river moves diagonally adds another tile so it looks better*/
-    public (bool,Vector2Int) SmoothRiverEdges(Vector2Int prevTile, Vector2Int currentTile)
+    private GameObject RoadChange(Vector2Int tilePosition)
+    {
+        // Kiszámítjuk a szomszédos tile-ok pozícióit
+        Vector2Int up = new Vector2Int(tilePosition.x, tilePosition.y + 1);
+        Vector2Int down = new Vector2Int(tilePosition.x, tilePosition.y - 1);
+        Vector2Int left = new Vector2Int(tilePosition.x - 1, tilePosition.y);
+        Vector2Int right = new Vector2Int(tilePosition.x + 1, tilePosition.y);
+        // Ellenőrizzük a szomszédos tile-ok típusát
+        bool upTile = IsRoad(up);
+        bool downTile = IsRoad(down);
+        bool leftTile = IsRoad(left);
+        bool rightTile = IsRoad(right);
+        Debug.Log("Road u: " + upTile + " d" + downTile + " l" + leftTile+  " r" + rightTile);
+        // Új út prefab kiválasztása a szomszédos tile-ok alapján
+        GameObject selectedPrefab = prefab_road1010; // Alapértelmezett prefab
+        if (upTile && downTile && leftTile && rightTile)
+            selectedPrefab = prefab_road1111;
+        else if (upTile && downTile && leftTile)
+            selectedPrefab = prefab_road1011;
+        else if (upTile && downTile && rightTile)
+            selectedPrefab = prefab_road1110;
+        else if (upTile && leftTile && rightTile)
+            selectedPrefab = prefab_road1101;
+        else if (downTile && leftTile && rightTile)
+            selectedPrefab = prefab_road0111;
+        else if (upTile && downTile)
+            selectedPrefab = prefab_road1010;
+        else if (leftTile && rightTile)
+            selectedPrefab = prefab_road0101;
+        else if (upTile && leftTile)
+            selectedPrefab = prefab_road1001;
+        else if (upTile && rightTile)
+            selectedPrefab = prefab_road1100;
+        else if (downTile && leftTile)
+            selectedPrefab = prefab_road0011;
+        else if (downTile && rightTile)
+            selectedPrefab = prefab_road0110;
+        else if (upTile || downTile)
+            selectedPrefab = prefab_road1010;
+        else if (leftTile || rightTile)
+            selectedPrefab = prefab_road0101;
+        return selectedPrefab;
+    }
+
+    private void UpdateSurroundingRoads(Vector2Int tilePosition)
+    {
+        // Kiszámítjuk a szomszédos tile-ok pozícióit
+        Vector2Int up = new Vector2Int(tilePosition.x, tilePosition.y + 1);
+        Vector2Int down = new Vector2Int(tilePosition.x, tilePosition.y - 1);
+        Vector2Int left = new Vector2Int(tilePosition.x - 1, tilePosition.y);
+        Vector2Int right = new Vector2Int(tilePosition.x + 1, tilePosition.y);
+
+        // Frissítjük a szomszédos tile-okat, ha azok utak
+        if (IsRoad(up))
+            UpdateRoadTile(up);
+        if (IsRoad(down))
+            UpdateRoadTile(down);
+        if (IsRoad(left))
+            UpdateRoadTile(left);
+        if (IsRoad(right))
+            UpdateRoadTile(right);
+    }
+
+    private void UpdateRoadTile(Vector2Int tilePosition)
+    {
+        GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y];
+        if (currentTile != null)
+        {
+            Destroy(currentTile);
+            GameObject newRoadTile = Instantiate(RoadChange(tilePosition), currentTile.transform.position, Quaternion.identity);
+            newRoadTile.transform.parent = currentTile.transform.parent;
+            Tile roadTileComponent = newRoadTile.GetComponent<Tile>();
+            if (roadTileComponent == null)
+                roadTileComponent = newRoadTile.AddComponent<Tile>();
+            roadTileComponent.Type = Tile.TileType.Road;
+            tile_grid[tilePosition.x][tilePosition.y] = newRoadTile;
+        }
+    }
+
+    private bool IsRoad(Vector2Int position)
+    {
+        if (position.x >= 0 && position.x < tile_grid.Count && position.y >= 0 && position.y < tile_grid[0].Count)
+        {
+            GameObject tile = tile_grid[position.x][position.y];
+            if (tile != null)
+            {
+                Tile tileComponent = tile.GetComponent<Tile>();
+                return tileComponent != null && tileComponent.Type == Tile.TileType.Road;
+            }
+        }
+        return false;
+    }
+
+    private GameObject InstantiateTileOfType(Tile.TileType type, Vector3 position)
+    {
+        GameObject tilePrefab = null;
+
+        // A típus alapján kiválasztjuk a megfelelő prefabot
+        switch (type)
+        {
+            case Tile.TileType.Plains:
+                tilePrefab = prefab_plains;
+                break;
+            case Tile.TileType.Tree:
+                tilePrefab = prefab_tree;
+                break;
+            case Tile.TileType.Hills:
+                tilePrefab = prefab_hills;
+                break;
+            case Tile.TileType.River:
+                tilePrefab = prefab_river;
+                break;
+            case Tile.TileType.Lake:
+                tilePrefab = prefab_lake;
+                break;
+            case Tile.TileType.Bush:
+                tilePrefab = prefab_bush;
+                break;
+            case Tile.TileType.Flowerbed:
+                tilePrefab = prefab_flowerbed;
+                break;
+            default:
+                return null;
+        }
+
+        // Létrehozzuk az új tile-t a kiválasztott prefab alapján
+        return Instantiate(tilePrefab, position, Quaternion.identity);
+    }
+
+
+
+/*Helper function for river generating, if river moves diagonally adds another tile so it looks better*/
+public (bool,Vector2Int) SmoothRiverEdges(Vector2Int prevTile, Vector2Int currentTile)
     {
         int dx = currentTile.x - prevTile.x;
         int dy = currentTile.y - prevTile.y;
