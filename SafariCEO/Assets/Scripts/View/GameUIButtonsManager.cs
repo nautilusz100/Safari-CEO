@@ -188,7 +188,7 @@ public class gameUIButtonsManager : MonoBehaviour
                 }
                 break;
             case ShopTypes.ANIMALS:
-                gameManager.IsBuilding = Tile.TileType.None;
+                gameManager.IsBuilding = Tile.TileType.Animal;
                 break;
             case ShopTypes.JEEP:
                 if (button == 0)

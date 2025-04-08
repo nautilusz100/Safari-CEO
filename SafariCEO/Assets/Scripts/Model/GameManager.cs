@@ -8,8 +8,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
+    public GameObject animalPrefab;
 
-    public Tile.TileType IsBuilding { get; set; } = Tile.TileType.None;
+    public Tile.TileType IsBuilding { get; set; } = Tile.TileType.Animal;
 
     // Singleton GameManager
     void Start()
@@ -73,6 +74,25 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+            else if (IsBuilding == Tile.TileType.Animal)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+                    if (hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Tiles"))
+                    {
+                        Vector2 tilePosition = hit.collider.gameObject.transform.position;
+
+                        // Lehelyezés z = 0-ra
+                        Vector3 spawnPos = new Vector3(tilePosition.x, tilePosition.y, 0f);
+
+                        GameObject newAnimal = Instantiate(animalPrefab, spawnPos, Quaternion.identity);
+                    }
+                }
+            }
+
+
         }
 
     }
