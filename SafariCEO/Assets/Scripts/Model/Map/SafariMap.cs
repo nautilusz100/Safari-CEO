@@ -84,6 +84,7 @@ public class SafariMap : MonoBehaviour
                                 tileComponentBuilding = building.AddComponent<Tile>(); // If no Tile component exists, add one
 
                             tileComponentBuilding.Type = Tile.TileType.MainBuilding; // Set type to main building
+                            tile_grid[x][y] = building;
                         }
                         Destroy(currentTile);
                         count++;
@@ -104,28 +105,37 @@ public class SafariMap : MonoBehaviour
         {
             Vector2Int tilePosition = new Vector2Int(xIndex + 2, yIndex); // Kerekített indexek
             GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y]; // Aktuális tile
-            if (currentTile != null)
+            Tile tileComponent = currentTile.GetComponent<Tile>();
+            Tile.TileType newType = Tile.TileType.Plains;
+            switch (whichTileType)
             {
-                Tile.TileType newType = Tile.TileType.Plains;
-                switch (whichTileType)
-                {
-                    case 0: //tree
-                        newType = Tile.TileType.Tree;
-                        break;
-                    case 1: //flower
-                        newType = Tile.TileType.Flowerbed;
-                        break;
-                    case 2: //bush
-                        newType = Tile.TileType.Bush;
-                        break;
-                    default:
-                        Debug.Log("Invalid tile type");
-                        break;
-                }
+                case 0: //tree
+                    newType = Tile.TileType.Tree;
+                    break;
+                case 1: //flower
+                    newType = Tile.TileType.Flowerbed;
+                    break;
+                case 2: //bush
+                    newType = Tile.TileType.Bush;
+                    break;
+                default:
+                    Debug.Log("Invalid tile type");
+                    break;
+            }
+            if (currentTile != null && newType != tileComponent.Type && !(tileComponent.Type == Tile.TileType.River || tileComponent.Type == Tile.TileType.Lake || tileComponent.Type == Tile.TileType.Hills || tileComponent.Type == Tile.TileType.MainBuilding))
+            {
                 GameObject newTile = InstantiateTileOfType(newType, currentTile.transform.position);
                 newTile.transform.parent = currentTile.transform.parent;
                 tile_grid[tilePosition.x][tilePosition.y] = newTile; // Frissítjük a gridet
-                originalTileTypes.Remove(tilePosition);
+                Destroy(currentTile);
+                //originalTileTypes.Remove(tilePosition);
+            }
+            else if(currentTile != null && newType == tileComponent.Type)
+            {
+                GameObject newTile = InstantiateTileOfType(Tile.TileType.Plains, currentTile.transform.position);
+                newTile.transform.parent = currentTile.transform.parent;
+                tile_grid[tilePosition.x][tilePosition.y] = newTile;
+                Destroy(currentTile);
             }
         }
     }
@@ -145,7 +155,7 @@ public class SafariMap : MonoBehaviour
             {
                 Tile tileComponent = currentTile.GetComponent<Tile>(); // A tile komponens beszerzése
                 Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: " + tilePosition);
-                if (tileComponent != null && !(tileComponent.Type == Tile.TileType.River || tileComponent.Type == Tile.TileType.Lake || tileComponent.Type == Tile.TileType.Hills))
+                if (tileComponent != null && !(tileComponent.Type == Tile.TileType.River || tileComponent.Type == Tile.TileType.Lake || tileComponent.Type == Tile.TileType.Hills || tileComponent.Type == Tile.TileType.MainBuilding))
                 {
                     if (tileComponent != null && tileComponent.Type == Tile.TileType.Road)
                     {
@@ -165,7 +175,7 @@ public class SafariMap : MonoBehaviour
                         // Tároljuk el az eredeti típusát
                         if (!originalTileTypes.ContainsKey(tilePosition))
                         {
-                            originalTileTypes[tilePosition] = tileComponent.Type; // Eredeti típus mentése
+                            originalTileTypes[tilePosition] = Tile.TileType.Plains; // Eredeti típus mentése
                         }
 
                         // Új út tile létrehozása
