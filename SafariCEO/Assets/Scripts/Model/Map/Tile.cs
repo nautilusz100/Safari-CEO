@@ -15,6 +15,7 @@ public class Tile : MonoBehaviour
         Road,
         MainBuilding,
         Plains,
+        Animal,
         None
     }
 
