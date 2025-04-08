@@ -100,7 +100,6 @@ public class SafariMap : MonoBehaviour
     {
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
         int yIndex = Mathf.FloorToInt(vector.y); // Lefelé kerekítés az y koordinátán
-        Debug.Log("xIndex: " + xIndex + ", yIndex: " + yIndex);
         if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid[0].Count)
         {
             Vector2Int tilePosition = new Vector2Int(xIndex + 2, yIndex); // Kerekített indexek
@@ -110,6 +109,7 @@ public class SafariMap : MonoBehaviour
             newType = whichTileType;
             if (currentTile != null && newType != tileComponent.Type && !(tileComponent.Type == Tile.TileType.River || tileComponent.Type == Tile.TileType.Lake || tileComponent.Type == Tile.TileType.Hills || tileComponent.Type == Tile.TileType.MainBuilding))
             {
+                Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: " + tilePosition);
                 GameObject newTile = InstantiateTileOfType(newType, currentTile.transform.position);
                 newTile.transform.parent = currentTile.transform.parent;
                 tile_grid[tilePosition.x][tilePosition.y] = newTile; // Frissítjük a gridet
