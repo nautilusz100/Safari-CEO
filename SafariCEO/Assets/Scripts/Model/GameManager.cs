@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
-    public bool IsRoadBuildingMode { get; private set; } = false;
-    public int IsNatureBuildingMode { get; private set; } = 0; //-1 nem épít, 0 tree épít, 1 flower épít, 2 bush épít
+
+    public Tile.TileType IsBuilding { get; set; } = Tile.TileType.None;
 
     // Singleton GameManager
     void Start()
@@ -34,54 +35,58 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // Csak akkor dolgozunk, ha az útépítési mód engedélyezett
-        if (IsRoadBuildingMode)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            // Bal kattintás esemény
-            if (Input.GetMouseButtonDown(0)) // Bal kattintás
+            if (IsBuilding == Tile.TileType.Road)
             {
-                // Raycast a kamera pozíciójából
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
-                if (hit.collider != null)
+                // Left click event
+                if (Input.GetMouseButtonDown(0)) // Left click
                 {
-                    // Debug üzenet a kattintott objektumról
-                    Debug.Log("Kattintott objektum: " + hit.collider.gameObject.name);
+                    // Raycast from camera position
+                    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-                    // Opció: Ha rákattintunk, váltsunk tile-t
-                    Vector2 tilePosition = hit.collider.gameObject.transform.position;
-                    currentMap.ChangeTileToRoad(tilePosition);
+                    if (hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Tiles"))
+                    {
+                        // Debug message for the clicked object
+                        Debug.Log("Clicked object: " + hit.collider.gameObject.name);
+
+                        // Option: Change tile to road
+                        Vector2 tilePosition = hit.collider.gameObject.transform.position;
+                        currentMap.ChangeTileToRoad(tilePosition);
+                    }
+                }
+            }
+            else if ((int)IsBuilding < 3)
+            {
+                if (Input.GetMouseButtonDown(0)) // Left click
+                {
+                    // Raycast from camera position
+                    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+                    if (hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Tiles"))
+                    {
+                        // Debug message for the clicked object
+                        Debug.Log("Clicked object: " + hit.collider.gameObject.name);
+
+                        // Option: Change tile nature
+                        Vector2 tilePosition = hit.collider.gameObject.transform.position;
+                        currentMap.ChangeTileNature(tilePosition, IsBuilding);
+                    }
                 }
             }
         }
-        else if (IsNatureBuildingMode > -1)
-        {
-            if (Input.GetMouseButtonDown(0)) // Bal kattintás
-            {
-                // Raycast a kamera pozíciójából
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-                if (hit.collider != null)
-                {
-                    // Debug üzenet a kattintott objektumról
-                    Debug.Log("Kattintott objektum: " + hit.collider.gameObject.name);
-
-                    // Opció: Ha rákattintunk, váltsunk tile-t
-                    Vector2 tilePosition = hit.collider.gameObject.transform.position;
-                    currentMap.ChangeTileNature(tilePosition, IsNatureBuildingMode);
-                }
-            }
-        }
     }
 
     // Útépítési mód engedélyezése
     public void EnableRoadBuilding()
     {
-        IsRoadBuildingMode = true;
+        IsBuilding = Tile.TileType.Road;
     }
 
     // Útépítési mód letiltása
     public void DisableRoadBuilding()
     {
-        IsRoadBuildingMode = false;
+        IsBuilding = Tile.TileType.None;
     }
 }

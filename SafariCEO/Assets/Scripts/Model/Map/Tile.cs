@@ -6,15 +6,17 @@ public class Tile : MonoBehaviour
 
     public enum TileType
     {
-        Plains,
+        
         Tree,
+        Bush,
+        Flowerbed,
         Hills,
         River,
         Lake,
-        Bush,
-        Flowerbed,
         Road,
-        MainBuilding
+        MainBuilding,
+        Plains,
+        None
     }
 
     [SerializeField] private TileType initialType = TileType.Plains;

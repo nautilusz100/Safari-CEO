@@ -96,7 +96,7 @@ public class SafariMap : MonoBehaviour
     }
 
 
-    internal void ChangeTileNature(Vector2 vector, int whichTileType)
+    internal void ChangeTileNature(Vector2 vector, Tile.TileType whichTileType)
     {
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
         int yIndex = Mathf.FloorToInt(vector.y); // Lefelé kerekítés az y koordinátán
@@ -107,21 +107,7 @@ public class SafariMap : MonoBehaviour
             GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y]; // Aktuális tile
             Tile tileComponent = currentTile.GetComponent<Tile>();
             Tile.TileType newType = Tile.TileType.Plains;
-            switch (whichTileType)
-            {
-                case 0: //tree
-                    newType = Tile.TileType.Tree;
-                    break;
-                case 1: //flower
-                    newType = Tile.TileType.Flowerbed;
-                    break;
-                case 2: //bush
-                    newType = Tile.TileType.Bush;
-                    break;
-                default:
-                    Debug.Log("Invalid tile type");
-                    break;
-            }
+            newType = whichTileType;
             if (currentTile != null && newType != tileComponent.Type && !(tileComponent.Type == Tile.TileType.River || tileComponent.Type == Tile.TileType.Lake || tileComponent.Type == Tile.TileType.Hills || tileComponent.Type == Tile.TileType.MainBuilding))
             {
                 GameObject newTile = InstantiateTileOfType(newType, currentTile.transform.position);

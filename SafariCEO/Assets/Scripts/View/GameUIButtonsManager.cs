@@ -28,6 +28,7 @@ public class gameUIButtonsManager : MonoBehaviour
     
     public GameObject enableShop;
     public GameObject enableParkStat;
+    public GameManager gameManager;
 
     public event EventHandler NatureShopClicked;
     public event EventHandler AnimalShopClicked;
@@ -162,5 +163,45 @@ public class gameUIButtonsManager : MonoBehaviour
     {
         ShopDisplayManager(ShopTypes.JEEP);
         JeepShopClicked?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SelectElement(int button)
+    {
+        switch (currentShopType)
+        {
+            case ShopTypes.NATURE:
+                if (button == 0)
+                {
+                    gameManager.IsBuilding = Tile.TileType.Flowerbed;
+                }
+                else if (button == 1)
+                {
+                    gameManager.IsBuilding = Tile.TileType.Bush;
+                }
+                else if (button == 2)
+                {
+                    gameManager.IsBuilding = Tile.TileType.Tree;
+                }
+                else
+                {
+                    gameManager.IsBuilding = Tile.TileType.None;
+                }
+                break;
+            case ShopTypes.ANIMALS:
+                gameManager.IsBuilding = Tile.TileType.None;
+                break;
+            case ShopTypes.JEEP:
+                if (button == 0)
+                {
+                    gameManager.IsBuilding = Tile.TileType.Road;
+                }
+                else
+                {
+                    gameManager.IsBuilding = Tile.TileType.None;
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
