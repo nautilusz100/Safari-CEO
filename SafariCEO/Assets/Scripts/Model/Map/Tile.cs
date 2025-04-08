@@ -5,8 +5,7 @@ public class Tile : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     public enum TileType
-    {
-        
+    { 
         Tree,
         Bush,
         Flowerbed,

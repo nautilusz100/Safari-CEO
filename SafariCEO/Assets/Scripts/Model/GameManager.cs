@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
         currentMap.CreateMap();
     }
 
-    // Update method for raycasting
     void Update()
     {
         // Csak akkor dolgozunk, ha az útépítési mód engedélyezett
