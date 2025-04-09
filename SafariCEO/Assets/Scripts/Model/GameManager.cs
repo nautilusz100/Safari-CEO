@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using NavMeshPlus.Components;
 using NavMeshPlus.Extensions;
-using UnityEditor.AI;
 
 public class GameManager : MonoBehaviour
 {

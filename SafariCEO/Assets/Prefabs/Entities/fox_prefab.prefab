@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6852650388546423908}
   - component: {fileID: 7831216721857747575}
-  - component: {fileID: -4120780424293697138}
   - component: {fileID: -2667726479943666716}
   m_Layer: 0
   m_Name: fox_prefab
@@ -86,27 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!65 &-4120780424293697138
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2717604959698954646}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.4616681, y: 1.2253958, z: 0.3}
-  m_Center: {x: -0.009844402, y: 0.9155512, z: 0}
 --- !u!114 &-2667726479943666716
 MonoBehaviour:
   m_ObjectHideFlags: 0
