@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using NavMeshPlus.Components;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class GameManager : MonoBehaviour
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
     public GameObject animalPrefab;
+
+    public GameObject navMesh;
 
     public Tile.TileType IsBuilding { get; set; } = Tile.TileType.Animal;
 

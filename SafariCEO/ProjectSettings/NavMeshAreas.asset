@@ -11,19 +11,19 @@ NavMeshProjectSettings:
     cost: 1
   - name: Jump
     cost: 2
-  - name: 
+  - name: Plains
     cost: 1
-  - name: 
+  - name: Bush
+    cost: 2
+  - name: Trees
+    cost: 3
+  - name: Hill
+    cost: 4
+  - name: Water
+    cost: 5
+  - name: Road
     cost: 1
-  - name: 
-    cost: 1
-  - name: 
-    cost: 1
-  - name: 
-    cost: 1
-  - name: 
-    cost: 1
-  - name: 
+  - name: Flowerbed
     cost: 1
   - name: 
     cost: 1
