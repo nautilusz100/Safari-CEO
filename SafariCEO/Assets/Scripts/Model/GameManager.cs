@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using NavMeshPlus.Components;
-using UnityEngine.AI;
+using NavMeshPlus.Extensions;
+using UnityEditor.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject animalPrefab;
 
     public GameObject navMesh;
+    private NavMeshSurface navMeshSurface;
 
     public Tile.TileType IsBuilding { get; set; } = Tile.TileType.Animal;
 
@@ -31,11 +34,11 @@ public class GameManager : MonoBehaviour
         }
 
         currentMap = safariMapPrefab;
-
+        navMeshSurface = navMesh.GetComponent<NavMeshSurface>();
         // Térkép generálása
         currentMap.CreateMap();
         // NavMesh generálása
-        navMesh.GetComponent<NavMeshSurface>().BuildNavMesh();
+        navMeshSurface.BuildNavMesh();
     }
 
     void Update()
@@ -59,13 +62,7 @@ public class GameManager : MonoBehaviour
                         // Option: Change tile to road
                         Vector2 tilePosition = hit.collider.gameObject.transform.position;
                         currentMap.ChangeTileToRoad(tilePosition);
-                        navMesh.GetComponent<NavMeshSurface>().BuildNavMesh();
-                        // NavMesh update
-                        //Vector3 tilePosForBounds = new Vector3(tilePosition.x, tilePosition.y, 0f);
-                        //Bounds bound = new Bounds(tilePosForBounds, new Vector3(2,2,0));
-                        //List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
-
-
+                        navMeshSurface.UpdateNavMesh(navMeshSurface.navMeshData);
                     }
                 }
             }
@@ -84,7 +81,9 @@ public class GameManager : MonoBehaviour
                         // Option: Change tile nature
                         Vector2 tilePosition = hit.collider.gameObject.transform.position;
                         currentMap.ChangeTileNature(tilePosition, IsBuilding);
-                        navMesh.GetComponent<NavMeshSurface>().BuildNavMesh();
+                        navMeshSurface.UpdateNavMesh(navMeshSurface.navMeshData);
+
+
                     }
                 }
             }
