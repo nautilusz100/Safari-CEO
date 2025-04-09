@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using NavMeshPlus.Components;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour
 
         // Térkép generálása
         currentMap.CreateMap();
+        // NavMesh generálása
+        navMesh.GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 
     void Update()
@@ -56,6 +59,13 @@ public class GameManager : MonoBehaviour
                         // Option: Change tile to road
                         Vector2 tilePosition = hit.collider.gameObject.transform.position;
                         currentMap.ChangeTileToRoad(tilePosition);
+                        navMesh.GetComponent<NavMeshSurface>().BuildNavMesh();
+                        // NavMesh update
+                        //Vector3 tilePosForBounds = new Vector3(tilePosition.x, tilePosition.y, 0f);
+                        //Bounds bound = new Bounds(tilePosForBounds, new Vector3(2,2,0));
+                        //List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
+
+
                     }
                 }
             }
@@ -74,6 +84,7 @@ public class GameManager : MonoBehaviour
                         // Option: Change tile nature
                         Vector2 tilePosition = hit.collider.gameObject.transform.position;
                         currentMap.ChangeTileNature(tilePosition, IsBuilding);
+                        navMesh.GetComponent<NavMeshSurface>().BuildNavMesh();
                     }
                 }
             }
