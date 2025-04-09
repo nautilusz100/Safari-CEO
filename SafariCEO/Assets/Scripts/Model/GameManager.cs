@@ -74,7 +74,8 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-            else if (IsBuilding == Tile.TileType.Animal)
+            /* Not needed anymore because of draggable animals, left the code here for debugging reasons
+             * else if (IsBuilding == Tile.TileType.Animal)
             {
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
                         GameObject newAnimal = Instantiate(animalPrefab, spawnPos, Quaternion.identity);
                     }
                 }
-            }
+            }*/
 
 
         }

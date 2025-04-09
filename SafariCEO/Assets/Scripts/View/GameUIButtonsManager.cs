@@ -14,6 +14,7 @@ public class gameUIButtonsManager : MonoBehaviour
     private Button parkStatButton;
 
     private ShopTypes currentShopType = ShopTypes.NONE;
+    public ShopTypes CurrentShopType { get { return currentShopType; } }
     private List<Transform> shopElementPanels;
 
     [SerializeField]private UnityEngine.Sprite bushImage;
