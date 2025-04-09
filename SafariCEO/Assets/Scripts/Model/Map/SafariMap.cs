@@ -444,11 +444,13 @@ public (bool,Vector2Int) SmoothRiverEdges(Vector2Int prevTile, Vector2Int curren
     {
         /** Elevation based tile order. **/
 
-        tileset = new Dictionary<int, GameObject>();
-        tileset.Add(0, prefab_lake);
-        tileset.Add(1, prefab_plains);
-        tileset.Add(2, prefab_tree);
-        tileset.Add(3, prefab_hills);
+        tileset = new Dictionary<int, GameObject>
+        {
+            { 0, prefab_lake },
+            { 1, prefab_plains },
+            { 2, prefab_tree },
+            { 3, prefab_hills }
+        };
 
         /** Create empty gameobjects for grouping tiles of the same type, ie
             trees **/
@@ -543,7 +545,15 @@ public (bool,Vector2Int) SmoothRiverEdges(Vector2Int prevTile, Vector2Int curren
 
         return false;
     }
- 
+    
+    public Tile GetTileAt(Vector2 pos)
+    {
+        int x = Mathf.FloorToInt(pos.x)+2;
+        int y = Mathf.FloorToInt(pos.y)-1;
+        GameObject gameObject = tile_grid[x][y];
+        return gameObject.GetComponent<Tile>();
+    }
+
     (int, float) GetTileFromPerlin(int x, int y)
     {
         /** Using a grid coordinate input, generate a Perlin noise value to be
