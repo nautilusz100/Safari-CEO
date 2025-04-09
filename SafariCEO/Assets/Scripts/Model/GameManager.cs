@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using NavMeshPlus.Components;
+using NavMeshPlus.Extensions;
+using UnityEditor.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +13,9 @@ public class GameManager : MonoBehaviour
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
     public GameObject animalPrefab;
+
+    public GameObject navMesh;
+    private NavMeshSurface navMeshSurface;
 
     public Tile.TileType IsBuilding { get; set; } = Tile.TileType.Animal;
 
@@ -27,9 +34,11 @@ public class GameManager : MonoBehaviour
         }
 
         currentMap = safariMapPrefab;
-
+        navMeshSurface = navMesh.GetComponent<NavMeshSurface>();
         // Térkép generálása
         currentMap.CreateMap();
+        // NavMesh generálása
+        navMeshSurface.BuildNavMesh();
     }
 
     void Update()
@@ -53,6 +62,7 @@ public class GameManager : MonoBehaviour
                         // Option: Change tile to road
                         Vector2 tilePosition = hit.collider.gameObject.transform.position;
                         currentMap.ChangeTileToRoad(tilePosition);
+                        navMeshSurface.UpdateNavMesh(navMeshSurface.navMeshData);
                     }
                 }
             }
@@ -71,6 +81,9 @@ public class GameManager : MonoBehaviour
                         // Option: Change tile nature
                         Vector2 tilePosition = hit.collider.gameObject.transform.position;
                         currentMap.ChangeTileNature(tilePosition, IsBuilding);
+                        navMeshSurface.UpdateNavMesh(navMeshSurface.navMeshData);
+
+
                     }
                 }
             }
