@@ -700,7 +700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   safariMapPrefab: {fileID: 337380334}
   animalPrefab: {fileID: 2717604959698954646, guid: 9a370f1197b9ce640a40d6cef55ba630, type: 3}
-  navMesh: {fileID: 0}
+  navMesh: {fileID: 202532414}
 --- !u!4 &138372539
 Transform:
   m_ObjectHideFlags: 0
