@@ -29,8 +29,9 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Tile tile = other.GetComponent<Tile>();
+        if (tile == null) return;
         //water slow zone 
-        if (tile != null && (tile.Type == TileType.Lake || tile.Type == TileType.River))
+        if (tile.Type == TileType.Lake || tile.Type == TileType.River)
         {
             slowZoneCountWater++; //tobbe megy bele mint 1
             agent.speed = slowedSpeedWater;
@@ -46,8 +47,9 @@ public class Player : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other)
     {
         Tile tile = other.GetComponent<Tile>();
+        if (tile == null) return;
         //water slow zone   
-        if (tile != null && (tile.Type == TileType.Lake || tile.Type == TileType.River))
+        if (tile.Type == TileType.Lake || tile.Type == TileType.River)
         {
             slowZoneCountWater--;
             if (slowZoneCountWater <= 0)

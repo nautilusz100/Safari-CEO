@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
-    public GameObject animalPrefab;
+    //public GameObject animalPrefab;
 
     public GameObject navMesh;
     private NavMeshSurface navMeshSurface;
