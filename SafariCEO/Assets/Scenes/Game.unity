@@ -803,7 +803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86d2ef231b881e940be01a1b57de6215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 5855485762125835324, guid: 03736f5495a9c7f4ea8ac10ec351108d, type: 3}
+  prefabToSpawn: {fileID: 5855485762125835324, guid: abe507b1e91a5834bb0a6dc6ac6aeab1, type: 3}
   canvas: {fileID: 510238980}
   buttonsManager: {fileID: 711214708}
   map: {fileID: 337380334}
