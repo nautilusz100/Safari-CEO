@@ -18,10 +18,10 @@ public class Carnivorous : MonoBehaviour
 
     // Movement parameters
     public float moveRange = 100f;
-    public float normalSpeed = 3f;
     public float slowedSpeedWater = 0.5f;
     public float slowedSpeedHills = 0.7f;
     public float huntingSpeed = 5f;
+    public float normalSpeed = 3f;
 
     // Perception
     public float visionRadius = 15f;
@@ -47,37 +47,25 @@ public class Carnivorous : MonoBehaviour
 
     private NavMeshAgent agent;
     private List<Tile> exploredTiles = new List<Tile>();
-    private Dictionary<Vector3, float> spottedPreyPositions = new Dictionary<Vector3, float>();
+    private Dictionary<GameObject, Vector3> spottedPreyPositions = new Dictionary<GameObject, Vector3>();
 
     private enum State { Wander, SearchFood, SearchWater, Eating, Drinking, Hunt, Rest }
     private State currentState = State.Wander;
 
-    private Transform currentTargetAnimal;
+    //épen aktuális célpontok
+    private GameObject currentTargetAnimal;
     private Tile currentTargetTile;
+
 
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer == null)
-        {
-            Debug.LogError("SpriteRenderer component missing!");
-            enabled = false;
-            return;
-        }
-
         agent = GetComponent<NavMeshAgent>();
-        if (agent == null)
-        {
-            Debug.LogError("NavMeshAgent component missing!");
-            enabled = false;
-            return;
-        }
 
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.speed = normalSpeed;
 
-        // Initialize timers
         starvationTimer = starvationTime;
         dehydrationTimer = dehydrationTime;
         hungerTimer = hungerInterval;
@@ -86,31 +74,31 @@ public class Carnivorous : MonoBehaviour
 
         InvokeRepeating("DecideNextAction", 0f, 1f);
         InvokeRepeating("UpdateVision", 0f, 0.3f);
+
     }
 
     private void Update()
     {
-        // Aging
+        // Ha a prédát elkapta, akkor az állapotot át kell állítani, ez a agent coliderrel mûkdöik, TODO nem így kene sztem
+        if (currentState == State.Hunt && currentTargetAnimal != null)
+        {
+            // Ha a préda elég közel van (3 egység)
+            Debug.Log($"Distance to prey: {Vector3.Distance(transform.position, currentTargetAnimal.transform.position)}");
+            if (Vector3.Distance(transform.position, currentTargetAnimal.transform.position) < 3f)
+            {
+                Debug.Log("Prey caught via distance check!");
+                StartEating(currentTargetAnimal.transform);
+            }
+        }
         age += Time.deltaTime;
-        if (age >= maxAge)
-        {
-            Die();
-            return;
-        }
+        if (age >= maxAge) Die();
 
-        // Hunger system
         if (currentState != State.Eating && currentState != State.Hunt)
-        {
             hungerTimer -= Time.deltaTime;
-        }
 
-        // Thirst system
         if (currentState != State.Drinking && currentState != State.SearchWater)
-        {
             thirstTimer -= Time.deltaTime;
-        }
 
-        // Starvation handling
         if (hungerTimer <= 0)
         {
             starvationTimer -= Time.deltaTime;
@@ -121,7 +109,6 @@ public class Carnivorous : MonoBehaviour
             starvationTimer = starvationTime;
         }
 
-        // Dehydration handling
         if (thirstTimer <= 0)
         {
             dehydrationTimer -= Time.deltaTime;
@@ -135,44 +122,31 @@ public class Carnivorous : MonoBehaviour
 
     private void UpdateVision()
     {
-        // Új észlelések
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, visionRadius);
+
         foreach (var hit in hits)
         {
             if (hit.CompareTag("Herbivore"))
             {
-                Vector3 preyPosition = hit.transform.position;
-                Vector3 directionToPrey = preyPosition - transform.position;
+                GameObject prey = hit.gameObject;
+                Vector3 preyPosition = prey.transform.position;
+                Vector3 directionToPrey = (preyPosition - transform.position).normalized;
+                float angleToPrey = Vector3.Angle(transform.right, directionToPrey);
 
-                if (Vector3.Angle(transform.forward, directionToPrey) < visionAngle / 2)
-                {
-                    // Frissítjük vagy hozzáadjuk a pozíciót
-                    if (spottedPreyPositions.ContainsKey(preyPosition))
-                    {
-                        spottedPreyPositions[preyPosition] = Time.time;
-                    }
-                    else
-                    {
-                        spottedPreyPositions.Add(preyPosition, Time.time);
-                    }
+                spottedPreyPositions[prey] = preyPosition;
+                Debug.Log($"Spotted prey: {prey.name} at {preyPosition}"); 
+                
 
-                    Debug.Log($"Prey spotted at {preyPosition}");
-                }
             }
 
-            // Tile-ok kezelése marad
             Tile tile = hit.GetComponent<Tile>();
             if (tile != null && !exploredTiles.Contains(tile))
-            {
                 exploredTiles.Add(tile);
-            }
         }
     }
 
     private void DecideNextAction()
     {
-        Debug.Log($"Current state: {currentState}, Hunger: {hungerTimer}, Thirst: {thirstTimer}");
-        // Critical needs take priority
         if (hungerTimer <= hungerInterval * 0.2f && spottedPreyPositions.Count > 0)
         {
             currentState = State.Hunt;
@@ -185,46 +159,22 @@ public class Carnivorous : MonoBehaviour
             SearchForWater();
             return;
         }
-        else if (hungerTimer <= hungerInterval * 0.5f && spottedPreyPositions.Count > 0)
-        {
-            currentState = State.Hunt;
-            HuntClosestPrey(); ;
-            return;
-        }
 
-        // Normal behavior
         switch (currentState)
         {
             case State.Wander:
                 spriteRenderer.color = normalColor;
-                if (Random.value < 0.1f)
-                {
-                    if (hungerTimer < thirstTimer)
-                    {
-                        currentState = State.SearchFood;
-                    }
-                    else
-                    {
-                        currentState = State.SearchWater;
-                    }
-                }
-                else
-                {
-                    MoveToRandomPosition();
-                }
+                MoveToRandomPosition();
                 break;
 
             case State.SearchFood:
                 spriteRenderer.color = searchingColor;
-                if (spottedPreyPositions.Count > 0)
+                if (spottedPreyPositions.Count > 0) //ha látott már állatot
                 {
                     currentState = State.Hunt;
                     HuntClosestPrey();
                 }
-                else
-                {
-                    MoveToRandomPosition();
-                }
+                else MoveToRandomPosition();
                 break;
 
             case State.SearchWater:
@@ -242,101 +192,98 @@ public class Carnivorous : MonoBehaviour
 
     private void HuntClosestPrey()
     {
-        currentState = State.Hunt;
         spriteRenderer.color = huntingColor;
         agent.speed = huntingSpeed;
 
-        // Kiválasztjuk a legközelebbi pozíciót
-        Vector3 closestPosition = Vector3.zero;
-        float closestDistance = Mathf.Infinity;
+        // Frissítjük a prédák pozícióját (eltávolítjuk a null elemeket)
+        spottedPreyPositions = spottedPreyPositions
+            .Where(p => p.Key != null)
+            .ToDictionary(p => p.Key, p => p.Key.transform.position);
 
-        foreach (var pos in spottedPreyPositions.Keys)
-        {
-            float dist = Vector3.Distance(transform.position, pos);
-            if (dist < closestDistance)
-            {
-                closestDistance = dist;
-                closestPosition = pos;
-            }
-        }
-
-        if (closestDistance < Mathf.Infinity)
-        {
-            agent.SetDestination(closestPosition);
-            StartCoroutine(CheckIfReachedHuntingPosition(closestPosition));
-        }
-        else
+        if (spottedPreyPositions.Count == 0)
         {
             currentState = State.Wander;
+            return;
+        }
+
+        // Kiválasztjuk a legközelebbi prédát
+        var closestPrey = spottedPreyPositions
+            .OrderBy(p => Vector3.Distance(transform.position, p.Value))
+            .FirstOrDefault();
+
+        // Ha a préda túl közel van (3 egységnél közelebb), megtámadjuk
+        if (closestPrey.Key != null && Vector3.Distance(transform.position, closestPrey.Value) < 3f)
+        {
+            StartEating(closestPrey.Key.transform);
+        }
+        // Különben követjük
+        else if (closestPrey.Key != null)
+        {
+            agent.SetDestination(closestPrey.Value);
         }
     }
-
-
-    private IEnumerator CheckIfReachedHuntingPosition(Vector3 targetPosition)
+    /* elõzõ koncepció, de nem mûködik
+    private IEnumerator ChasePrey(GameObject prey)
     {
-        while (Vector3.Distance(transform.position, targetPosition) > agent.stoppingDistance)
+        while (prey != null && currentState == State.Hunt)
         {
-            // Közben ellenõrizzük, hogy látunk-e közelebbi prédát
-            CheckForBetterPrey(ref targetPosition);
-            yield return null;
-        }
+            // Frissítsük a cél pozíciót
+            agent.SetDestination(prey.transform.position);
+            currentTargetAnimal = prey.transform;
 
-        // Ha ideértünk, de nem találtunk prédát (mert elmenekült)
-        if (spottedPreyPositions.ContainsKey(targetPosition))
-        {
-            // Megnézzük, van-e élõ préda a közelben
-            Collider2D[] hits = Physics2D.OverlapCircleAll(targetPosition, 2f);
-            bool foundLivePrey = false;
-
-            foreach (var hit in hits)
+            // Ha közel vagyunk, a trigger kezelje
+            if (Vector3.Distance(transform.position, prey.transform.position) < 1.5f)
             {
-                if (hit.CompareTag("Herbivore"))
-                {
-                    foundLivePrey = true;
-                    StartEating(hit.transform);
-                    break;
-                }
-            }
-
-            if (!foundLivePrey)
-            {
-                spottedPreyPositions.Remove(targetPosition);
-                currentState = State.Wander;
-            }
-        }
-        else
-        {
-            currentState = State.Wander;
-        }
-    }
-
-    private void CheckForBetterPrey(ref Vector3 currentTarget)
-    {
-        float currentDistance = Vector3.Distance(transform.position, currentTarget);
-
-        foreach (var pos in spottedPreyPositions.Keys)
-        {
-            float newDistance = Vector3.Distance(transform.position, pos);
-            if (newDistance < currentDistance * 0.7f) // 30%-al közelebbi
-            {
-                currentTarget = pos;
-                agent.SetDestination(pos);
                 break;
             }
+
+            yield return new WaitForSeconds(0.2f);
         }
-    }
+
+        // Ha még mindig hunt állapotban vagyunk, de a préda eltûnt
+        if (currentState == State.Hunt)
+        {
+            currentState = State.Wander;
+        }
+    }*/
 
     private void StartEating(Transform prey)
     {
-        if (prey != null)
-        {
-            Destroy(prey.gameObject);
-            hungerTimer = hungerInterval;
-        }
-        currentState = State.Rest;
+        if (prey == null) return;
 
-        Invoke("FinishEating", drinkingDuration);
+        Debug.Log($"Started eating prey: {prey.name}");
+
+        // Állapotbeállítások
+        currentState = State.Eating;
+        spriteRenderer.color = eatingColor;
+
+        // Ragadozó mozgás leállítása
+        agent.isStopped = true;
+
+        // Préda mozgás letiltása (ha van NavMeshAgent-je)
+        NavMeshAgent preyAgent = prey.GetComponent<NavMeshAgent>();
+        if (preyAgent != null) preyAgent.isStopped = true;
+        Debug.Log($"Stopped prey agent: {prey.name}");
+        currentTargetAnimal = prey.gameObject; //valamiért újra be kell állítani, mert ha nincs akkor a préda nem tûnik el
+        // 10 másodperc után vége az evésnek
+        Invoke("FinishEating", eatingDuration);
     }
+    private void FinishEating()
+    {
+        if (currentTargetAnimal != null)
+        {
+            Debug.Log($"Finished eating prey: {currentTargetAnimal.name}");
+            Destroy(currentTargetAnimal); // Préda megsemmisítése
+        }
+
+        // Visszaállítások
+        hungerTimer = hungerInterval;
+        currentTargetAnimal = null;
+        currentState = State.Rest;
+        spriteRenderer.color = restingColor;
+        agent.isStopped = false;
+    }
+
     private void SearchForWater()
     {
         currentTargetTile = exploredTiles
@@ -349,38 +296,21 @@ public class Carnivorous : MonoBehaviour
             agent.SetDestination(currentTargetTile.transform.position);
             StartCoroutine(CheckIfReachedWater());
         }
-        else
-        {
-            MoveToRandomPosition();
-        }
+        else MoveToRandomPosition();
     }
 
     private IEnumerator CheckIfReachedWater()
     {
         while (currentTargetTile != null &&
-               (agent.pathPending ||
-                agent.remainingDistance > agent.stoppingDistance))
+               (agent.pathPending || agent.remainingDistance > agent.stoppingDistance))
         {
             yield return null;
         }
 
         if (currentTargetTile != null)
-        {
             StartDrinking();
-        }
         else
-        {
             currentState = State.Wander;
-        }
-    }
-
-
-    private void FinishEating()
-    {
-        currentState = State.Rest;
-        spriteRenderer.color = restingColor;
-        currentTargetAnimal = null;
-        agent.speed = normalSpeed;
     }
 
     private void StartDrinking()
@@ -392,16 +322,10 @@ public class Carnivorous : MonoBehaviour
         thirstTimer = thirstInterval;
         dehydrationTimer = dehydrationTime;
 
-        Invoke("FinishDrinking", drinkingDuration);
-    }
-
-    private void FinishDrinking()
-    {
         currentState = State.Rest;
         spriteRenderer.color = restingColor;
         currentTargetTile = null;
     }
-
     private void ResumeWander()
     {
         agent.isStopped = false;
@@ -425,19 +349,36 @@ public class Carnivorous : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Tile kezelése
         Tile tile = other.GetComponent<Tile>();
-        if (tile == null) return;
+        if (tile != null)
+        {
+            if (tile.Type == TileType.Lake || tile.Type == TileType.River)
+            {
+                slowZoneCountWater++;
+                agent.speed = slowedSpeedWater;
+            }
+            else if (tile.Type == TileType.Hills)
+            {
+                slowZoneCountHills++;
+                agent.speed = slowedSpeedHills;
+            }
+            return;
+        }
 
-        if (tile.Type == TileType.Lake || tile.Type == TileType.River)
+        // Préda kezelése, ez nem nagyon mûködik
+        /*
+        if (other.CompareTag("Herbivore") && currentState == State.Hunt)
         {
-            slowZoneCountWater++;
-            agent.speed = slowedSpeedWater;
-        }
-        else if (tile.Type == TileType.Hills)
-        {
-            slowZoneCountHills++;
-            agent.speed = slowedSpeedHills;
-        }
+            Debug.Log($"Caught prey: {other.name}");
+            StartEating(other.transform);
+
+            // Távolítsuk el a prédát a látottak listájából
+            if (spottedPreyPositions.ContainsKey(other.gameObject))
+            {
+                spottedPreyPositions.Remove(other.gameObject);
+            }
+        }*/
     }
 
     private void OnTriggerExit2D(Collider2D other)
