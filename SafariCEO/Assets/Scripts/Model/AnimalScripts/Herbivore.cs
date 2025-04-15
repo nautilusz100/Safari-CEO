@@ -239,7 +239,7 @@ public class Herbivore : MonoBehaviour
     private Tile FindClosestFood()
     {
         return exploredTiles
-            .FindAll(t => t.Type == TileType.Tree || t.Type == TileType.Flowerbed || t.Type == TileType.Bush)
+            .FindAll(t => t.Type == ShopType.Tree || t.Type == ShopType.Flowerbed || t.Type == ShopType.Bush)
             .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
             .FirstOrDefault();
     }
@@ -247,7 +247,7 @@ public class Herbivore : MonoBehaviour
     private Tile FindClosestWater()
     {
         return exploredTiles
-            .FindAll(t => t.Type == TileType.Lake || t.Type == TileType.River)
+            .FindAll(t => t.Type == ShopType.Lake || t.Type == ShopType.River)
             .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
             .FirstOrDefault();
     }
@@ -339,12 +339,12 @@ public class Herbivore : MonoBehaviour
         Tile tile = other.GetComponent<Tile>();
         if (tile == null) return;
 
-        if (tile.Type == TileType.Lake || tile.Type == TileType.River)
+        if (tile.Type == ShopType.Lake || tile.Type == ShopType.River)
         {
             slowZoneCountWater++;
             agent.speed = slowedSpeedWater;
         }
-        else if (tile.Type == TileType.Hills)
+        else if (tile.Type == ShopType.Hills)
         {
             slowZoneCountHills++;
             agent.speed = slowedSpeedHills;
@@ -356,12 +356,12 @@ public class Herbivore : MonoBehaviour
         Tile tile = other.GetComponent<Tile>();
         if (tile == null) return;
 
-        if (tile.Type == TileType.Lake || tile.Type == TileType.River)
+        if (tile.Type == ShopType.Lake || tile.Type == ShopType.River)
         {
             slowZoneCountWater--;
             if (slowZoneCountWater <= 0) agent.speed = normalSpeed;
         }
-        else if (tile.Type == TileType.Hills)
+        else if (tile.Type == ShopType.Hills)
         {
             slowZoneCountHills--;
             if (slowZoneCountHills <= 0) agent.speed = normalSpeed;

@@ -38,7 +38,7 @@ public class SafariMap : MonoBehaviour
     List<List<int>> noise_grid = new List<List<int>>();
     List<List<GameObject>> tile_grid = new List<List<GameObject>>();
     List<List<Vector2Int>> rivers = new List<List<Vector2Int>>();
-    private Dictionary<Vector2Int, Tile.TileType> originalTileTypes = new Dictionary<Vector2Int, Tile.TileType>();
+    private Dictionary<Vector2Int, Tile.ShopType> originalTileTypes = new Dictionary<Vector2Int, Tile.ShopType>();
 
     // recommend 4 to 20
     float magnification = 7.0f;
@@ -83,7 +83,7 @@ public class SafariMap : MonoBehaviour
                             if (tileComponentBuilding == null)
                                 tileComponentBuilding = building.AddComponent<Tile>(); // If no Tile component exists, add one
 
-                            tileComponentBuilding.Type = Tile.TileType.MainBuilding; // Set type to main building
+                            tileComponentBuilding.Type = Tile.ShopType.MainBuilding; // Set type to main building
                             tile_grid[x][y] = building;
                         }
                         Destroy(currentTile);
@@ -96,7 +96,7 @@ public class SafariMap : MonoBehaviour
     }
 
 
-    internal void ChangeTileNature(Vector2 vector, Tile.TileType whichTileType)
+    internal void ChangeTileNature(Vector2 vector, Tile.ShopType whichTileType)
     {
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
         int yIndex = Mathf.FloorToInt(vector.y); // Lefelé kerekítés az y koordinátán
@@ -105,9 +105,9 @@ public class SafariMap : MonoBehaviour
             Vector2Int tilePosition = new Vector2Int(xIndex + 2, yIndex); // Kerekített indexek
             GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y]; // Aktuális tile
             Tile tileComponent = currentTile.GetComponent<Tile>();
-            Tile.TileType newType = Tile.TileType.Plains;
+            Tile.ShopType newType = Tile.ShopType.Plains;
             newType = whichTileType;
-            if (currentTile != null && newType != tileComponent.Type && !(tileComponent.Type == Tile.TileType.River || tileComponent.Type == Tile.TileType.Lake || tileComponent.Type == Tile.TileType.Hills || tileComponent.Type == Tile.TileType.MainBuilding))
+            if (currentTile != null && newType != tileComponent.Type && !(tileComponent.Type == Tile.ShopType.River || tileComponent.Type == Tile.ShopType.Lake || tileComponent.Type == Tile.ShopType.Hills || tileComponent.Type == Tile.ShopType.MainBuilding))
             {
                 Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: " + tilePosition);
                 GameObject newTile = InstantiateTileOfType(newType, currentTile.transform.position);
@@ -118,7 +118,7 @@ public class SafariMap : MonoBehaviour
             }
             else if(currentTile != null && newType == tileComponent.Type)
             {
-                GameObject newTile = InstantiateTileOfType(Tile.TileType.Plains, currentTile.transform.position);
+                GameObject newTile = InstantiateTileOfType(Tile.ShopType.Plains, currentTile.transform.position);
                 newTile.transform.parent = currentTile.transform.parent;
                 tile_grid[tilePosition.x][tilePosition.y] = newTile;
                 Destroy(currentTile);
@@ -141,14 +141,14 @@ public class SafariMap : MonoBehaviour
             {
                 Tile tileComponent = currentTile.GetComponent<Tile>(); // A tile komponens beszerzése
                 Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: " + tilePosition);
-                if (tileComponent != null && !(tileComponent.Type == Tile.TileType.River || tileComponent.Type == Tile.TileType.Lake || tileComponent.Type == Tile.TileType.Hills || tileComponent.Type == Tile.TileType.MainBuilding))
+                if (tileComponent != null && !(tileComponent.Type == Tile.ShopType.River || tileComponent.Type == Tile.ShopType.Lake || tileComponent.Type == Tile.ShopType.Hills || tileComponent.Type == Tile.ShopType.MainBuilding))
                 {
-                    if (tileComponent != null && tileComponent.Type == Tile.TileType.Road)
+                    if (tileComponent != null && tileComponent.Type == Tile.ShopType.Road)
                     {
                         // Ha már út, akkor visszaállítjuk az eredeti tile-t
                         if (originalTileTypes.ContainsKey(tilePosition))
                         {
-                            Tile.TileType originalType = originalTileTypes[tilePosition]; // Eredeti típus
+                            Tile.ShopType originalType = originalTileTypes[tilePosition]; // Eredeti típus
                             GameObject restoredTile = InstantiateTileOfType(originalType, currentTile.transform.position); // Új tile létrehozása a tárolt típus alapján
                             restoredTile.transform.parent = currentTile.transform.parent; // Szülő beállítása
                             tile_grid[tilePosition.x][tilePosition.y] = restoredTile; // Frissítjük a gridet
@@ -161,7 +161,7 @@ public class SafariMap : MonoBehaviour
                         // Tároljuk el az eredeti típusát
                         if (!originalTileTypes.ContainsKey(tilePosition))
                         {
-                            originalTileTypes[tilePosition] = Tile.TileType.Plains; // Eredeti típus mentése
+                            originalTileTypes[tilePosition] = Tile.ShopType.Plains; // Eredeti típus mentése
                         }
 
                         // Új út tile létrehozása
@@ -171,7 +171,7 @@ public class SafariMap : MonoBehaviour
                         Tile roadTileComponent = roadTile.GetComponent<Tile>();
                         if (roadTileComponent == null)
                             roadTileComponent = roadTile.AddComponent<Tile>();
-                        roadTileComponent.Type = Tile.TileType.Road; // Beállítjuk a típusát "Road"-ra
+                        roadTileComponent.Type = Tile.ShopType.Road; // Beállítjuk a típusát "Road"-ra
 
                         Destroy(currentTile); // Eltávolítjuk az aktuális tile-t
                         tile_grid[tilePosition.x][tilePosition.y] = roadTile; // Frissítjük a gridet
@@ -263,7 +263,7 @@ public class SafariMap : MonoBehaviour
             Tile roadTileComponent = newRoadTile.GetComponent<Tile>();
             if (roadTileComponent == null)
                 roadTileComponent = newRoadTile.AddComponent<Tile>();
-            roadTileComponent.Type = Tile.TileType.Road;
+            roadTileComponent.Type = Tile.ShopType.Road;
             tile_grid[tilePosition.x][tilePosition.y] = newRoadTile;
         }
     }
@@ -276,38 +276,38 @@ public class SafariMap : MonoBehaviour
             if (tile != null)
             {
                 Tile tileComponent = tile.GetComponent<Tile>();
-                return tileComponent != null && tileComponent.Type == Tile.TileType.Road;
+                return tileComponent != null && tileComponent.Type == Tile.ShopType.Road;
             }
         }
         return false;
     }
 
-    private GameObject InstantiateTileOfType(Tile.TileType type, Vector3 position)
+    private GameObject InstantiateTileOfType(Tile.ShopType type, Vector3 position)
     {
         GameObject tilePrefab = null;
 
         // A típus alapján kiválasztjuk a megfelelő prefabot
         switch (type)
         {
-            case Tile.TileType.Plains:
+            case Tile.ShopType.Plains:
                 tilePrefab = prefab_plains;
                 break;
-            case Tile.TileType.Tree:
+            case Tile.ShopType.Tree:
                 tilePrefab = prefab_tree;
                 break;
-            case Tile.TileType.Hills:
+            case Tile.ShopType.Hills:
                 tilePrefab = prefab_hills;
                 break;
-            case Tile.TileType.River:
+            case Tile.ShopType.River:
                 tilePrefab = prefab_river;
                 break;
-            case Tile.TileType.Lake:
+            case Tile.ShopType.Lake:
                 tilePrefab = prefab_lake;
                 break;
-            case Tile.TileType.Bush:
+            case Tile.ShopType.Bush:
                 tilePrefab = prefab_bush;
                 break;
-            case Tile.TileType.Flowerbed:
+            case Tile.ShopType.Flowerbed:
                 tilePrefab = prefab_flowerbed;
                 break;
             default:

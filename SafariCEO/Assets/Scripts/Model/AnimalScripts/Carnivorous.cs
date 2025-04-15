@@ -84,7 +84,7 @@ public class Carnivorous : MonoBehaviour
         {
             // Ha a préda elég közel van (3 egység)
             Debug.Log($"Distance to prey: {Vector3.Distance(transform.position, currentTargetAnimal.transform.position)}");
-            if (Vector3.Distance(transform.position, currentTargetAnimal.transform.position) < 3f)
+            if (Vector3.Distance(transform.position, currentTargetAnimal.transform.position) < 1f)
             {
                 Debug.Log("Prey caught via distance check!");
                 StartEating(currentTargetAnimal.transform);
@@ -212,8 +212,9 @@ public class Carnivorous : MonoBehaviour
             .FirstOrDefault();
 
         // Ha a préda túl közel van (3 egységnél közelebb), megtámadjuk
-        if (closestPrey.Key != null && Vector3.Distance(transform.position, closestPrey.Value) < 3f)
+        if (closestPrey.Key != null && Vector3.Distance(transform.position, closestPrey.Value) < 1f)
         {
+            Debug.Log($"Attacking prey (by hunt closest): {closestPrey.Key.name}");
             StartEating(closestPrey.Key.transform);
         }
         // Különben követjük
@@ -287,7 +288,7 @@ public class Carnivorous : MonoBehaviour
     private void SearchForWater()
     {
         currentTargetTile = exploredTiles
-            .FindAll(t => t.Type == TileType.Lake || t.Type == TileType.River)
+            .FindAll(t => t.Type == ShopType.Lake || t.Type == ShopType.River)
             .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
             .FirstOrDefault();
 
@@ -353,12 +354,12 @@ public class Carnivorous : MonoBehaviour
         Tile tile = other.GetComponent<Tile>();
         if (tile != null)
         {
-            if (tile.Type == TileType.Lake || tile.Type == TileType.River)
+            if (tile.Type == ShopType.Lake || tile.Type == ShopType.River)
             {
                 slowZoneCountWater++;
                 agent.speed = slowedSpeedWater;
             }
-            else if (tile.Type == TileType.Hills)
+            else if (tile.Type == ShopType.Hills)
             {
                 slowZoneCountHills++;
                 agent.speed = slowedSpeedHills;
@@ -386,12 +387,12 @@ public class Carnivorous : MonoBehaviour
         Tile tile = other.GetComponent<Tile>();
         if (tile == null) return;
 
-        if (tile.Type == TileType.Lake || tile.Type == TileType.River)
+        if (tile.Type == ShopType.Lake || tile.Type == ShopType.River)
         {
             slowZoneCountWater--;
             if (slowZoneCountWater <= 0) agent.speed = normalSpeed;
         }
-        else if (tile.Type == TileType.Hills)
+        else if (tile.Type == ShopType.Hills)
         {
             slowZoneCountHills--;
             if (slowZoneCountHills <= 0) agent.speed = normalSpeed;

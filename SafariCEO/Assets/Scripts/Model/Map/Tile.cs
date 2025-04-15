@@ -4,7 +4,7 @@ public class Tile : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
 
-    public enum TileType
+    public enum ShopType
     { 
         Tree,
         Bush,
@@ -16,11 +16,12 @@ public class Tile : MonoBehaviour
         MainBuilding,
         Plains,
         Animal,
+        Jeep,
         None
     }
 
-    [SerializeField] private TileType initialType = TileType.Plains;
-    public TileType Type { get; set; }
+    [SerializeField] private ShopType initialType = ShopType.Plains;
+    public ShopType Type { get; set; }
 
     void Awake()
     {
