@@ -262,7 +262,8 @@ public class Carnivorous : MonoBehaviour
 
         // Préda mozgás letiltása (ha van NavMeshAgent-je)
         NavMeshAgent preyAgent = prey.GetComponent<NavMeshAgent>();
-        if (preyAgent != null) preyAgent.isStopped = true;
+        Herbivore herbivore = prey.GetComponent<Herbivore>();
+        if (preyAgent != null) herbivore.beingAttacked = true;
         Debug.Log($"Stopped prey agent: {prey.name}");
         currentTargetAnimal = prey.gameObject; //valamiért újra be kell állítani, mert ha nincs akkor a préda nem tûnik el
         // 10 másodperc után vége az evésnek

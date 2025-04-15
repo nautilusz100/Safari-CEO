@@ -50,6 +50,7 @@ public class Herbivore : MonoBehaviour
 
     private enum State { Wander, SearchFood, SearchWater, Eating, Drinking, Rest }
     private State currentState = State.Wander;
+    public bool beingAttacked = false;
 
     private void Start()
     {
@@ -88,66 +89,75 @@ public class Herbivore : MonoBehaviour
 
     private void Update()
     {
-        // Aging
-        age += Time.deltaTime;
-        if (age >= maxAge)
+        if (!beingAttacked)
         {
-            Die();
-            return;
-        }
 
-        // Hunger system
-        if (currentState != State.Eating && currentState != State.SearchFood)
-        {
-            hungerTimer -= Time.deltaTime;
-        }
-
-        // Thirst system
-        if (currentState != State.Drinking && currentState != State.SearchWater)
-        {
-            thirstTimer -= Time.deltaTime;
-        }
-
-        // Starvation handling
-        if (hungerTimer <= 0)
-        {
-            starvationTimer -= Time.deltaTime;
-            if (starvationTimer <= 0)
+            // Aging
+            age += Time.deltaTime;
+            if (age >= maxAge)
             {
                 Die();
+                return;
             }
-        }
-        else
-        {
-            starvationTimer = starvationTime;
-        }
 
-        // Dehydration handling
-        if (thirstTimer <= 0)
-        {
-            dehydrationTimer -= Time.deltaTime;
-            if (dehydrationTimer <= 0)
+            // Hunger system
+            if (currentState != State.Eating && currentState != State.SearchFood)
             {
-                Die();
+                hungerTimer -= Time.deltaTime;
             }
-        }
-        else
-        {
-            dehydrationTimer = dehydrationTime;
-        }
 
-        // Prioritize needs - if either hunger or thirst is critical, switch to searching
-        if (hungerTimer <= hungerInterval * 0.3f || thirstTimer <= thirstInterval * 0.3f)
-        {
-            if (hungerTimer <= thirstTimer)
+            // Thirst system
+            if (currentState != State.Drinking && currentState != State.SearchWater)
             {
-                currentState = State.SearchFood;
+                thirstTimer -= Time.deltaTime;
+            }
+
+            // Starvation handling
+            if (hungerTimer <= 0)
+            {
+                starvationTimer -= Time.deltaTime;
+                if (starvationTimer <= 0)
+                {
+                    Die();
+                }
             }
             else
             {
-                currentState = State.SearchWater;
+                starvationTimer = starvationTime;
+            }
+
+            // Dehydration handling
+            if (thirstTimer <= 0)
+            {
+                dehydrationTimer -= Time.deltaTime;
+                if (dehydrationTimer <= 0)
+                {
+                    Die();
+                }
+            }
+            else
+            {
+                dehydrationTimer = dehydrationTime;
+            }
+
+            // Prioritize needs - if either hunger or thirst is critical, switch to searching
+            if (hungerTimer <= hungerInterval * 0.3f || thirstTimer <= thirstInterval * 0.3f)
+            {
+                if (hungerTimer <= thirstTimer)
+                {
+                    currentState = State.SearchFood;
+                }
+                else
+                {
+                    currentState = State.SearchWater;
+                }
             }
         }
+        else
+        {
+            agent.isStopped = true;
+        }
+        
     }
 
     // Vision of the animal, adding tile to the explored list
