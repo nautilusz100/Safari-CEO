@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using NavMeshPlus.Components;
 using NavMeshPlus.Extensions;
+using TMPro;
+using UnityEngine.SocialPlatforms.Impl;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +15,10 @@ public class GameManager : MonoBehaviour
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
     [SerializeField]private int jeepCount = 0;
+    public TextMeshProUGUI scoreText;
+
     //public GameObject animalPrefab;
+    public int EntryFee { get; set; }
 
     public GameObject navMesh;
     private NavMeshSurface navMeshSurface;
@@ -22,6 +28,9 @@ public class GameManager : MonoBehaviour
     // Singleton GameManager
     void Start()
     {
+
+        EntryFee = 100;
+        scoreText.text = "$" + EntryFee.ToString();
         if (Instance == null)
             Instance = this;
         else
@@ -106,5 +115,16 @@ public class GameManager : MonoBehaviour
     public void DisableRoadBuilding()
     {
         IsBuilding = Tile.ShopType.None;
+    }
+    public void PriceIncrease()
+    { 
+        Debug.Log("PriceIncrease");
+        EntryFee++;
+        scoreText.text = "$" + EntryFee.ToString();
+    }
+    public void PriceDecrease()
+    {
+        EntryFee--;
+        scoreText.text = "$" + EntryFee.ToString();
     }
 }
