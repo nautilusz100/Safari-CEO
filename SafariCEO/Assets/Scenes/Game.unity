@@ -700,6 +700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   safariMapPrefab: {fileID: 337380334}
   jeepCount: 0
+  scoreText: {fileID: 1167427206}
   navMesh: {fileID: 202532414}
 --- !u!4 &138372539
 Transform:
