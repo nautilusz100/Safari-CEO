@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4592569953141203528}
   - component: {fileID: 1358045962049438094}
   m_Layer: 0
-  m_Name: fox_prefeab_mov
+  m_Name: fox_prefab_mov
   m_TagString: Carnivorous
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
