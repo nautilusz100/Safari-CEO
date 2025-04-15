@@ -173,32 +173,33 @@ public class gameUIButtonsManager : MonoBehaviour
             case ShopTypes.NATURE:
                 if (button == 0)
                 {
-                    gameManager.IsBuilding = Tile.TileType.Flowerbed;
+                    gameManager.IsBuilding = Tile.ShopType.Flowerbed;
                 }
                 else if (button == 1)
                 {
-                    gameManager.IsBuilding = Tile.TileType.Bush;
+                    gameManager.IsBuilding = Tile.ShopType.Bush;
                 }
                 else if (button == 2)
                 {
-                    gameManager.IsBuilding = Tile.TileType.Tree;
+                    gameManager.IsBuilding = Tile.ShopType.Tree;
                 }
                 else
                 {
-                    gameManager.IsBuilding = Tile.TileType.None;
+                    gameManager.IsBuilding = Tile.ShopType.None;
                 }
                 break;
             case ShopTypes.ANIMALS:
-                gameManager.IsBuilding = Tile.TileType.Animal;
+                gameManager.IsBuilding = Tile.ShopType.Animal;
                 break;
             case ShopTypes.JEEP:
                 if (button == 0)
                 {
-                    gameManager.IsBuilding = Tile.TileType.Road;
+                    gameManager.IsBuilding = Tile.ShopType.Road;
                 }
                 else
                 {
-                    gameManager.IsBuilding = Tile.TileType.None;
+                    gameManager.IsBuilding = Tile.ShopType.Jeep;
+                    Debug.Log("Jeep selected");
                 }
                 break;
             default:

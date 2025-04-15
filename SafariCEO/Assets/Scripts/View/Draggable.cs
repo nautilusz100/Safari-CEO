@@ -62,7 +62,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         }
         /*Check if placing it in a valid position*/
         Tile tile = map.GetTileAt(new Vector2(animal.transform.position.x, animal.transform.position.y));
-        if (tile.Type == Tile.TileType.Lake || tile.Type == Tile.TileType.River)
+        if (tile.Type == Tile.ShopType.Lake || tile.Type == Tile.ShopType.River)
         {
             Destroy(animal);
         }

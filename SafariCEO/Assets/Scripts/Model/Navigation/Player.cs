@@ -31,12 +31,12 @@ public class Player : MonoBehaviour
         Tile tile = other.GetComponent<Tile>();
         if (tile == null) return;
         //water slow zone 
-        if (tile.Type == TileType.Lake || tile.Type == TileType.River)
+        if (tile.Type == ShopType.Lake || tile.Type == ShopType.River)
         {
             slowZoneCountWater++; //tobbe megy bele mint 1
             agent.speed = slowedSpeedWater;
         }
-        else if(tile.Type == TileType.Hills)
+        else if(tile.Type == ShopType.Hills)
         {
             //hills slow zone
             slowZoneCountHills++;
@@ -49,14 +49,14 @@ public class Player : MonoBehaviour
         Tile tile = other.GetComponent<Tile>();
         if (tile == null) return;
         //water slow zone   
-        if (tile.Type == TileType.Lake || tile.Type == TileType.River)
+        if (tile.Type == ShopType.Lake || tile.Type == ShopType.River)
         {
             slowZoneCountWater--;
             if (slowZoneCountWater <= 0)
             {
                 agent.speed = normalSpeed;
             }
-        }else if (tile.Type == TileType.Hills)
+        }else if (tile.Type == ShopType.Hills)
         {
             slowZoneCountHills--;
             if (slowZoneCountHills <= 0)
