@@ -223,30 +223,6 @@ public class Carnivorous : MonoBehaviour
             agent.SetDestination(closestPrey.Value);
         }
     }
-    /* elõzõ koncepció, de nem mûködik
-    private IEnumerator ChasePrey(GameObject prey)
-    {
-        while (prey != null && currentState == State.Hunt)
-        {
-            // Frissítsük a cél pozíciót
-            agent.SetDestination(prey.transform.position);
-            currentTargetAnimal = prey.transform;
-
-            // Ha közel vagyunk, a trigger kezelje
-            if (Vector3.Distance(transform.position, prey.transform.position) < 1.5f)
-            {
-                break;
-            }
-
-            yield return new WaitForSeconds(0.2f);
-        }
-
-        // Ha még mindig hunt állapotban vagyunk, de a préda eltûnt
-        if (currentState == State.Hunt)
-        {
-            currentState = State.Wander;
-        }
-    }*/
 
     private void StartEating(Transform prey)
     {
@@ -367,20 +343,6 @@ public class Carnivorous : MonoBehaviour
             }
             return;
         }
-
-        // Préda kezelése, ez nem nagyon mûködik
-        /*
-        if (other.CompareTag("Herbivore") && currentState == State.Hunt)
-        {
-            Debug.Log($"Caught prey: {other.name}");
-            StartEating(other.transform);
-
-            // Távolítsuk el a prédát a látottak listájából
-            if (spottedPreyPositions.ContainsKey(other.gameObject))
-            {
-                spottedPreyPositions.Remove(other.gameObject);
-            }
-        }*/
     }
 
     private void OnTriggerExit2D(Collider2D other)

@@ -20,10 +20,10 @@ public class MainMenu : MonoBehaviour
     private Button hardButton;
     private Difficulty selectedDifficulty = Difficulty.None;
 
-    public event EventHandler<DifficultySelectedEventArgs> NewGame;
+    /*
     public event EventHandler LoadGame;
     public event EventHandler ExitMenu;
-
+    */
 
     void Start()
     {
@@ -90,10 +90,10 @@ public class MainMenu : MonoBehaviour
 
         if (selectedDifficulty == Difficulty.None)
         {
-            Debug.LogError("No difficulty selected!");
+            Debug.Log("No difficulty selected!");
         }
         else {
-            NewGame?.Invoke(this, new DifficultySelectedEventArgs(selectedDifficulty));
+            GameSettings.SelectedDifficulty = selectedDifficulty;
             SceneManager.LoadScene("Game");
         }
 
@@ -131,7 +131,7 @@ public class MainMenu : MonoBehaviour
     private void OnExitButtonClick()
     {
         Debug.Log("Quit");
-        ExitMenu?.Invoke(this, EventArgs.Empty);
+        //ExitMenu?.Invoke(this, EventArgs.Empty);
         #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
         #else

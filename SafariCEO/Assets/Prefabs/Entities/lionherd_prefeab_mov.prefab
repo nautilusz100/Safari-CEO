@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4592569953141203528}
   - component: {fileID: 1358045962049438094}
   m_Layer: 0
-  m_Name: lion_prefeab_mov
+  m_Name: lionherd_prefeab_mov
   m_TagString: Carnivorous
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: -1067296519
   m_SortingLayer: 2
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 1fea399790bfac8469baa740fb30041b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 410b004b5fc6bb54fbd048a47f137d2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -110,7 +110,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5312220684229478086}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.02
+  m_Radius: 0.83
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -119,8 +119,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: -0.28
+  m_Height: 2.06
+  m_BaseOffset: 1.24
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!61 &3836230655731566231
@@ -155,10 +155,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.009656608, y: 1.2799977}
+  m_Offset: {x: -0.16, y: -0.21}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2.56, y: 2.56}
     newSize: {x: 2.56, y: 2.56}
     adaptiveTilingThreshold: 0.5
@@ -166,7 +166,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.0409265, y: 2.056287}
+  m_Size: {x: 1.76, y: 1.98}
   m_EdgeRadius: 0
 --- !u!50 &4592569953141203528
 Rigidbody2D:

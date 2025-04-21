@@ -95,6 +95,25 @@ public class SafariMap : MonoBehaviour
         }
     }
 
+    public void ReplaceTileWithPlains(Vector2 vector)
+    {
+        int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
+        int yIndex = Mathf.FloorToInt(vector.y);
+        if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid[0].Count)
+        {
+            Vector2Int tilePosition = new Vector2Int(xIndex + 2, yIndex); // Kerekített indexek
+            GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y]; // Aktuális tile
+            if (currentTile != null)
+            {
+                GameObject newTile = InstantiateTileOfType(Tile.ShopType.Plains, currentTile.transform.position);
+                newTile.transform.parent = currentTile.transform.parent;
+                tile_grid[tilePosition.x][tilePosition.y] = newTile;
+                Destroy(currentTile);
+            }
+
+        }
+    }
+
 
     internal void ChangeTileNature(Vector2 vector, Tile.ShopType whichTileType)
     {
@@ -614,6 +633,5 @@ public (bool,Vector2Int) SmoothRiverEdges(Vector2Int prevTile, Vector2Int curren
             tile_grid[x].Add(tile);
         }
     }
-
 
 }
