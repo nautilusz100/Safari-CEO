@@ -216,10 +216,10 @@ public class SafariMap : MonoBehaviour
         Vector2Int left = new Vector2Int(tilePosition.x - 1, tilePosition.y);
         Vector2Int right = new Vector2Int(tilePosition.x + 1, tilePosition.y);
         // Ellenőrizzük a szomszédos tile-ok típusát
-        bool upTile = IsRoad(up);
-        bool downTile = IsRoad(down);
-        bool leftTile = IsRoad(left);
-        bool rightTile = IsRoad(right);
+        bool upTile = IsRoad(up)        || tile_grid[up.x][up.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
+        bool downTile = IsRoad(down)    || tile_grid[down.x][down.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
+        bool leftTile = IsRoad(left)    || tile_grid[left.x][left.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
+        bool rightTile = IsRoad(right)  || tile_grid[right.x][right.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
         Debug.Log("Road u: " + upTile + " d" + downTile + " l" + leftTile+  " r" + rightTile);
         // Új út prefab kiválasztása a szomszédos tile-ok alapján
         GameObject selectedPrefab = prefab_road1010; // Alapértelmezett prefab
