@@ -7,6 +7,7 @@ using NavMeshPlus.Components;
 using NavMeshPlus.Extensions;
 using TMPro;
 using UnityEngine.SocialPlatforms.Impl;
+using System;
 
 
 public class GameManager : MonoBehaviour
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     public SafariMap safariMapPrefab;
     [SerializeField]private int jeepCount = 0;
     public TextMeshProUGUI scoreText;
+    [SerializeField] private Difficulty gameDifficulty;
 
     //public GameObject animalPrefab;
     public int EntryFee { get; set; }
@@ -48,8 +50,17 @@ public class GameManager : MonoBehaviour
         currentMap.CreateMap();
         // NavMesh generálása
         navMeshSurface.BuildNavMesh();
-    }
 
+        //Game difficulty
+        gameDifficulty = GameSettings.SelectedDifficulty;
+        Debug.Log("Difficulty from static: " + gameDifficulty);
+
+
+    }
+    internal void NotifyTileFoodDepleted(Vector2Int pos)
+    {
+        currentMap.ReplaceTileWithPlains(pos);
+    }
     void Update()
     {
 
@@ -127,4 +138,6 @@ public class GameManager : MonoBehaviour
         EntryFee--;
         scoreText.text = "$" + EntryFee.ToString();
     }
+
+
 }

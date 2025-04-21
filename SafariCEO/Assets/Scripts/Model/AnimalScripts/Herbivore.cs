@@ -52,6 +52,9 @@ public class Herbivore : MonoBehaviour
     private State currentState = State.Wander;
     public bool beingAttacked = false;
 
+    //csak 1 rutin legyen mindig
+    private Coroutine moveCoroutine;
+
     private void Start()
     {
         //debugging
@@ -82,6 +85,7 @@ public class Herbivore : MonoBehaviour
         hungerTimer = hungerInterval;
         thirstTimer = thirstInterval;
         maxAge = Random.Range(maxAge * 0.8f, maxAge * 1.2f);
+        moveCoroutine = null;
 
         InvokeRepeating("DecideNextAction", 0f, 2f);
         InvokeRepeating("UpdateVision", 0f, 0.5f);
@@ -157,7 +161,8 @@ public class Herbivore : MonoBehaviour
         {
             agent.isStopped = true;
         }
-        
+
+
     }
 
     // Vision of the animal, adding tile to the explored list
@@ -176,6 +181,9 @@ public class Herbivore : MonoBehaviour
 
     private void DecideNextAction()
     {
+
+        if (moveCoroutine != null)
+            return;
         switch (currentState)
         {
             case State.Wander:
@@ -206,7 +214,9 @@ public class Herbivore : MonoBehaviour
                 if (currentTarget != null)
                 {
                     agent.SetDestination(currentTarget.transform.position);
-                    StartCoroutine(CheckIfReachedDestination(State.Eating));
+                    moveCoroutine = StartCoroutine(CheckIfReachedDestination(State.Eating));
+                    Debug.Log("Corutin called food"+ moveCoroutine);
+                   
                 }
                 else
                 {
@@ -222,7 +232,7 @@ public class Herbivore : MonoBehaviour
                 if (currentTarget != null)
                 {
                     agent.SetDestination(currentTarget.transform.position);
-                    StartCoroutine(CheckIfReachedDestination(State.Drinking));
+                    moveCoroutine  = StartCoroutine(CheckIfReachedDestination(State.Drinking));
                 }
                 else
                 {
@@ -283,6 +293,7 @@ public class Herbivore : MonoBehaviour
                     break;
             }
         }
+        
     }
 
     private void StartEating()
@@ -299,11 +310,26 @@ public class Herbivore : MonoBehaviour
     {
         spriteRenderer.color = restingColor;
 
-        hungerTimer = hungerInterval;
+        float ageRatio = Mathf.Clamp01(age / maxAge); // 0 (young) to 1 (old)
+        float hungerMultiplier = Mathf.Lerp(1f, 0.5f, ageRatio); // Old animals get less benefit
+        hungerTimer = hungerInterval * hungerMultiplier;
+
+        // --- TILE FOOD DEPLETION HERE ---
+        Tile tile = currentTarget.GetComponent<Tile>();
+        if (tile != null)
+        {
+            int baseFoodConsumption = 1;
+            int foodToEat = Mathf.RoundToInt(Mathf.Lerp(baseFoodConsumption, baseFoodConsumption * 2f, ageRatio));
+            tile.ConsumeFood(foodToEat);
+            
+        }
+
         currentTarget = null;
         currentState = State.Rest;
         Debug.Log(transform.name + " finished eating and is now resting.");
+        moveCoroutine = null; // ha végzett a coroutine, akkor nullázzuk
     }
+
 
     private void StartDrinking()
     {
@@ -323,6 +349,7 @@ public class Herbivore : MonoBehaviour
         currentTarget = null;
         currentState = State.Rest;
         Debug.Log(transform.name + " finished drinking and is now resting.");
+        moveCoroutine = null; // ha végzett a coroutine, akkor nullázzuk
     }
 
     private void ResumeWander()
