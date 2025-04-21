@@ -57,38 +57,46 @@ public class SafariMap : MonoBehaviour
     {
         // Iterate through the grid to place buildings
         int count = 0;
-        for (int i = 0; i < 4; i++)
+        for (int i = -2; i < 6; i++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int j = -2; j < 6; j++)
             {
-                int x = 40 + (j % 4);
-                int y = 40 - (i % 4);
+                int x = 40 + j;
+                int y = 40 - i;
 
                 if (x < map_dimensions.x && y < map_dimensions.y) // Check if within bounds
                 {
-                    GameObject currentTile = tile_grid[x][y]; // Get the current tile
-
-                    if (currentTile != null)
+                    if (x >= 40 && x < 44 && y <= 40 && y > 36)
                     {
-                        Tile tileComponent = currentTile.GetComponent<Tile>(); // Get the tile component
-                        Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: (" + x + ", " + y + ")");
+                        GameObject currentTile = tile_grid[x][y]; // Get the current tile
 
-                        if (tileComponent != null)
+                        if (currentTile != null)
                         {
-                            // Instantiate the building prefab at this position
+                            Tile tileComponent = currentTile.GetComponent<Tile>(); // Get the tile component
+                            //Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: (" + x + ", " + y + ")");
 
-                            GameObject building = Instantiate(maninBuildingTilePrefabs[count], currentTile.transform.position, Quaternion.identity);
-                            building.transform.parent = gameObject.transform; // Set parent of the building
-                            Tile tileComponentBuilding = building.GetComponent<Tile>();
-                            if (tileComponentBuilding == null)
-                                tileComponentBuilding = building.AddComponent<Tile>(); // If no Tile component exists, add one
+                            if (tileComponent != null)
+                            {
+                                // Instantiate the building prefab at this position
 
-                            tileComponentBuilding.Type = Tile.ShopType.MainBuilding; // Set type to main building
-                            tile_grid[x][y] = building;
+                                GameObject building = Instantiate(maninBuildingTilePrefabs[count], currentTile.transform.position, Quaternion.identity);
+                                building.transform.parent = gameObject.transform; // Set parent of the building
+                                Tile tileComponentBuilding = building.GetComponent<Tile>();
+                                if (tileComponentBuilding == null)
+                                    tileComponentBuilding = building.AddComponent<Tile>(); // If no Tile component exists, add one
+
+                                tileComponentBuilding.Type = Tile.ShopType.MainBuilding; // Set type to main building
+                                tile_grid[x][y] = building;
+                            }
+                            Destroy(currentTile);
+                            count++;
                         }
-                        Destroy(currentTile);
-                        count++;
                     }
+                    else // replace 2 tile thick border with plains around main building
+                    {
+                        ReplaceTileWithPlains(new Vector2(x-2, y)); 
+                    }
+
                 }
             }
             
@@ -97,6 +105,7 @@ public class SafariMap : MonoBehaviour
 
     public void ReplaceTileWithPlains(Vector2 vector)
     {
+        Debug.Log("Replacing with plains at: " + vector);
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
         int yIndex = Mathf.FloorToInt(vector.y);
         if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid[0].Count)
