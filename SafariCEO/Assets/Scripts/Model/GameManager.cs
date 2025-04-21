@@ -8,6 +8,7 @@ using NavMeshPlus.Extensions;
 using TMPro;
 using UnityEngine.SocialPlatforms.Impl;
 using System;
+using System.Net;
 
 
 public class GameManager : MonoBehaviour
@@ -17,10 +18,12 @@ public class GameManager : MonoBehaviour
     public SafariMap safariMapPrefab;
     [SerializeField]private int jeepCount = 0;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI visitorCount;
     [SerializeField] private Difficulty gameDifficulty;
 
     //public GameObject animalPrefab;
     public int EntryFee { get; set; }
+    public int Visitors { get; set; } 
 
     public GameObject navMesh;
     private NavMeshSurface navMeshSurface;
@@ -32,6 +35,7 @@ public class GameManager : MonoBehaviour
     {
 
         EntryFee = 100;
+        Visitors = 0;
         scoreText.text = "$" + EntryFee.ToString();
         if (Instance == null)
             Instance = this;
@@ -139,5 +143,9 @@ public class GameManager : MonoBehaviour
         scoreText.text = "$" + EntryFee.ToString();
     }
 
+    public void UpdateVisitorCount()
+    {
+        visitorCount.text = Visitors.ToString();
+    }
 
 }
