@@ -61,8 +61,8 @@ public class SafariMap : MonoBehaviour
         {
             for (int j = 0; j < 4; j++)
             {
-                int x = 45 + (j % 4);
-                int y = 45 - (i % 4);
+                int x = 40 + (j % 4);
+                int y = 40 - (i % 4);
 
                 if (x < map_dimensions.x && y < map_dimensions.y) // Check if within bounds
                 {
