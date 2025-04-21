@@ -12,6 +12,7 @@ public class gameUIButtonsManager : MonoBehaviour
     private Button animalButton;
     private Button jeepAndRoadButton;
     private Button parkStatButton;
+    [SerializeField] private TMP_InputField parkNameInputField;
 
     private ShopTypes currentShopType = ShopTypes.NONE;
     public ShopTypes CurrentShopType { get { return currentShopType; } }
@@ -79,6 +80,8 @@ public class gameUIButtonsManager : MonoBehaviour
 
         CreateShopElementPanelList();
 
+        parkNameInputField.onValueChanged.AddListener(UpdateParkNamePreview);
+
     }
 
     private void CreateShopElementPanelList()
@@ -94,6 +97,16 @@ public class gameUIButtonsManager : MonoBehaviour
     {
         enableParkStat.SetActive(!enableParkStat.activeSelf);
         ParkStatClicked?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void UpdateParkNamePreview(string value)
+    {
+        if (value == null || value == "")
+        {
+            parkStatButton.text = "Park Name";
+            return;
+        }
+        parkStatButton.text = value;
     }
 
     private void ShopDisplayManager(ShopTypes shopType)

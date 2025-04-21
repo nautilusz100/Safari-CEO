@@ -101,6 +101,8 @@ public class SafariMap : MonoBehaviour
             }
             
         }
+        ChangeTileToRoad(new Vector2(37, 38), true); 
+        ChangeTileToRoad(new Vector2(42, 38), true); 
     }
 
     public void ReplaceTileWithPlains(Vector2 vector)
@@ -154,7 +156,7 @@ public class SafariMap : MonoBehaviour
         }
     }
 
-    public void ChangeTileToRoad(Vector2 vector)
+    public void ChangeTileToRoad(Vector2 vector, bool isLockedTile = false)
     {
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
         int yIndex = Mathf.FloorToInt(vector.y); // Lefelé kerekítés az y koordinátán
@@ -173,6 +175,13 @@ public class SafariMap : MonoBehaviour
                 {
                     if (tileComponent != null && tileComponent.Type == Tile.ShopType.Road)
                     {
+
+                        if (tileComponent.isLocked)
+                        {
+                            Debug.Log("Tile is locked, cannot change to road");
+                            return;
+                        }
+
                         // Ha már út, akkor visszaállítjuk az eredeti tile-t
                         if (originalTileTypes.ContainsKey(tilePosition))
                         {
@@ -200,6 +209,10 @@ public class SafariMap : MonoBehaviour
                         if (roadTileComponent == null)
                             roadTileComponent = roadTile.AddComponent<Tile>();
                         roadTileComponent.Type = Tile.ShopType.Road; // Beállítjuk a típusát "Road"-ra
+                        if(isLockedTile)
+                        {
+                            roadTileComponent.isLocked = true; // Ha zárva van, akkor beállítjuk
+                        }
 
                         Destroy(currentTile); // Eltávolítjuk az aktuális tile-t
                         tile_grid[tilePosition.x][tilePosition.y] = roadTile; // Frissítjük a gridet
@@ -283,6 +296,8 @@ public class SafariMap : MonoBehaviour
     private void UpdateRoadTile(Vector2Int tilePosition)
     {
         GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y];
+        bool currentTileLock = currentTile.GetComponent<Tile>().isLocked;
+
         if (currentTile != null)
         {
             Destroy(currentTile);
@@ -292,6 +307,7 @@ public class SafariMap : MonoBehaviour
             if (roadTileComponent == null)
                 roadTileComponent = newRoadTile.AddComponent<Tile>();
             roadTileComponent.Type = Tile.ShopType.Road;
+            roadTileComponent.isLocked = currentTileLock; // Beállítjuk a zárást
             tile_grid[tilePosition.x][tilePosition.y] = newRoadTile;
         }
     }

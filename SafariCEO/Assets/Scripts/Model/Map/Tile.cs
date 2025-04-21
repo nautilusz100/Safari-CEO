@@ -25,6 +25,7 @@ public class Tile : MonoBehaviour
 
 
     [SerializeField] private int FoodAmount;
+    public bool isLocked;
 
     void Awake()
     {
@@ -44,6 +45,7 @@ public class Tile : MonoBehaviour
                 FoodAmount = 0;
                 break;
         }
+        isLocked = false;
     }
 
     void Start()
