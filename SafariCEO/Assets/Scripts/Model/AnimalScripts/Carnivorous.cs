@@ -24,7 +24,7 @@ public class Carnivorous : MonoBehaviour
     public float normalSpeed = 3f;
 
     // Perception
-    public float visionRadius = 15f;
+    public float visionRadius = 5f;
     public float visionAngle = 120f;
 
     // Survival needs
@@ -340,8 +340,10 @@ public class Carnivorous : MonoBehaviour
             {
                 slowZoneCountHills++;
                 agent.speed = slowedSpeedHills;
+                //messzebre lát
+                visionRadius = 10f;
             }
-            return;
+            
         }
     }
 
@@ -358,7 +360,11 @@ public class Carnivorous : MonoBehaviour
         else if (tile.Type == ShopType.Hills)
         {
             slowZoneCountHills--;
-            if (slowZoneCountHills <= 0) agent.speed = normalSpeed;
+            if (slowZoneCountHills <= 0) 
+            {
+                agent.speed = normalSpeed;
+                visionRadius = 5f; //visszaállítja a látótávolságot
+            }
         }
     }
 

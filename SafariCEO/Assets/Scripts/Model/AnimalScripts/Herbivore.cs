@@ -23,7 +23,7 @@ public class Herbivore : MonoBehaviour
     public float slowedSpeedHills = 0.7f;
 
     // Perception
-    public float visionRadius = 10f;
+    public float visionRadius = 5f;
 
     // Survival needs
     public float hungerInterval = 120f;
@@ -385,6 +385,7 @@ public class Herbivore : MonoBehaviour
         {
             slowZoneCountHills++;
             agent.speed = slowedSpeedHills;
+            visionRadius = 10f;
         }
     }
 
@@ -401,7 +402,11 @@ public class Herbivore : MonoBehaviour
         else if (tile.Type == ShopType.Hills)
         {
             slowZoneCountHills--;
-            if (slowZoneCountHills <= 0) agent.speed = normalSpeed;
+            if (slowZoneCountHills <= 0)
+            {
+                agent.speed = normalSpeed;
+                visionRadius = 5f; //visszaállítja a látótávolságot
+            }
         }
     }
 
