@@ -32,6 +32,9 @@ public class SafariMap : MonoBehaviour
 
     //main building
     public List<GameObject> maninBuildingTilePrefabs;
+    // Jeep
+    public GameObject prefab_jeep;
+
 
     public Vector2 map_dimensions = new Vector2(160, 90);
 
