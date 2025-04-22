@@ -27,8 +27,8 @@ NavMeshProjectSettings:
     cost: 1
   - name: RoadCorner
     cost: 100
-  - name: 
-    cost: 1
+  - name: MainBuilding
+    cost: 100
   - name: 
     cost: 1
   - name: 
