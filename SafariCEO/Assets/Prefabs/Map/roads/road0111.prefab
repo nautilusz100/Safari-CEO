@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: -5613829987319047090}
   - component: {fileID: 3883605026443281194}
   - component: {fileID: 8431322971431731368}
+  - component: {fileID: 3503493404491486235}
+  - component: {fileID: 7209506137314307557}
   m_Layer: 3
   m_Name: road0111
   m_TagString: Untagged
@@ -100,6 +102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialType: 6
+  FoodAmount: 0
+  isLocked: 0
 --- !u!61 &3883605026443281194
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -161,3 +165,35 @@ MonoBehaviour:
   m_Area: 8
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &3503493404491486235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6314414795035957142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fa0352a4d56abd42ad2fc69deb72448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Size: {x: 0.5, y: 0.5, z: 4}
+  m_Center: {x: -0.44, y: 0.06, z: 0}
+  m_Area: 10
+  m_AffectedAgents: a98c17ec00000000
+--- !u!114 &7209506137314307557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6314414795035957142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fa0352a4d56abd42ad2fc69deb72448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Size: {x: 0.5, y: 0.5, z: 4}
+  m_Center: {x: 0.45, y: 0.06, z: 0}
+  m_Area: 10
+  m_AffectedAgents: 00000000

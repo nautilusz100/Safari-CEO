@@ -13,9 +13,9 @@ public class Jeep : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
-        safariExit = new Vector2(42, 39);
+        safariExit = new Vector2(42.5f, 39.5f);
         agent.SetDestination(safariExit);
-
+        
     }
 
     // Update is called once per frame

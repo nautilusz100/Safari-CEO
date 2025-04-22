@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         if(jeepCount > 0)
         {
             // Spawn a new Jeep
-            GameObject jeep = Instantiate(currentMap.prefab_jeep, new Vector3(39,38,0), Quaternion.identity );
+            GameObject jeep = Instantiate(currentMap.prefab_jeep, new Vector3(39f,39.5f,0f) , Quaternion.identity );
             jeepCount--;
         }
     }
