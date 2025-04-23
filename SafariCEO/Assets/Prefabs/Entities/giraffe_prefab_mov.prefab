@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -4870601444093044318}
   m_Layer: 0
   m_Name: giraffe_prefab_mov
-  m_TagString: Herbivore
+  m_TagString: Giraffe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -184,7 +184,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &-4870601444093044318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,3 +217,8 @@ MonoBehaviour:
   thirstTimer: 0
   age: 0
   maxAge: 1000
+  beingAttacked: 0
+  mateTimer: 0
+  mateInterval: 100
+  zebraPrefab: {fileID: 5855485762125835324, guid: a62b6cfd17c4ae540897ef614a0dcdbc, type: 3}
+  giraffePrefab: {fileID: 5855485762125835324}

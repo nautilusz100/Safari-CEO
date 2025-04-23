@@ -57,6 +57,8 @@ public class Carnivorous : MonoBehaviour
     private Tile currentTargetTile;
 
 
+
+
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -126,12 +128,12 @@ public class Carnivorous : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            if (hit.CompareTag("Herbivore"))
+            if (hit.gameObject == this.gameObject)
+                continue; //saját magát kihagyja
+            if (hit.CompareTag("Zebra") || hit.CompareTag("Giraffe") || hit.CompareTag("Giraffes") || hit.CompareTag("Zebras"))
             {
                 GameObject prey = hit.gameObject;
                 Vector3 preyPosition = prey.transform.position;
-                Vector3 directionToPrey = (preyPosition - transform.position).normalized;
-                float angleToPrey = Vector3.Angle(transform.right, directionToPrey);
 
                 spottedPreyPositions[prey] = preyPosition;
                 Debug.Log($"Spotted prey: {prey.name} at {preyPosition}"); 
