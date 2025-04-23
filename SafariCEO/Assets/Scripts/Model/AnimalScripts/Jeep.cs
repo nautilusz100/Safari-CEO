@@ -6,18 +6,23 @@ using UnityEngine.AI;
 
 /*
  TODO:
-    - Add logic so jeep doesnt move back and forth
- 
+    - Add animal detection logic
+    - Add post-ride satisfaction logic
+    - Add fail-safe incase jeep gets stuck
  */
 public class Jeep : MonoBehaviour
 {
     private NavMeshAgent agent;
+    private Vector2 safariEntry;
     private Vector2 safariExit;
-    private float visionRadius = 1f;
+    private float visionRadius = 0.65f;
+    private bool isReturningHome = false;
 
     public Vector2 destinationTilePos;
 
-    [SerializeField] private List<Tile> detectedRoads = new List<Tile>();
+
+    private Dictionary<Tile, int> traversedRoads = new Dictionary<Tile, int>();
+    private List<Tile> detectedRoads = new List<Tile>();
 
 
     void Start()
@@ -28,15 +33,25 @@ public class Jeep : MonoBehaviour
         agent.autoBraking = false;
         agent.avoidancePriority = Random.Range(1, 99);
 
+        safariEntry = new Vector2(37.5f, 39.5f);
         safariExit = new Vector2(42.5f, 39.5f);
-        //agent.SetDestination(safariExit);
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (agent.remainingDistance < 0.1f)
+        if (isReturningHome) HasReachedHome();
+        else
+        {
+            AtExit();
+            Movement();
+        }
+    }
+
+    private void Movement()
+    {
+        if (!agent.pathPending && agent.remainingDistance < 0.1f)
         {
             DetectRoads();
             Tile newDestinationTile = GetNewDestinationTile();
@@ -49,27 +64,83 @@ public class Jeep : MonoBehaviour
         }
     }
 
+    private void HasReachedHome()
+    {
+        bool isAtHome = Vector2.Distance(transform.position, safariEntry) < 0.25f;
+        if (isAtHome) KillJeep();
+    }
+    private void AtExit()
+    {
+        bool isAtExit = Vector2.Distance(transform.position, safariExit) < 0.25f;
+        if (isAtExit)
+        {
+            Debug.Log("Jeep has reached the exit");
+            isReturningHome = true;
+            agent.SetDestination(safariEntry);
+        }
+    }
+
     private Vector2 AddJeepOffset(Vector2 position)
     {
-        Vector2 offset = new Vector2(0, 0.5f);
+        Vector2 offset = new Vector2(Random.Range(-0.05f,0.05f), 0.5f);
         return position + offset;
     }
 
     private Tile GetNewDestinationTile()
     {
-        if (detectedRoads.Count > 0)
+        if (detectedRoads.Count == 0)
         {
-            int randomIndex = Random.Range(0, detectedRoads.Count);
-            Tile selectedTile = detectedRoads[randomIndex];
-            return selectedTile;
+            KillJeep();
+            return null;
         }
+
+        List<Tile> curiousTileCandidates = new List<Tile>();
+        int minTraversedCount = int.MaxValue;
+
+        foreach (var tile in detectedRoads)
+        {
+            int count = traversedRoads.ContainsKey(tile) ? traversedRoads[tile] : 0;
+            if (count < minTraversedCount)
+            {
+                minTraversedCount = count;
+                curiousTileCandidates.Clear();
+                curiousTileCandidates.Add(tile);
+            }
+            else if (count == minTraversedCount)
+            {
+                curiousTileCandidates.Add(tile);
+            }
+        }
+
+        if (curiousTileCandidates.Count > 0)
+        {
+            return curiousTileCandidates[Random.Range(0, curiousTileCandidates.Count)];
+        }
+
+        KillJeep();
         return null;
     }
+
+    private void KillJeep()
+    {
+        Debug.Log("Jeep has been killed");
+        Destroy(gameObject);
+    }
+
+
+    private void AddToTraversedRoads(Tile tile)
+    {
+
+        if (!traversedRoads.ContainsKey(tile))
+            traversedRoads[tile] = 0;
+
+        traversedRoads[tile]++;
+    }
+
 
     private void DetectRoads()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, visionRadius);
-        // Clear the list of detected roads
         detectedRoads.Clear();
         foreach (var hit in hits)
         {
@@ -78,6 +149,21 @@ public class Jeep : MonoBehaviour
             {
                 detectedRoads.Add(tile);
             }
+        }
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+
+        Gizmos.DrawWireSphere(transform.position, visionRadius);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Tile tile = collision.GetComponent<Tile>();
+        if (tile != null && tile.Type == Tile.ShopType.Road)
+        {
+            AddToTraversedRoads(tile);
         }
     }
 }
