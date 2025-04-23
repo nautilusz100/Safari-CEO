@@ -74,8 +74,8 @@ public class Carnivorous : MonoBehaviour
         thirstTimer = thirstInterval;
         maxAge = Random.Range(maxAge * 0.8f, maxAge * 1.2f);
 
-        InvokeRepeating("DecideNextAction", 0f, 1f);
-        InvokeRepeating("UpdateVision", 0f, 0.3f);
+        InvokeRepeating(nameof(DecideNextAction), 0f, 1f);
+        InvokeRepeating(nameof(UpdateVision), 0f, 0.3f);
 
     }
 
@@ -187,7 +187,7 @@ public class Carnivorous : MonoBehaviour
             case State.Rest:
                 spriteRenderer.color = restingColor;
                 agent.isStopped = true;
-                Invoke("ResumeWander", Random.Range(3f, 7f));
+                Invoke(nameof(ResumeWander), Random.Range(3f, 7f));
                 break;
         }
     }
@@ -246,7 +246,7 @@ public class Carnivorous : MonoBehaviour
         Debug.Log($"Stopped prey agent: {prey.name}");
         currentTargetAnimal = prey.gameObject; //valamiért újra be kell állítani, mert ha nincs akkor a préda nem tûnik el
         // 10 másodperc után vége az evésnek
-        Invoke("FinishEating", eatingDuration);
+        Invoke(nameof(FinishEating), eatingDuration);
     }
     private void FinishEating()
     {

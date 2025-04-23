@@ -218,7 +218,11 @@ MonoBehaviour:
   age: 0
   maxAge: 1000
   beingAttacked: 0
+  isMating: 0
   mateTimer: 0
   mateInterval: 100
   zebraPrefab: {fileID: 5855485762125835324, guid: a62b6cfd17c4ae540897ef614a0dcdbc, type: 3}
   giraffePrefab: {fileID: 5855485762125835324}
+  herdSprite: {fileID: 21300000, guid: 7c3ac0007ff73eb4ba8e494a9950bb17, type: 3}
+  isInHerd: 0
+  herdMembersData: []
