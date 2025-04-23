@@ -835,6 +835,7 @@ MonoBehaviour:
   safariMapPrefab: {fileID: 337380334}
   jeepCount: 0
   scoreText: {fileID: 1167427206}
+  visitorCount: {fileID: 0}
   gameDifficulty: 0
   navMesh: {fileID: 202532414}
 --- !u!4 &138372539
@@ -1062,7 +1063,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 711214708}
+        m_TargetAssemblyTypeName: gameUIButtonsManager, Assembly-CSharp
+        m_MethodName: UpdateParkNamePreview
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1416,6 +1429,7 @@ MonoBehaviour:
   - {fileID: 6314414795035957142, guid: f3b7d9d860e4cb343be57e183bce0f08, type: 3}
   - {fileID: 6314414795035957142, guid: 381234c0055c0384f82a094ee6d93ca5, type: 3}
   - {fileID: 6314414795035957142, guid: 8851247f91eb2b6488d9b4bdeffed64a, type: 3}
+  prefab_jeep: {fileID: 8082772739999290378, guid: ab4598f4a54b4f94b8b7fc8bcf52824f, type: 3}
   map_dimensions: {x: 80, y: 80}
 --- !u!4 &337380335
 Transform:
@@ -2390,6 +2404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1e647a84a50ece45b1a4b97cee04390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parkNameInputField: {fileID: 161574667}
   bushImage: {fileID: 21300000, guid: b35560607c1ded6429d28126803770ee, type: 3}
   treeImage: {fileID: 21300000, guid: c5ddb8b67aa754a498eac47662115515, type: 3}
   flowerImage: {fileID: 21300000, guid: 4f56a43563ff5ce4496ae89d8dd89c33, type: 3}
@@ -5884,7 +5899,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2099654403
 RectTransform:
   m_ObjectHideFlags: 0

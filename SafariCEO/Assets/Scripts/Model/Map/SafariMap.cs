@@ -32,6 +32,9 @@ public class SafariMap : MonoBehaviour
 
     //main building
     public List<GameObject> maninBuildingTilePrefabs;
+    // Jeep
+    public GameObject prefab_jeep;
+
 
     public Vector2 map_dimensions = new Vector2(160, 90);
 
@@ -57,46 +60,57 @@ public class SafariMap : MonoBehaviour
     {
         // Iterate through the grid to place buildings
         int count = 0;
-        for (int i = 0; i < 4; i++)
+        for (int i = -2; i < 6; i++)
         {
-            for (int j = 0; j < 4; j++)
+            for (int j = -2; j < 6; j++)
             {
-                int x = 45 + (j % 4);
-                int y = 45 - (i % 4);
+                int x = 40 + j;
+                int y = 40 - i;
 
                 if (x < map_dimensions.x && y < map_dimensions.y) // Check if within bounds
                 {
-                    GameObject currentTile = tile_grid[x][y]; // Get the current tile
-
-                    if (currentTile != null)
+                    if (x >= 40 && x < 44 && y <= 40 && y > 36)
                     {
-                        Tile tileComponent = currentTile.GetComponent<Tile>(); // Get the tile component
-                        Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: (" + x + ", " + y + ")");
+                        GameObject currentTile = tile_grid[x][y]; // Get the current tile
 
-                        if (tileComponent != null)
+                        if (currentTile != null)
                         {
-                            // Instantiate the building prefab at this position
+                            Tile tileComponent = currentTile.GetComponent<Tile>(); // Get the tile component
+                            //Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: (" + x + ", " + y + ")");
 
-                            GameObject building = Instantiate(maninBuildingTilePrefabs[count], currentTile.transform.position, Quaternion.identity);
-                            building.transform.parent = gameObject.transform; // Set parent of the building
-                            Tile tileComponentBuilding = building.GetComponent<Tile>();
-                            if (tileComponentBuilding == null)
-                                tileComponentBuilding = building.AddComponent<Tile>(); // If no Tile component exists, add one
+                            if (tileComponent != null)
+                            {
+                                // Instantiate the building prefab at this position
 
-                            tileComponentBuilding.Type = Tile.ShopType.MainBuilding; // Set type to main building
-                            tile_grid[x][y] = building;
+                                GameObject building = Instantiate(maninBuildingTilePrefabs[count], currentTile.transform.position, Quaternion.identity);
+                                building.transform.parent = gameObject.transform; // Set parent of the building
+                                Tile tileComponentBuilding = building.GetComponent<Tile>();
+                                if (tileComponentBuilding == null)
+                                    tileComponentBuilding = building.AddComponent<Tile>(); // If no Tile component exists, add one
+
+                                tileComponentBuilding.Type = Tile.ShopType.MainBuilding; // Set type to main building
+                                tile_grid[x][y] = building;
+                            }
+                            Destroy(currentTile);
+                            count++;
                         }
-                        Destroy(currentTile);
-                        count++;
                     }
+                    else // replace 2 tile thick border with plains around main building
+                    {
+                        ReplaceTileWithPlains(new Vector2(x-2, y)); 
+                    }
+
                 }
             }
             
         }
+        ChangeTileToRoad(new Vector2(37, 38), true); 
+        ChangeTileToRoad(new Vector2(42, 38), true); 
     }
 
     public void ReplaceTileWithPlains(Vector2 vector)
     {
+        Debug.Log("Replacing with plains at: " + vector);
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
         int yIndex = Mathf.FloorToInt(vector.y);
         if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid[0].Count)
@@ -145,7 +159,7 @@ public class SafariMap : MonoBehaviour
         }
     }
 
-    public void ChangeTileToRoad(Vector2 vector)
+    public void ChangeTileToRoad(Vector2 vector, bool isLockedTile = false)
     {
         int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
         int yIndex = Mathf.FloorToInt(vector.y); // Lefelé kerekítés az y koordinátán
@@ -164,6 +178,13 @@ public class SafariMap : MonoBehaviour
                 {
                     if (tileComponent != null && tileComponent.Type == Tile.ShopType.Road)
                     {
+
+                        if (tileComponent.isLocked)
+                        {
+                            Debug.Log("Tile is locked, cannot change to road");
+                            return;
+                        }
+
                         // Ha már út, akkor visszaállítjuk az eredeti tile-t
                         if (originalTileTypes.ContainsKey(tilePosition))
                         {
@@ -191,6 +212,10 @@ public class SafariMap : MonoBehaviour
                         if (roadTileComponent == null)
                             roadTileComponent = roadTile.AddComponent<Tile>();
                         roadTileComponent.Type = Tile.ShopType.Road; // Beállítjuk a típusát "Road"-ra
+                        if(isLockedTile)
+                        {
+                            roadTileComponent.isLocked = true; // Ha zárva van, akkor beállítjuk
+                        }
 
                         Destroy(currentTile); // Eltávolítjuk az aktuális tile-t
                         tile_grid[tilePosition.x][tilePosition.y] = roadTile; // Frissítjük a gridet
@@ -216,10 +241,10 @@ public class SafariMap : MonoBehaviour
         Vector2Int left = new Vector2Int(tilePosition.x - 1, tilePosition.y);
         Vector2Int right = new Vector2Int(tilePosition.x + 1, tilePosition.y);
         // Ellenőrizzük a szomszédos tile-ok típusát
-        bool upTile = IsRoad(up);
-        bool downTile = IsRoad(down);
-        bool leftTile = IsRoad(left);
-        bool rightTile = IsRoad(right);
+        bool upTile = IsRoad(up)        || tile_grid[up.x][up.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
+        bool downTile = IsRoad(down)    || tile_grid[down.x][down.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
+        bool leftTile = IsRoad(left)    || tile_grid[left.x][left.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
+        bool rightTile = IsRoad(right)  || tile_grid[right.x][right.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
         Debug.Log("Road u: " + upTile + " d" + downTile + " l" + leftTile+  " r" + rightTile);
         // Új út prefab kiválasztása a szomszédos tile-ok alapján
         GameObject selectedPrefab = prefab_road1010; // Alapértelmezett prefab
@@ -274,6 +299,8 @@ public class SafariMap : MonoBehaviour
     private void UpdateRoadTile(Vector2Int tilePosition)
     {
         GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y];
+        bool currentTileLock = currentTile.GetComponent<Tile>().isLocked;
+
         if (currentTile != null)
         {
             Destroy(currentTile);
@@ -283,6 +310,7 @@ public class SafariMap : MonoBehaviour
             if (roadTileComponent == null)
                 roadTileComponent = newRoadTile.AddComponent<Tile>();
             roadTileComponent.Type = Tile.ShopType.Road;
+            roadTileComponent.isLocked = currentTileLock; // Beállítjuk a zárást
             tile_grid[tilePosition.x][tilePosition.y] = newRoadTile;
         }
     }

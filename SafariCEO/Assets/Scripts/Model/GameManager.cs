@@ -118,6 +118,18 @@ public class GameManager : MonoBehaviour
             IsBuilding = Tile.ShopType.None;
         }
 
+        AttemptJeepSpawn();
+
+    }
+
+    private void AttemptJeepSpawn()
+    {
+        if(jeepCount > 0)
+        {
+            // Spawn a new Jeep
+            GameObject jeep = Instantiate(currentMap.prefab_jeep, new Vector3(39f,39.5f,0f) , Quaternion.identity );
+            jeepCount--;
+        }
     }
 
     // Útépítési mód engedélyezése
