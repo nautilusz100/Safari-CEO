@@ -6,6 +6,14 @@ TagManager:
   tags:
   - Herbivore
   - Carnivorous
+  - Fox
+  - Zebra
+  - Lion
+  - Giraffe
+  - Foxes
+  - Zebras
+  - Lions
+  - Giraffes
   layers:
   - Default
   - TransparentFX
