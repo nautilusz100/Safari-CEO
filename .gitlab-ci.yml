@@ -33,10 +33,9 @@ image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 # run this job when you need to request a license
 # you may need to follow activation steps from documentation
 get-activation-file:
-  # Known unity activation issue in GitLab CI
-  # See: https://gitlab.com/game-ci/unity3d-gitlab-ci-example/-/issues/171
-  # Workaround implemented as: https://gitlab.com/game-ci/unity3d-gitlab-ci-example/-/issues/171#note_974622879 
-  image: $IMAGE:2021.3.4f1-base-1.0.1
+  image: $IMAGE:2022.3.24f1-base-$IMAGE_VERSION
+  tags:
+    - unity
   rules:
     - if: '$UNITY_LICENSE == null'
       when: manual
@@ -46,7 +45,7 @@ get-activation-file:
   artifacts:
     paths:
       - $UNITY_ACTIVATION_FILE
-    expire_in: 10 min # Expiring this as artifacts may contain sensitive data and should not be kept public
+    expire_in: 10 min
 
 .test: &test
   stage: build_and_test
