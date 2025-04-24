@@ -16,10 +16,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
-    [SerializeField]private int jeepCount = 0;
+    private int jeepCount = 0;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI visitorCount;
     [SerializeField] private Difficulty gameDifficulty;
+    public float satisfaction = 0;
 
     //public GameObject animalPrefab;
     public int EntryFee { get; set; }
@@ -128,9 +129,22 @@ public class GameManager : MonoBehaviour
         {
             // Spawn a new Jeep
             GameObject jeep = Instantiate(currentMap.prefab_jeep, new Vector3(39f,39.5f,0f) , Quaternion.identity );
+            jeep.GetComponent<Jeep>().SetManager(this);
             jeepCount--;
         }
     }
+
+    public void LeaveReview(int score)
+    {
+        Debug.Log("Visitor satisfaction: " + score);
+        if (score == 0) return;
+        if (satisfaction == 0)
+            satisfaction = score;
+        else
+            satisfaction = (satisfaction + score) / 2;
+
+    }
+
 
     // Útépítési mód engedélyezése
     public void EnableRoadBuilding()

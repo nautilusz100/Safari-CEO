@@ -27,6 +27,12 @@ public class gameUIButtonsManager : MonoBehaviour
     [SerializeField]private UnityEngine.Sprite zebraImage;
     [SerializeField]private UnityEngine.Sprite roadImage;
     [SerializeField]private UnityEngine.Sprite jeepImage;
+
+    [SerializeField]private UnityEngine.Sprite awfulIcon;
+    [SerializeField]private UnityEngine.Sprite badIcon;
+    [SerializeField]private UnityEngine.Sprite okayIcon;
+    [SerializeField]private UnityEngine.Sprite goodIcon;
+    [SerializeField]private UnityEngine.Sprite perfectIcon;
     
     public GameObject enableShop;
     public GameObject enableParkStat;
@@ -84,6 +90,14 @@ public class gameUIButtonsManager : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        if (enableParkStat.activeSelf)
+        {
+            UpdateSatisfactionIcon();
+        }
+    }
+
     private void CreateShopElementPanelList()
     {
         shopElementPanels = new List<Transform>();
@@ -96,7 +110,22 @@ public class gameUIButtonsManager : MonoBehaviour
     private void OnParkStatButtonClick()
     {
         enableParkStat.SetActive(!enableParkStat.activeSelf);
+        UpdateSatisfactionIcon();
         ParkStatClicked?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void UpdateSatisfactionIcon()
+    {
+        UnityEngine.Sprite icon = awfulIcon;
+        float satisfaction = gameManager.satisfaction;
+
+        if      (satisfaction <= 1) icon = awfulIcon;
+        else if (satisfaction <= 2) icon = badIcon;
+        else if (satisfaction <= 3) icon = okayIcon;
+        else if (satisfaction <= 4.5) icon = goodIcon;
+        else if (satisfaction <= 5) icon = perfectIcon;
+
+        enableParkStat.transform.Find("ParkSatisfactionPanel").Find("Image").GetComponent<UnityEngine.UI.Image>().sprite = icon;
     }
 
     public void UpdateParkNamePreview(string value)
