@@ -34,6 +34,8 @@ image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 # you may need to follow activation steps from documentation
 get-activation-file:
   image: $IMAGE:2022.3.24f1-base-$IMAGE_VERSION
+  tags:
+    - unity
   rules:
     - if: '$UNITY_LICENSE == null'
       when: manual
