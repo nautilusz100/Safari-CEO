@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using System.Linq;
 using static Tile;
 
-public class Herbivore : MonoBehaviour
+public class Herbivore : MonoBehaviour, IHasVision
 {
     //for debugging
     private SpriteRenderer spriteRenderer;
@@ -15,12 +15,9 @@ public class Herbivore : MonoBehaviour
     public Color drinkingColor = Color.cyan;
     public Color searchingColor = Color.yellow;
 
-
     // Movement parameters
     public float moveRange = 100f;
-    public float normalSpeed = 1f;
-    public float slowedSpeedWater = 0.5f;
-    public float slowedSpeedHills = 0.7f;
+    public float normalSpeed = 3f;
 
     // Perception
     public float visionRadius = 5f;
@@ -40,9 +37,6 @@ public class Herbivore : MonoBehaviour
 
     public float age = 0f;
     public float maxAge = 1000f;
-
-    private int slowZoneCountWater = 0;
-    private int slowZoneCountHills = 0;
 
     private NavMeshAgent agent;
     private List<Tile> exploredTiles = new List<Tile>();
@@ -72,8 +66,7 @@ public class Herbivore : MonoBehaviour
     //herd
     public bool isInHerd = false;
     public List<HerdMemberData> herdMembersData;
-
-
+    //public int herdMemberID = 0;?
 
     private void Start()
     {
@@ -108,8 +101,6 @@ public class Herbivore : MonoBehaviour
         //matehez be kell állítani itt,  ami változik
         mateTimer = 0;
         age = 0;
-        slowZoneCountHills = 0;
-        slowZoneCountWater = 0;
         currentState = State.Wander;
         beingAttacked = false;
         isMating = false;
@@ -199,6 +190,10 @@ public class Herbivore : MonoBehaviour
         }
 
 
+    }
+    public void SetVisionRadius(float radius)//IHasVision interface implementáció
+    {
+        visionRadius = radius;
     }
 
     // Vision of the animal, adding tile to the explored list
@@ -560,45 +555,6 @@ public class Herbivore : MonoBehaviour
             if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, moveRange, NavMesh.AllAreas))
             {
                 agent.SetDestination(hit.position);
-            }
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        Tile tile = other.GetComponent<Tile>();
-        if (tile == null) return;
-
-        if (tile.Type == ShopType.Lake || tile.Type == ShopType.River)
-        {
-            slowZoneCountWater++;
-            agent.speed = slowedSpeedWater;
-        }
-        else if (tile.Type == ShopType.Hills)
-        {
-            slowZoneCountHills++;
-            agent.speed = slowedSpeedHills;
-            visionRadius = 10f;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        Tile tile = other.GetComponent<Tile>();
-        if (tile == null) return;
-
-        if (tile.Type == ShopType.Lake || tile.Type == ShopType.River)
-        {
-            slowZoneCountWater--;
-            if (slowZoneCountWater <= 0) agent.speed = normalSpeed;
-        }
-        else if (tile.Type == ShopType.Hills)
-        {
-            slowZoneCountHills--;
-            if (slowZoneCountHills <= 0)
-            {
-                agent.speed = normalSpeed;
-                visionRadius = 5f; //visszaállítja a látótávolságot
             }
         }
     }

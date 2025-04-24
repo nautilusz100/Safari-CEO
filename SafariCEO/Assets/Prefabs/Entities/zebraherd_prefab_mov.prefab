@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 546026443148668779}
   - component: {fileID: -8461357255759682603}
   - component: {fileID: -4870601444093044318}
+  - component: {fileID: 6670704606910726689}
   m_Layer: 0
   m_Name: zebraherd_prefab_mov
   m_TagString: Zebras
@@ -203,9 +204,7 @@ MonoBehaviour:
   drinkingColor: {r: 0, g: 1, b: 1, a: 1}
   searchingColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   moveRange: 100
-  normalSpeed: 1
-  slowedSpeedWater: 0.5
-  slowedSpeedHills: 0.7
+  normalSpeed: 3
   visionRadius: 10
   hungerInterval: 120
   thirstInterval: 90
@@ -218,7 +217,27 @@ MonoBehaviour:
   age: 0
   maxAge: 1000
   beingAttacked: 0
+  isMating: 0
   mateTimer: 0
   mateInterval: 100
   zebraPrefab: {fileID: 0}
   giraffePrefab: {fileID: 0}
+  herdSprite: {fileID: 0}
+  isInHerd: 0
+  herdMembersData: []
+--- !u!114 &6670704606910726689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855485762125835324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8858ed646a0dfda4499810152771ad4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slowedSpeedWater: 2
+  slowedSpeedHills: 1.5
+  visionRadiusNormal: 5
+  visionRadiusHills: 10
