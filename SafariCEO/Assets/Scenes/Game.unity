@@ -576,6 +576,10 @@ MonoBehaviour:
   canvas: {fileID: 510238980}
   buttonsManager: {fileID: 711214708}
   map: {fileID: 337380334}
+  foxPrefab: {fileID: 5312220684229478086, guid: e60b4e0337056ff41bc9d76418fac555, type: 3}
+  lionPrefab: {fileID: 5312220684229478086, guid: 6b82723cd67f0eb42b7c1f534a12d5ae, type: 3}
+  giraffePrefab: {fileID: 5855485762125835324, guid: abe507b1e91a5834bb0a6dc6ac6aeab1, type: 3}
+  zebraPrefab: {fileID: 5855485762125835324, guid: a62b6cfd17c4ae540897ef614a0dcdbc, type: 3}
 --- !u!1 &98367707
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,6 +841,7 @@ MonoBehaviour:
   scoreText: {fileID: 1167427206}
   visitorCount: {fileID: 0}
   gameDifficulty: 0
+  uiGameObject: {fileID: 711214704}
   navMesh: {fileID: 202532414}
 --- !u!4 &138372539
 Transform:
@@ -945,6 +950,10 @@ MonoBehaviour:
   canvas: {fileID: 510238980}
   buttonsManager: {fileID: 711214708}
   map: {fileID: 337380334}
+  foxPrefab: {fileID: 5312220684229478086, guid: e60b4e0337056ff41bc9d76418fac555, type: 3}
+  lionPrefab: {fileID: 5312220684229478086, guid: 6b82723cd67f0eb42b7c1f534a12d5ae, type: 3}
+  giraffePrefab: {fileID: 5855485762125835324, guid: abe507b1e91a5834bb0a6dc6ac6aeab1, type: 3}
+  zebraPrefab: {fileID: 5855485762125835324, guid: a62b6cfd17c4ae540897ef614a0dcdbc, type: 3}
 --- !u!1 &161574665
 GameObject:
   m_ObjectHideFlags: 0
@@ -3323,6 +3332,10 @@ MonoBehaviour:
   canvas: {fileID: 510238980}
   buttonsManager: {fileID: 711214708}
   map: {fileID: 337380334}
+  foxPrefab: {fileID: 5312220684229478086, guid: e60b4e0337056ff41bc9d76418fac555, type: 3}
+  lionPrefab: {fileID: 5312220684229478086, guid: 6b82723cd67f0eb42b7c1f534a12d5ae, type: 3}
+  giraffePrefab: {fileID: 5855485762125835324, guid: abe507b1e91a5834bb0a6dc6ac6aeab1, type: 3}
+  zebraPrefab: {fileID: 5855485762125835324, guid: a62b6cfd17c4ae540897ef614a0dcdbc, type: 3}
 --- !u!1 &986582621
 GameObject:
   m_ObjectHideFlags: 0
@@ -5012,6 +5025,10 @@ MonoBehaviour:
   canvas: {fileID: 510238980}
   buttonsManager: {fileID: 711214708}
   map: {fileID: 337380334}
+  foxPrefab: {fileID: 5312220684229478086, guid: e60b4e0337056ff41bc9d76418fac555, type: 3}
+  lionPrefab: {fileID: 5312220684229478086, guid: 6b82723cd67f0eb42b7c1f534a12d5ae, type: 3}
+  giraffePrefab: {fileID: 5855485762125835324, guid: abe507b1e91a5834bb0a6dc6ac6aeab1, type: 3}
+  zebraPrefab: {fileID: 5855485762125835324, guid: a62b6cfd17c4ae540897ef614a0dcdbc, type: 3}
 --- !u!1 &1477383798
 GameObject:
   m_ObjectHideFlags: 0
