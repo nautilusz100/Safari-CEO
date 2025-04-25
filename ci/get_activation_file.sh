@@ -2,7 +2,8 @@
 
 set -e
 
-activation_file=${UNITY_ACTIVATION_FILE:-./unity3d.alf}
+activation_file="Unity_v2022.3.24f1.alf"
+
 
 if [[ -z "${UNITY_USERNAME}" ]] || [[ -z "${UNITY_PASSWORD}" ]]; then
   echo "UNITY_USERNAME or UNITY_PASSWORD environment variables are not set."
