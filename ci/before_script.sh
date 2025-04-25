@@ -13,6 +13,13 @@ if ! echo "$UNITY_LICENSE" | grep -q "<?xml"; then
   exit 1
 fi
 
+unity-editor \
+  -batchmode \
+  -username "$UNITY_USERNAME" \
+  -password "$UNITY_PASSWORD" \
+  -quit \
+  -logfile /dev/stdout
+
 UPPERCASE_BUILD_TARGET=${BUILD_TARGET^^};
 
 if [ $UPPERCASE_BUILD_TARGET = "ANDROID" ]
