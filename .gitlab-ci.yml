@@ -3,7 +3,7 @@ stages:
   - deploy
 
 # If you are looking for a place where to add 'UNITY_LICENSE_FILE' and other secrets, please visit your project's gitlab page:
-# settings > CI/CD > Variables instead
+# settings > CI/CD > Variables instead 
 variables:
   BUILD_NAME: SafariCEO
   UNITY_ACTIVATION_FILE: Unity_v2022.3.24f1.alf
