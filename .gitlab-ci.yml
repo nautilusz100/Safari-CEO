@@ -33,7 +33,7 @@ image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 # run this job when you need to request a license
 # you may need to follow activation steps from documentation
 get-activation-file:
-  image: $IMAGE:2022.3.24f1-base-$IMAGE_VERSION
+  image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
   tags:
     - unity
   rules:
