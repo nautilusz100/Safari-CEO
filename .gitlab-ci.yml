@@ -11,6 +11,8 @@ variables:
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
   IMAGE_VERSION: "3" # This will automatically use latest v3.x.x, see https://github.com/game-ci/docker/releases
   UNITY_DIR: "SafariCEO" # this needs to be an absolute path. Defaults to the root of your tree.
+  UNITY_USERNAME: "$UNITY_USERNAME"
+  UNITY_PASSWORD: "$UNITY_PASSWORD"
 
 
 image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
