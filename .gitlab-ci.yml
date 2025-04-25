@@ -45,7 +45,7 @@ get-activation-file:
   artifacts:
     paths:
       - $UNITY_ACTIVATION_FILE
-    expire_in: 10 min
+    expire_in: 60 min
 
 .test: &test
   stage: build_and_test
