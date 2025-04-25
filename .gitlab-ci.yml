@@ -6,7 +6,7 @@ stages:
 # settings > CI/CD > Variables instead
 variables:
   BUILD_NAME: SafariCEO
-  UNITY_ACTIVATION_FILE: ./unity3d.alf
+  UNITY_ACTIVATION_FILE: Unity_v2022.3.24f1.alf
   UNITY_VERSION: "2022.3.24f1"
   IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
   IMAGE_VERSION: "3" # This will automatically use latest v3.x.x, see https://github.com/game-ci/docker/releases
