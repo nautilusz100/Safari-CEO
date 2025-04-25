@@ -6,13 +6,6 @@ mkdir -p /root/.cache/unity3d
 mkdir -p /root/.local/share/unity3d/Unity/
 set +x
 
-echo "Checking UNITY_LICENSE format..."
-echo "$UNITY_LICENSE" | head -n 1
-if ! echo "$UNITY_LICENSE" | grep -q "<?xml"; then
-  echo "Invalid UNITY_LICENSE: Does not start with XML declaration"
-  exit 1
-fi
-
 unity-editor \
   -batchmode \
   -username "$UNITY_USERNAME" \
