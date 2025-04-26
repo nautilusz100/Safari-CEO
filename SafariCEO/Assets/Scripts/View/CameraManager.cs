@@ -31,6 +31,11 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
+        if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != null)
+        {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+        }
+
         HandleMovement();
         HandleZoom();
         SmoothJump();
