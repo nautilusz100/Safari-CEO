@@ -89,10 +89,23 @@ pages:
   only:
     - master
 
+get-activation-file:
+  stage: build_and_test
+  image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
+  script:
+    - echo "Generating manual activation file (.alf)..."
+    - unity-editor -logFile -batchmode -nographics -createManualActivationFile -quit
+    - mkdir -p artifacts
+    - mv Unity_v*.alf artifacts/unity3d.alf
+  artifacts:
+    paths:
+      - artifacts/unity3d.alf
+    expire_in: 10 minutes
+
 workflow:
   rules:
-    - if: $CI_MERGE_REQUEST_ID
-      when: never
-    - if: $CI_COMMIT_TAG
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
       when: never
     - when: always
+
+
