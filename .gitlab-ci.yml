@@ -109,4 +109,16 @@ pages:
   stage: deploy
   script:
     - mv "$UNITY_DIR/Builds/WebGL/${BUILD_NAME}" public
-  artifacts
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+
+workflow:
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+      when: never
+    - if: $CI_COMMIT_TAG
+      when: never
+    - when: always
