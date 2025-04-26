@@ -93,15 +93,14 @@ get-activation-file:
   stage: build_and_test
   image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
   script:
-    - echo "Generating manual activation file (.ulf)..."
-    - unity-editor -logFile -batchmode -nographics -createManualActivationFile -quit
-    - mkdir -p artifacts
-    - mv Unity_v*.ulf artifacts/unity3d.ulf
+    - echo "Activating Unity license..."
+    - unity-editor -logFile -batchmode -nographics -manualLicenseFile artifacts/Unity_v2022.3.24f1.alf -quit
   artifacts:
     paths:
-      - artifacts/unity3d.ulf
+      - artifacts/Unity_v2022.3.24f1.alf
     expire_in: 10 minutes
   when: manual
+
 
 activate-license:
   stage: build_and_test
