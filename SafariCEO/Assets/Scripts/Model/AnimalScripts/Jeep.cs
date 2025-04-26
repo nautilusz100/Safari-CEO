@@ -12,17 +12,27 @@ using UnityEngine.AI;
  */
 public class Jeep : MonoBehaviour
 {
+    // general
+    private GameManager gameManager;
     private NavMeshAgent agent;
     private Vector2 safariEntry;
     private Vector2 safariExit;
-    private float visionRadius = 0.65f;
     private bool isReturningHome = false;
 
+    // Vision, Pathfinding
+    public float roadVisionRadius = 0.65f;
+    public float animalVisionRadius = 2f;
     public Vector2 destinationTilePos;
 
-
     private Dictionary<Tile, int> traversedRoads = new Dictionary<Tile, int>();
-    private List<Tile> detectedRoads = new List<Tile>();
+    [SerializeField]private List<Tile> detectedRoads = new List<Tile>();
+    [SerializeField]private List<Animal> detectedAnimals = new List<Animal>();
+
+    // stuck check
+    private Vector3 lastPosition;
+    private float stuckTimer = 0f;
+    private float stuckCheckInterval = 2f; // Check every 2 seconds
+    private float minDistanceDelta = 0.5f; // Must move at least this much
 
 
     void Start()
@@ -36,6 +46,14 @@ public class Jeep : MonoBehaviour
         safariEntry = new Vector2(37.5f, 39.5f);
         safariExit = new Vector2(42.5f, 39.5f);
         
+
+        InvokeRepeating("DetectAnimals", 0, 0.25f);
+        InvokeRepeating("CheckIfStuck", stuckCheckInterval, stuckCheckInterval);
+    }
+
+    public void SetManager(GameManager manager)
+    {
+        gameManager = manager;
     }
 
     // Update is called once per frame
@@ -48,6 +66,30 @@ public class Jeep : MonoBehaviour
             Movement();
         }
     }
+
+    private void CheckIfStuck()
+    {
+        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+
+        if (distanceMoved < minDistanceDelta)
+        {
+            stuckTimer += stuckCheckInterval;
+            Debug.Log("Jeep might be stuck... (" + stuckTimer + "s)");
+
+            if (stuckTimer >= 6f) // Stuck for 6 seconds total
+            {
+                Debug.LogWarning("Jeep confirmed stuck! Killing...");
+                KillJeep();
+            }
+        }
+        else
+        {
+            stuckTimer = 0f; // Reset timer if moved enough
+        }
+
+        lastPosition = transform.position;
+    }
+
 
     private void Movement()
     {
@@ -67,8 +109,14 @@ public class Jeep : MonoBehaviour
     private void HasReachedHome()
     {
         bool isAtHome = Vector2.Distance(transform.position, safariEntry) < 0.25f;
-        if (isAtHome) KillJeep();
+        if (isAtHome)
+        {
+            gameManager.JeepIsHome(detectedAnimals.Count);
+            KillJeep();
+        }
     }
+
+
     private void AtExit()
     {
         bool isAtExit = Vector2.Distance(transform.position, safariExit) < 0.25f;
@@ -140,7 +188,7 @@ public class Jeep : MonoBehaviour
 
     private void DetectRoads()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, visionRadius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, roadVisionRadius);
         detectedRoads.Clear();
         foreach (var hit in hits)
         {
@@ -151,11 +199,27 @@ public class Jeep : MonoBehaviour
             }
         }
     }
+
+    private void DetectAnimals()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, animalVisionRadius);
+        foreach (var hit in hits)
+        {
+            Animal animal = hit.GetComponent<Animal>();
+            if (animal != null && !detectedAnimals.Contains(animal))
+            {
+                detectedAnimals.Add(animal);
+            }
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, roadVisionRadius);
 
-        Gizmos.DrawWireSphere(transform.position, visionRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, animalVisionRadius);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

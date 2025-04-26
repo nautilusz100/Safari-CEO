@@ -11,6 +11,7 @@ using System;
 using System.Net;
 using UnityEngine.UIElements;
 using static Draggable;
+using UnityEditor.Build;
 //https://www.flaticon.com/free-icons/next icons credit - Flaticon
 
 public class GameManager : MonoBehaviour
@@ -18,21 +19,28 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
-    [SerializeField]private int jeepCount = 0;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI visitorCount;
 
+    // Jeep & Tourist related information
+    private float visitorInterval = 5f; // Time in seconds between each visitor
+    public float visitorTimer = 0f; // Timer to track the interval
+    public int jeepCount = 0;
+
+    public float satisfaction = 0;
+    
     //difficulty seettings
     [SerializeField] private Difficulty gameDifficulty;
 
     //winning conditions
+    private int howManyVisitorsNeeded;
     private int howManyAnimalsNeededCarnivorous;
     private int howManyAnimalsNeededHerbivore;
     private int howManyDaysNeeded;
     //private int howMuchMoneyNeeded;
 
     //shop prices
-    private int roadPrice = 10;
+    private int roadPrice = 1;
     private int jeepPrice = 20;
     private int foxPrice = 10;
     private int lionPrice = 20;
@@ -41,9 +49,6 @@ public class GameManager : MonoBehaviour
     private int flowerPrice = 10;
     private int bushPrice = 20;
     private int treePrice = 30;
-
-
-
 
     //public GameObject animalPrefab;
     public int EntryFee { get; set; }
@@ -110,9 +115,6 @@ public class GameManager : MonoBehaviour
     // Singleton GameManager
     void Start()
     {
-
-        EntryFee = 100;
-        Visitors = 0;
         scoreText.text = "$" + EntryFee.ToString();
         if (Instance == null)
             Instance = this;
@@ -138,7 +140,6 @@ public class GameManager : MonoBehaviour
         dateButton = root.Q<UnityEngine.UIElements.Button>("dateButton");
         speedButton = root.Q<UnityEngine.UIElements.Button>("speedButton");
 
-
         //Game difficulty
         gameDifficulty = GameSettings.SelectedDifficulty;
         if (gameDifficulty == Difficulty.None)
@@ -155,6 +156,12 @@ public class GameManager : MonoBehaviour
         CurrentGameSpeed = GameSpeed.Normal;
         // set start date
         TimePassed = 0;
+
+        EntryFee = 50;
+        scoreText.text = "$" + EntryFee.ToString();
+        visitorTimer = visitorInterval;
+        Visitors = 0;
+        UpdateVisitorCount();
     }
 
     private void SetDifficulty()
@@ -163,18 +170,21 @@ public class GameManager : MonoBehaviour
         {
             case Difficulty.Easy:
                 Money = 1000;
+                howManyVisitorsNeeded = 25;
                 howManyAnimalsNeededCarnivorous = 20;
                 howManyAnimalsNeededHerbivore = 20;
                 howManyDaysNeeded = 180;
                 break;
             case Difficulty.Medium:
                 Money = 750;
+                howManyVisitorsNeeded = 50;
                 howManyAnimalsNeededCarnivorous = 30;
                 howManyAnimalsNeededHerbivore = 30;
                 howManyDaysNeeded = 270;
                 break;
             case Difficulty.Hard:
                 Money = 500;
+                howManyVisitorsNeeded = 75;
                 howManyAnimalsNeededCarnivorous = 50;
                 howManyAnimalsNeededHerbivore = 50;
                 howManyDaysNeeded = 360;
@@ -195,6 +205,8 @@ public class GameManager : MonoBehaviour
             TimePassed += 1; // 1 órát növelünk
             timeAccumulator -= 1f;
         }
+
+
 
         if (!EventSystem.current.IsPointerOverGameObject())
         {
@@ -273,21 +285,89 @@ public class GameManager : MonoBehaviour
             Money = Money - jeepPrice;
         }
 
-        AttemptJeepSpawn();
+        if(visitorTimer > 0f)
+        {
+            visitorTimer -= Time.deltaTime * (int)CurrentGameSpeed;
+        }
+        else
+        {
+            visitorTimer = visitorInterval;
+            AttemptVisitorSpawn();
+        }
 
     }
 
-    private void AttemptJeepSpawn()
+    private void AttemptVisitorSpawn()
     {
-        if(jeepCount > 0)
+        float baseSpawnChance = 0.5f;
+        int maxFee = 100; // Maximum entry fee
+        float feePenalty = Mathf.Clamp01(EntryFee / maxFee); 
+        float reviewBonus = satisfaction == 0 ? 1 : satisfaction / 5f;
+        float finalSpawnChance = baseSpawnChance * (1f - feePenalty) * reviewBonus;
+
+        if(UnityEngine.Random.value < finalSpawnChance && jeepCount > 0)
         {
-            // Spawn a new Jeep
-            GameObject jeep = Instantiate(currentMap.prefab_jeep, new Vector3(39f,39.5f,0f) , Quaternion.identity );
-            jeepCount--;
+            int tourists = UnityEngine.Random.Range(1, 4);
+            money += EntryFee * tourists;
+            Visitors += tourists;
+            UpdateVisitorCount();
+            SpawnJeep();
         }
     }
 
-    // Útépítési mód engedélyezése
+    private void SpawnJeep()
+    {
+        // Spawn a new Jeep
+        GameObject jeep = Instantiate(currentMap.prefab_jeep, new Vector3(39f,39.5f,0f) , Quaternion.identity );
+        jeep.GetComponent<Jeep>().SetManager(this);
+        jeepCount--;
+    }
+
+    public void JeepIsHome(int animalCount)
+    {
+        
+        Debug.Log("Visitor seen this many animals: " + animalCount);
+        // Review calculation
+        int review = CalculateReview(animalCount);
+        if (satisfaction == 0)
+        {
+            satisfaction = review;
+        }
+        else
+        {
+            satisfaction = (satisfaction + review) / 2;
+        }
+        jeepCount++;
+
+    }
+
+    private int CalculateReview(int animalCount)
+    {
+        int difficultyAdjustment = 0;
+        switch (gameDifficulty)
+        {
+            case Difficulty.Easy:
+                difficultyAdjustment = 0;
+                break;
+            case Difficulty.Medium:
+                difficultyAdjustment = 3;
+                break;
+        case Difficulty.Hard:
+            difficultyAdjustment = 5;
+            break;
+        }
+
+        if (animalCount < (1+difficultyAdjustment)) return 1;
+        if (animalCount < (3+difficultyAdjustment)) return 2;
+        if (animalCount < (5+difficultyAdjustment)) return 3;
+        if (animalCount < (7+difficultyAdjustment)) return 4;
+        if (animalCount < (10+difficultyAdjustment)) return 5;
+        return 0;
+    }
+
+
+    // útépítési mód engedélyezése
+
     public void EnableRoadBuilding()
     {
         IsBuilding = Tile.ShopType.Road;
@@ -367,7 +447,5 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
-
 
 }
