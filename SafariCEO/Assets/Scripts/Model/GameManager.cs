@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,7 +11,7 @@ using System;
 using System.Net;
 using UnityEngine.UIElements;
 using static Draggable;
-
+//https://www.flaticon.com/free-icons/next icons credit - Flaticon
 
 public class GameManager : MonoBehaviour
 {
@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Difficulty gameDifficulty;
 
     //winning conditions
-    private int howManyAnimalsNededCarnivorous;
-    private int howManyAnimalsNededHerbivore;
+    private int howManyAnimalsNeededCarnivorous;
+    private int howManyAnimalsNeededHerbivore;
     private int howManyDaysNeeded;
     //private int howMuchMoneyNeeded;
 
@@ -51,6 +51,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject uiGameObject;
     private Label moneyLabel;
+    private UnityEngine.UIElements.Button dateButton;
+    private UnityEngine.UIElements.Button speedButton;
+    [SerializeField] private Texture2D normalTimeArrow;
+    [SerializeField] private Texture2D doubleTimeArrow;
+    [SerializeField] private Texture2D tripleTimeArrow;
     private int money;
     public int Money
     {
@@ -64,11 +69,43 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    private int hoursPassed;
+    public int TimePassed
+    {
+        get => hoursPassed;
+        set
+        {
+            hoursPassed = value;
+            if (dateButton != null)
+            {
+                int monthsPassed = hoursPassed / 720; // 30 days * 24 hours
+                int daysPassed = (hoursPassed % 720) / 24;
+                int hours = (hoursPassed % 720) % 24;
+
+                dateButton.text =
+                    "M: " + monthsPassed.ToString("D2") +
+                    " D: " + daysPassed.ToString("D2") +
+                    " H: " + hours.ToString("D2");
+            }
+        }
+    }
+    public enum GameSpeed
+    {
+        Normal = 1,
+        Double = 2,
+        Triple = 3
+    }
+    public GameSpeed CurrentGameSpeed { get; private set; } = GameSpeed.Normal;
+
 
     public GameObject navMesh;
     private NavMeshSurface navMeshSurface;
 
     public Tile.ShopType IsBuilding { get; set; } = Tile.ShopType.Animal;
+
+    private float timer; // Real-world timer in seconds
+    [SerializeField] private float secondsPerGameHour = 1f; // 1 second = 1 game hour (adjustable)
+    private float timeAccumulator = 0f;
 
     // Singleton GameManager
     void Start()
@@ -82,7 +119,7 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        // Ha van m·r tÈrkÈp, akkor tˆrˆlj¸k
+        // Ha van m√°r t√©rk√©p, akkor t√∂r√∂lj√ºk
         if (currentMap != null)
         {
             Destroy(currentMap.gameObject);
@@ -90,14 +127,17 @@ public class GameManager : MonoBehaviour
 
         currentMap = safariMapPrefab;
         navMeshSurface = navMesh.GetComponent<NavMeshSurface>();
-        // TÈrkÈp gener·l·sa
+        // T√©rk√©p gener√°l√°sa
         currentMap.CreateMap();
-        // NavMesh gener·l·sa
+        // NavMesh gener√°l√°sa
         navMeshSurface.BuildNavMesh();
 
         var uiDocument = uiGameObject.GetComponent<UIDocument>();
         var root = uiDocument.rootVisualElement;
         moneyLabel = root.Q<Label>("MoneyLabel");
+        dateButton = root.Q<UnityEngine.UIElements.Button>("dateButton");
+        speedButton = root.Q<UnityEngine.UIElements.Button>("speedButton");
+
 
         //Game difficulty
         gameDifficulty = GameSettings.SelectedDifficulty;
@@ -108,6 +148,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("Difficulty from static: " + gameDifficulty);
         // Set the initial difficulty
         SetDifficulty();
+
+        speedButton.clicked += ChangeSpeed;
+        UpdateSpeedButton();
+        //set game speed
+        CurrentGameSpeed = GameSpeed.Normal;
+        // set start date
+        TimePassed = 0;
     }
 
     private void SetDifficulty()
@@ -116,20 +163,20 @@ public class GameManager : MonoBehaviour
         {
             case Difficulty.Easy:
                 Money = 1000;
-                howManyAnimalsNededCarnivorous = 20;
-                howManyAnimalsNededHerbivore = 20;
+                howManyAnimalsNeededCarnivorous = 20;
+                howManyAnimalsNeededHerbivore = 20;
                 howManyDaysNeeded = 180;
                 break;
             case Difficulty.Medium:
                 Money = 750;
-                howManyAnimalsNededCarnivorous = 30;
-                howManyAnimalsNededHerbivore = 30;
+                howManyAnimalsNeededCarnivorous = 30;
+                howManyAnimalsNeededHerbivore = 30;
                 howManyDaysNeeded = 270;
                 break;
             case Difficulty.Hard:
                 Money = 500;
-                howManyAnimalsNededCarnivorous = 50;
-                howManyAnimalsNededHerbivore = 50;
+                howManyAnimalsNeededCarnivorous = 50;
+                howManyAnimalsNeededHerbivore = 50;
                 howManyDaysNeeded = 360;
                 break;
         }
@@ -140,6 +187,14 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
+
+        timeAccumulator += Time.deltaTime * (int)CurrentGameSpeed; // gyors√≠t√°s szorz√°s
+        // Update the timer
+        if (timeAccumulator >= 1f) // 1 m√°sodperc eltelt
+        {
+            TimePassed += 1; // 1 √≥r√°t n√∂vel√ºnk
+            timeAccumulator -= 1f;
+        }
 
         if (!EventSystem.current.IsPointerOverGameObject())
         {
@@ -232,13 +287,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ⁄tÈpÌtÈsi mÛd engedÈlyezÈse
+    // √öt√©p√≠t√©si m√≥d enged√©lyez√©se
     public void EnableRoadBuilding()
     {
         IsBuilding = Tile.ShopType.Road;
     }
 
-    // ⁄tÈpÌtÈsi mÛd letilt·sa
+    // √öt√©p√≠t√©si m√≥d letilt√°sa
     public void DisableRoadBuilding()
     {
         IsBuilding = Tile.ShopType.None;
@@ -275,5 +330,44 @@ public class GameManager : MonoBehaviour
                 return int.MaxValue; // unknown type
         }
     }
+    private void ChangeSpeed()
+    {
+        switch (CurrentGameSpeed)
+        {
+            case GameSpeed.Normal:
+                CurrentGameSpeed = GameSpeed.Double;
+                break;
+            case GameSpeed.Double:
+                CurrentGameSpeed = GameSpeed.Triple;
+                break;
+            case GameSpeed.Triple:
+                CurrentGameSpeed = GameSpeed.Normal;
+                break;
+        }
+        UpdateSpeedButton();
+    }
+    private void UpdateSpeedButton()
+    {
+        if (speedButton == null) return;
+
+        switch (CurrentGameSpeed)
+        {
+            case GameSpeed.Normal:
+
+                speedButton.style.backgroundImage = normalTimeArrow;
+                speedButton.style.unitySliceScale = 0;
+                break;
+            case GameSpeed.Double:
+                speedButton.style.backgroundImage = doubleTimeArrow;
+                speedButton.style.unitySliceScale  = 0;
+                break;
+            case GameSpeed.Triple:
+                speedButton.style.backgroundImage = tripleTimeArrow;
+                speedButton.style.unitySliceScale = 6;
+                break;
+        }
+    }
+
+
 
 }
