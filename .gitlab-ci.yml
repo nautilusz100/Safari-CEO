@@ -93,13 +93,13 @@ get-activation-file:
   stage: build_and_test
   image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
   script:
-    - echo "Generating manual activation file (.alf)..."
+    - echo "Generating manual activation file (.ulf)..."
     - unity-editor -logFile -batchmode -nographics -createManualActivationFile -quit
     - mkdir -p artifacts
-    - mv Unity_v*.alf artifacts/unity3d.alf
+    - mv Unity_v*.ulf artifacts/unity3d.ulf
   artifacts:
     paths:
-      - artifacts/unity3d.alf
+      - artifacts/unity3d.ulf
     expire_in: 10 minutes
   when: manual
 
