@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3836230655731566231}
   - component: {fileID: 4592569953141203528}
   - component: {fileID: 1358045962049438094}
+  - component: {fileID: 912986367699730713}
   m_Layer: 0
   m_Name: lionherd_prefeab_mov
   m_TagString: Lions
@@ -230,3 +231,20 @@ MonoBehaviour:
   thirstTimer: 0
   age: 0
   maxAge: 1000
+--- !u!114 &912986367699730713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5312220684229478086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8858ed646a0dfda4499810152771ad4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slowedSpeedWater: 2
+  slowedSpeedHills: 1.5
+  normalSpeed: 3.5
+  visionRadiusNormal: 5
+  visionRadiusHills: 10

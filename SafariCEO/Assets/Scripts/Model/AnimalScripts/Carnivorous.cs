@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using static Tile;
 
-public class Carnivorous : MonoBehaviour
+public class Carnivorous : MonoBehaviour, IHasVision
 {
     // Debugging
     private SpriteRenderer spriteRenderer;
@@ -18,14 +18,11 @@ public class Carnivorous : MonoBehaviour
 
     // Movement parameters
     public float moveRange = 100f;
-    public float slowedSpeedWater = 0.5f;
-    public float slowedSpeedHills = 0.7f;
     public float huntingSpeed = 5f;
     public float normalSpeed = 3f;
 
     // Perception
     public float visionRadius = 5f;
-    public float visionAngle = 120f;
 
     // Survival needs
     public float hungerInterval = 120f;
@@ -42,9 +39,6 @@ public class Carnivorous : MonoBehaviour
     public float age = 0f;
     public float maxAge = 1000f;
 
-    private int slowZoneCountWater = 0;
-    private int slowZoneCountHills = 0;
-
     private NavMeshAgent agent;
     private List<Tile> exploredTiles = new List<Tile>();
     private Dictionary<GameObject, Vector3> spottedPreyPositions = new Dictionary<GameObject, Vector3>();
@@ -55,10 +49,6 @@ public class Carnivorous : MonoBehaviour
     //épen aktuális célpontok
     private GameObject currentTargetAnimal;
     private Tile currentTargetTile;
-
-
-
-
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -74,8 +64,8 @@ public class Carnivorous : MonoBehaviour
         thirstTimer = thirstInterval;
         maxAge = Random.Range(maxAge * 0.8f, maxAge * 1.2f);
 
-        InvokeRepeating("DecideNextAction", 0f, 1f);
-        InvokeRepeating("UpdateVision", 0f, 0.3f);
+        InvokeRepeating(nameof(DecideNextAction), 0f, 1f);
+        InvokeRepeating(nameof(UpdateVision), 0f, 0.3f);
 
     }
 
@@ -120,6 +110,10 @@ public class Carnivorous : MonoBehaviour
         {
             dehydrationTimer = dehydrationTime;
         }
+    }
+    public void SetVisionRadius(float radius)//IHasVision interface implementáció
+    {
+        visionRadius = radius;
     }
 
     private void UpdateVision()
@@ -187,7 +181,7 @@ public class Carnivorous : MonoBehaviour
             case State.Rest:
                 spriteRenderer.color = restingColor;
                 agent.isStopped = true;
-                Invoke("ResumeWander", Random.Range(3f, 7f));
+                Invoke(nameof(ResumeWander), Random.Range(3f, 7f));
                 break;
         }
     }
@@ -246,7 +240,7 @@ public class Carnivorous : MonoBehaviour
         Debug.Log($"Stopped prey agent: {prey.name}");
         currentTargetAnimal = prey.gameObject; //valamiért újra be kell állítani, mert ha nincs akkor a préda nem tûnik el
         // 10 másodperc után vége az evésnek
-        Invoke("FinishEating", eatingDuration);
+        Invoke(nameof(FinishEating), eatingDuration);
     }
     private void FinishEating()
     {
@@ -326,65 +320,9 @@ public class Carnivorous : MonoBehaviour
             }
         }
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        // Tile kezelése
-        Tile tile = other.GetComponent<Tile>();
-        if (tile != null)
-        {
-            if (tile.Type == ShopType.Lake || tile.Type == ShopType.River)
-            {
-                slowZoneCountWater++;
-                agent.speed = slowedSpeedWater;
-            }
-            else if (tile.Type == ShopType.Hills)
-            {
-                slowZoneCountHills++;
-                agent.speed = slowedSpeedHills;
-                //messzebre lát
-                visionRadius = 10f;
-            }
-            
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        Tile tile = other.GetComponent<Tile>();
-        if (tile == null) return;
-
-        if (tile.Type == ShopType.Lake || tile.Type == ShopType.River)
-        {
-            slowZoneCountWater--;
-            if (slowZoneCountWater <= 0) agent.speed = normalSpeed;
-        }
-        else if (tile.Type == ShopType.Hills)
-        {
-            slowZoneCountHills--;
-            if (slowZoneCountHills <= 0) 
-            {
-                agent.speed = normalSpeed;
-                visionRadius = 5f; //visszaállítja a látótávolságot
-            }
-        }
-    }
-
     private void Die()
     {
         Debug.Log($"{name} died at age {age}.");
         Destroy(gameObject);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, visionRadius);
-
-        Vector3 leftBound = Quaternion.Euler(0, -visionAngle / 2, 0) * transform.forward * visionRadius;
-        Vector3 rightBound = Quaternion.Euler(0, visionAngle / 2, 0) * transform.forward * visionRadius;
-
-        Gizmos.DrawLine(transform.position, transform.position + leftBound);
-        Gizmos.DrawLine(transform.position, transform.position + rightBound);
     }
 }

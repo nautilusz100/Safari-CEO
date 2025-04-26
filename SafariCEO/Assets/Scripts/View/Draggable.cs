@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static Draggable;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -15,15 +16,46 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public gameUIButtonsManager buttonsManager;
     public SafariMap map;
 
+    private AnimalType animalType;
+    [SerializeField] private GameObject foxPrefab;
+    [SerializeField] private GameObject lionPrefab;
+    [SerializeField] private GameObject giraffePrefab;
+    [SerializeField] private GameObject zebraPrefab;
+    public enum AnimalType
+    {
+        Fox,
+        Lion,
+        Giraffe,
+        Zebra
+    }
+
     private void Start()
     {
         originalImage = GetComponent<Image>();
+        if (prefabToSpawn == foxPrefab)
+            animalType = AnimalType.Fox;
+        else if (prefabToSpawn == lionPrefab)
+            animalType = AnimalType.Lion;
+        else if (prefabToSpawn == giraffePrefab)
+            animalType = AnimalType.Giraffe;
+        else if (prefabToSpawn == zebraPrefab)
+            animalType = AnimalType.Zebra;
+        else
+            Debug.LogError("Unknown animal prefab assigned to Draggable!");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         
         if (buttonsManager.CurrentShopType != ShopTypes.ANIMALS) return;
+
+        //price check
+        int animalPrice = GameManager.Instance.GetAnimalPrice(animalType);
+        if (GameManager.Instance.Money < animalPrice)
+        {
+            Debug.Log("Not enough money for this animal.");
+            return; // don't start drag
+        }
         // Create ghost
         ghostObject = new GameObject("Ghost", typeof(Image));
         ghostObject.transform.SetParent(canvas.transform, false);
@@ -65,6 +97,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (tile.Type == Tile.ShopType.Lake || tile.Type == Tile.ShopType.River)
         {
             Destroy(animal);
+        }
+        else
+        {
+            int animalPrice = GameManager.Instance.GetAnimalPrice(animalType);
+            GameManager.Instance.Money -= animalPrice;
         }
 
     }
