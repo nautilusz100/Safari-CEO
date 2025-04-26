@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/PauseMenuStyle.uss?fileID=7433441132597879392&amp;guid=b0b25157c47794a47adc1dbb9d1b165b&amp;type=3#PauseMenuStyle" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(255, 136, 5, 0);" />
+    <ui:VisualElement name="EndPanel" class="panel" style="flex-grow: 1; border-top-left-radius: 100px; border-top-right-radius: 100px; border-bottom-right-radius: 100px; border-bottom-left-radius: 100px; -unity-text-align: upper-center; justify-content: center; align-self: auto; align-items: center; max-width: 100%; max-height: 30%; flex-direction: column; background-color: rgb(255, 136, 5); -unity-background-scale-mode: scale-and-crop;">
+        <ui:Label tabindex="-1" text="YOu Won" parse-escape-sequences="true" display-tooltip-when-elided="true" name="EndLabel" style="-unity-font: url(&quot;project://database/Assets/Thaleah_PixelFont/Materials/ThaleahFat_TTF.ttf?fileID=12800000&amp;guid=585188cdc4600544eb408bee749e4b3a&amp;type=3#ThaleahFat_TTF&quot;); font-size: 80px; -unity-font-definition: initial;" />
+        <ui:Label tabindex="-1" text="AS ceo of &lt;Parkname&gt;" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ParkName" focusable="true" style="font-size: 50px; -unity-font: url(&quot;project://database/Assets/Thaleah_PixelFont/Materials/ThaleahFat_TTF.ttf?fileID=12800000&amp;guid=585188cdc4600544eb408bee749e4b3a&amp;type=3#ThaleahFat_TTF&quot;); -unity-font-definition: initial;" />
+        <ui:Button text="Quit to main menu" parse-escape-sequences="true" display-tooltip-when-elided="true" name="QuitButton" class="buttons" />
+    </ui:VisualElement>
+    <ui:VisualElement style="flex-grow: 1;" />
+</ui:UXML>
