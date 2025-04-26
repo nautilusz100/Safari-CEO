@@ -837,16 +837,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   safariMapPrefab: {fileID: 337380334}
-  jeepCount: 0
   scoreText: {fileID: 1167427206}
-  visitorCount: {fileID: 0}
+  visitorCount: {fileID: 422866491}
+  visitorTimer: 0
+  jeepCount: 0
+  satisfaction: 0
   gameDifficulty: 0
-
-  satisfaction: 2.5
   uiGameObject: {fileID: 711214704}
-  normalTimeArrow: {fileID: 2800000, guid: 78c989db9af9dfc42bab5b99ed497cae, type: 3}
-  doubleTimeArrow: {fileID: 2800000, guid: 585d70e6868ed474681d372cb8baa683, type: 3}
-  tripleTimeArrow: {fileID: 2800000, guid: d47e6443a3d3a3e4e8722ddcdc135489, type: 3}
+  normalTimeArrow: {fileID: 0}
+  doubleTimeArrow: {fileID: 0}
+  tripleTimeArrow: {fileID: 0}
   navMesh: {fileID: 202532414}
   secondsPerGameHour: 1
 --- !u!4 &138372539

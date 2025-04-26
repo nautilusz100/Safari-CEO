@@ -12,19 +12,27 @@ using UnityEngine.AI;
  */
 public class Jeep : MonoBehaviour
 {
+    // general
     private GameManager gameManager;
     private NavMeshAgent agent;
     private Vector2 safariEntry;
     private Vector2 safariExit;
     private bool isReturningHome = false;
 
+    // Vision, Pathfinding
     public float roadVisionRadius = 0.65f;
     public float animalVisionRadius = 2f;
     public Vector2 destinationTilePos;
 
     private Dictionary<Tile, int> traversedRoads = new Dictionary<Tile, int>();
-    private List<Tile> detectedRoads = new List<Tile>();
+    [SerializeField]private List<Tile> detectedRoads = new List<Tile>();
     [SerializeField]private List<Animal> detectedAnimals = new List<Animal>();
+
+    // stuck check
+    private Vector3 lastPosition;
+    private float stuckTimer = 0f;
+    private float stuckCheckInterval = 2f; // Check every 2 seconds
+    private float minDistanceDelta = 0.5f; // Must move at least this much
 
 
     void Start()
@@ -40,6 +48,7 @@ public class Jeep : MonoBehaviour
         
 
         InvokeRepeating("DetectAnimals", 0, 0.25f);
+        InvokeRepeating("CheckIfStuck", stuckCheckInterval, stuckCheckInterval);
     }
 
     public void SetManager(GameManager manager)
@@ -57,6 +66,30 @@ public class Jeep : MonoBehaviour
             Movement();
         }
     }
+
+    private void CheckIfStuck()
+    {
+        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+
+        if (distanceMoved < minDistanceDelta)
+        {
+            stuckTimer += stuckCheckInterval;
+            Debug.Log("Jeep might be stuck... (" + stuckTimer + "s)");
+
+            if (stuckTimer >= 6f) // Stuck for 6 seconds total
+            {
+                Debug.LogWarning("Jeep confirmed stuck! Killing...");
+                KillJeep();
+            }
+        }
+        else
+        {
+            stuckTimer = 0f; // Reset timer if moved enough
+        }
+
+        lastPosition = transform.position;
+    }
+
 
     private void Movement()
     {
@@ -78,21 +111,11 @@ public class Jeep : MonoBehaviour
         bool isAtHome = Vector2.Distance(transform.position, safariEntry) < 0.25f;
         if (isAtHome)
         {
-            gameManager.LeaveReview(CalculateReview());
+            gameManager.JeepIsHome(detectedAnimals.Count);
             KillJeep();
         }
     }
 
-    private int CalculateReview()
-    {
-        int animalCount = detectedAnimals.Count;
-        if (animalCount < 1) return 1;
-        if (animalCount < 3) return 2;
-        if (animalCount < 5) return 3;
-        if (animalCount < 7) return 4;
-        if (animalCount < 10) return 5;
-        return 0;
-    }
 
     private void AtExit()
     {

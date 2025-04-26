@@ -119,10 +119,10 @@ public class gameUIButtonsManager : MonoBehaviour
         UnityEngine.Sprite icon = awfulIcon;
         float satisfaction = gameManager.satisfaction;
 
-        if      (satisfaction <= 1) icon = awfulIcon;
-        else if (satisfaction <= 2) icon = badIcon;
-        else if (satisfaction <= 3) icon = okayIcon;
-        else if (satisfaction <= 4.5) icon = goodIcon;
+        if      (satisfaction < 2) icon = awfulIcon;
+        else if (satisfaction < 3) icon = badIcon;
+        else if (satisfaction < 4) icon = okayIcon;
+        else if (satisfaction < 4.5) icon = goodIcon;
         else if (satisfaction <= 5) icon = perfectIcon;
 
         enableParkStat.transform.Find("ParkSatisfactionPanel").Find("Image").GetComponent<UnityEngine.UI.Image>().sprite = icon;
