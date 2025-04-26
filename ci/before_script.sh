@@ -16,7 +16,7 @@ if [ "$UPPERCASE_BUILD_TARGET" = "ANDROID" ]; then
         echo '$ANDROID_KEYSTORE_BASE64 found, decoding content into keystore.keystore'
         echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > keystore.keystore
     else
-        echo '$ANDROID_KEYSTORE_BASE64 env var not found, building with Unity's default debug keystore'
+        echo '$ANDROID_KEYSTORE_BASE64 env var not found, building with Unitys default debug keystore'
     fi
 fi
 
