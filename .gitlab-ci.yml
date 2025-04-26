@@ -101,11 +101,20 @@ get-activation-file:
     paths:
       - artifacts/unity3d.alf
     expire_in: 10 minutes
+  when: manual
+
+activate-license:
+  stage: build_and_test
+  image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
+  script:
+    - echo "Activating Unity license..."
+    - unity-editor -logFile -batchmode -nographics -manualLicenseFile artifacts/unity3d.ulf -quit
+  when: manual
+  dependencies:
+    - get-activation-file
 
 workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "pipeline"
       when: never
     - when: always
-
-
