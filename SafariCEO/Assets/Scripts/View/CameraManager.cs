@@ -31,10 +31,6 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
-        if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != null)
-        {
-            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
-        }
 
         HandleMovement();
         HandleZoom();
@@ -51,7 +47,15 @@ public class CameraManager : MonoBehaviour
 
         if (moveX != 0 || moveY != 0)
         {
-            isJumping= false;
+            isJumping = false;
+        }
+
+        if ((moveX != 0 || moveY != 0) &&
+            UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != null &&
+            UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<TMPro.TMP_InputField>() == null)
+        {
+            // Only deselect if moving and the selected object is not a TMP_InputField
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
         }
 
         //If pressing shift double camera speed

@@ -63,10 +63,6 @@ public class Herbivore : MonoBehaviour, IHasVision
     public GameObject giraffePrefab;
     public Sprite herdSprite;
 
-    //herd
-    public bool isInHerd = false;
-    public List<HerdMemberData> herdMembersData;
-    //public int herdMemberID = 0;?
 
     private void Start()
     {
@@ -90,6 +86,7 @@ public class Herbivore : MonoBehaviour, IHasVision
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.speed = normalSpeed;
+        agent.avoidancePriority = Random.Range(1, 99); 
 
         // Initialize timers
         starvationTimer = starvationTime;
@@ -98,7 +95,7 @@ public class Herbivore : MonoBehaviour, IHasVision
         thirstTimer = thirstInterval;
 
 
-        //matehez be kell állítani itt,  ami változik
+        //matehez be kell állítani itt, ami változik
         mateTimer = 0;
         age = 0;
         currentState = State.Wander;
@@ -107,12 +104,9 @@ public class Herbivore : MonoBehaviour, IHasVision
         currentTarget = null;
         exploredTiles = new List<Tile>();
 
-
-
         maxAge = Random.Range(maxAge * 0.8f, maxAge * 1.2f);
 
         moveCoroutine = null;
-
 
         //InvokeRepeating("DecideNextAction", 0f, 2f);
         InvokeRepeating(nameof(UpdateVision), 0f, 0.5f);
@@ -125,27 +119,23 @@ public class Herbivore : MonoBehaviour, IHasVision
             // Aging
             age += Time.deltaTime;
 
-
-
             if (age >= maxAge)
             {
                 Die();
                 return;
             }
 
-            // Prioritize needs - if either hunger or thirst is critical, switch to searching
 
+            // Prioritize needs - if either hunger or thirst is critical, switch to searching
 
             if (currentState != State.Mating && currentState != State.FindMate)//Mate system
             {
                 mateTimer += Time.deltaTime;
             }
-
             if (currentState != State.Eating && currentState != State.SearchFood)            // Hunger system
             {
                 hungerTimer -= Time.deltaTime;
             }
-
             if (currentState != State.Drinking && currentState != State.SearchWater)// Thirst system
             {
                 thirstTimer -= Time.deltaTime;
@@ -153,6 +143,7 @@ public class Herbivore : MonoBehaviour, IHasVision
             
 
             // Starvation handling
+
             if (hungerTimer <= 0)
             {
                 starvationTimer -= Time.deltaTime;
@@ -180,8 +171,6 @@ public class Herbivore : MonoBehaviour, IHasVision
                 dehydrationTimer = dehydrationTime;
             }
             DecideNextAction();
-
-           
 
         }
         else
@@ -219,66 +208,36 @@ public class Herbivore : MonoBehaviour, IHasVision
             }
         }
     }
-    public void AbsorbOther(Herbivore other)
-    {
-        if (other == this || other.isInHerd)
-            return;
-
-        // Elmentjük a másik adatait
-        HerdMemberData data = new HerdMemberData
-        {
-            HungerTimer = other.hungerTimer,
-            ThirstTimer = other.thirstTimer,
-            MateTimer = other.mateTimer,
-            Age = other.age,
-            MaxAge = other.maxAge
-        };
-        herdMembersData.Add(data);
-
-
-
-        // Vizualitás csere
-        if(!isInHerd)//ha már van csapatban, akkor nem cseréljük le
-            GetComponent<SpriteRenderer>().sprite = herdSprite;
-        isInHerd = true;
-        Destroy(other.gameObject); // A másik eltûnik
-    }
-
-
     private void DecideNextAction()
     {
         Debug.Log($"Current state: {currentState}");
+        // Set State
         if (moveCoroutine != null)
             return;
-         if (hungerTimer <= hungerInterval * 0.3f || thirstTimer <= thirstInterval * 0.3f)
+        if (hungerTimer <= hungerInterval * 0.3f || thirstTimer <= thirstInterval * 0.3f)
+        {
+            if (hungerTimer <= thirstTimer)
             {
-                if (hungerTimer <= thirstTimer)
-                {
-                    currentState = State.SearchFood;
-                }
-                else
-                {
-                    currentState = State.SearchWater;
-                }
+                currentState = State.SearchFood;
             }
+            else
+            {
+                currentState = State.SearchWater;
+            }
+        }
         else if (age >= minMateAge && mateTimer >= mateInterval) //mating 
         {
             currentState = State.Mature;
         }
+
+        // Action based on state
         switch (currentState)
         {
             case State.Wander:
                 this.agent.isStopped = false;
-                if (spottedMates.Count > 0) //ha látott már állatot
-                {
-                    FindClosestMate();
-                }
-                else
-                {
-                    spriteRenderer.color = normalColor;
-                    MoveToRandomPosition();
-                    Debug.Log(transform.name + " is wandering.");
-                }
+                spriteRenderer.color = normalColor;
+                MoveTowardsHerdOrRandom();
+                Debug.Log(transform.name + " is wandering.");
                 break;
 
             case State.SearchFood:
@@ -288,14 +247,15 @@ public class Herbivore : MonoBehaviour, IHasVision
                 currentTarget = FindClosestFood();
                 if (currentTarget != null)
                 {
-                    agent.SetDestination(currentTarget.transform.position);
+                    Vector3 randomOffset = Random.insideUnitCircle;
+                    agent.SetDestination(currentTarget.transform.position+randomOffset);
                     moveCoroutine = StartCoroutine(CheckIfReachedDestination(State.Eating));
                     Debug.Log("Corutin called food" + moveCoroutine);
 
                 }
                 else
                 {
-                    MoveToRandomPosition();
+                    MoveTowardsHerdOrRandom();
                     Debug.Log(transform.name + " exploring new area for food.");
                 }
                 break;
@@ -307,12 +267,13 @@ public class Herbivore : MonoBehaviour, IHasVision
                 currentTarget = FindClosestWater();
                 if (currentTarget != null)
                 {
-                    agent.SetDestination(currentTarget.transform.position);
+                    Vector3 randomOffset = Random.insideUnitCircle; 
+                    agent.SetDestination(currentTarget.transform.position + randomOffset);
                     moveCoroutine = StartCoroutine(CheckIfReachedDestination(State.Drinking));
                 }
                 else
                 {
-                    MoveToRandomPosition();
+                    MoveTowardsHerdOrRandom();
                     Debug.Log(transform.name + " exploring new area for water.");
                 }
                 break;
@@ -324,7 +285,7 @@ public class Herbivore : MonoBehaviour, IHasVision
                     currentState = State.FindMate;
                     FindClosestMate();
                 }
-                else MoveToRandomPosition();
+                else MoveTowardsHerdOrRandom();
                 break;
             case State.Eating:
                 // Handled by coroutine
@@ -364,10 +325,6 @@ public class Herbivore : MonoBehaviour, IHasVision
         {
             Debug.Log($"Try mate  (by mate closest): {closestMate.Key.name} pos: {closestMate.Value}");
             StartMating(closestMate.Key.transform);
-        }
-        else if (closestMate.Key != null &&  Vector3.Distance(transform.position, closestMate.Value) < 1f)
-        {
-            AbsorbOther(closestMate.Key.GetComponent<Herbivore>());
         }
         else if (closestMate.Key != null)        // Különben követjük
         {
@@ -439,7 +396,6 @@ public class Herbivore : MonoBehaviour, IHasVision
         currentTargetAnimal = null;
 
     }
-
 
     private Tile FindClosestFood()
     {
@@ -545,18 +501,56 @@ public class Herbivore : MonoBehaviour, IHasVision
         spriteRenderer.color = normalColor;
     }
 
-    private void MoveToRandomPosition()
+    private void MoveTowardsHerdOrRandom()
     {
         if (agent.remainingDistance < 2f) //ez uj
         {
-            Vector3 randomDirection = Random.insideUnitSphere * moveRange;
-            randomDirection += transform.position;
+            Herbivore oldestMate = FindOldestSeenMate();
+            Vector3 destination = Vector3.zero;
 
-            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, moveRange, NavMesh.AllAreas))
+            // if oldest mate found, move towards them
+            if (oldestMate != null && age < oldestMate.age)
+            {
+                Vector3 matePosition = oldestMate.transform.position;
+                Vector3 randomOffset = Random.insideUnitCircle * 2.5f;
+
+                destination = matePosition + randomOffset;
+
+                Debug.Log($"Moving towards mate: {oldestMate.name} at {matePosition}");
+            }
+            else
+            {
+                destination = Random.insideUnitSphere * moveRange;
+                destination += transform.position;
+                Debug.Log($"Moving randomly to: {destination}");
+            }
+
+
+            if (NavMesh.SamplePosition(destination, out NavMeshHit hit, moveRange, NavMesh.AllAreas))
             {
                 agent.SetDestination(hit.position);
             }
         }
+    }
+
+    private Herbivore FindOldestSeenMate()
+    {
+        GameObject oldestMate = null;
+        float oldestAge = 0f;
+        foreach (var mate in spottedMates.Keys)
+        {
+            Herbivore mateScript = mate.GetComponent<Herbivore>();
+            if (mateScript != null && mateScript.age > oldestAge)
+            {
+                oldestAge = mateScript.age;
+                oldestMate = mate;
+            }
+        }
+        if (oldestMate == null)
+        {
+            return null;
+        }
+        return oldestMate.GetComponent<Herbivore>();
     }
 
     private void Die()
