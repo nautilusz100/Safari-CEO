@@ -4,6 +4,7 @@ stages:
 
 variables:
   BUILD_NAME: SafariCEO
+  UNITY_ACTIVATION_FILE: Unity_v2022.3.24f1.alf
   UNITY_VERSION: "2022.3.24f1"
   IMAGE: unityci/editor
   IMAGE_VERSION: "3"
@@ -15,8 +16,7 @@ image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
 .unity_before_script: &unity_before_script
   before_script:
-    - echo "Logging into Unity..."
-    - unity-editor -logFile -batchmode -nographics -username "$UNITY_USERNAME" -password "$UNITY_PASSWORD" -quit
+    - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
 
 .cache: &cache
   cache:
@@ -24,10 +24,33 @@ image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
     paths:
       - $UNITY_DIR/Library/
 
+.license: &license
+  rules:
+    - if: '$UNITY_LICENSE != null'
+      when: always
+
+get-activation-file:
+  image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
+  tags:
+    - unity
+  rules:
+    - if: '$UNITY_LICENSE == null'
+      when: manual
+  stage: build_and_test
+  script:
+    - chmod +x ./ci/get_activation_file.sh && ./ci/get_activation_file.sh
+  artifacts:
+    paths:
+      - $UNITY_ACTIVATION_FILE
+    expire_in: 60 min
+
 .test: &test
   stage: build_and_test
   <<: *unity_before_script
   <<: *cache
+  <<: *license
+  tags:
+    - unity
   script:
     - chmod +x ./ci/test.sh && ./ci/test.sh
   artifacts:
@@ -49,6 +72,9 @@ test-editmode:
   stage: build_and_test
   <<: *unity_before_script
   <<: *cache
+  <<: *license
+  tags:
+    - unity
   script:
     - chmod +x ./ci/build.sh && ./ci/build.sh
   artifacts:
