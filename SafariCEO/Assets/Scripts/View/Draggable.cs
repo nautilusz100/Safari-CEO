@@ -56,6 +56,18 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             Debug.Log("Not enough money for this animal.");
             return; // don't start drag
         }
+        switch(animalType)
+        {
+            case AnimalType.Fox:
+            case AnimalType.Lion:
+                GameManager.Instance.CurrentCarnivorousCount++;
+                break;
+            
+            case AnimalType.Giraffe:
+            case AnimalType.Zebra:
+                GameManager.Instance.CurrentHerbivoresCount++;
+                break;
+        }
         // Create ghost
         ghostObject = new GameObject("Ghost", typeof(Image));
         ghostObject.transform.SetParent(canvas.transform, false);

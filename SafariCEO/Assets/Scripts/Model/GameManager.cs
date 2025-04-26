@@ -11,7 +11,6 @@ using System;
 using System.Net;
 using UnityEngine.UIElements;
 using static Draggable;
-using UnityEditor.Build;
 //https://www.flaticon.com/free-icons/next icons credit - Flaticon
 
 public class GameManager : MonoBehaviour
@@ -21,7 +20,7 @@ public class GameManager : MonoBehaviour
     public SafariMap safariMapPrefab;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI visitorCount;
-
+    
     // Jeep & Tourist related information
     private float visitorInterval = 5f; // Time in seconds between each visitor
     public float visitorTimer = 0f; // Timer to track the interval
@@ -37,10 +36,23 @@ public class GameManager : MonoBehaviour
     private int howManyAnimalsNeededCarnivorous;
     private int howManyAnimalsNeededHerbivore;
     private int howManyDaysNeeded;
-    //private int howMuchMoneyNeeded;
+    private int howMuchMoneyNeeded;
+    [SerializeField] private GameObject endGameScreen;
+    public bool HasWon { get; private set; }
+    private bool HasLost { get; set; }
+
+    //current conditions
+    public int Visitors { get; set; }
+    public int CurrentCarnivorousCount { get; set; }
+    public int CurrentHerbivoresCount { get; set; }
+    private int hoursPassed;
+    private int money;
+
+
+
 
     //shop prices
-    private int roadPrice = 1;
+    private int roadPrice = 10;
     private int jeepPrice = 20;
     private int foxPrice = 10;
     private int lionPrice = 20;
@@ -52,7 +64,7 @@ public class GameManager : MonoBehaviour
 
     //public GameObject animalPrefab;
     public int EntryFee { get; set; }
-    public int Visitors { get; set; }
+
 
     [SerializeField] private GameObject uiGameObject;
     private Label moneyLabel;
@@ -61,7 +73,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Texture2D normalTimeArrow;
     [SerializeField] private Texture2D doubleTimeArrow;
     [SerializeField] private Texture2D tripleTimeArrow;
-    private int money;
     public int Money
     {
         get => money;
@@ -74,7 +85,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    private int hoursPassed;
+
     public int TimePassed
     {
         get => hoursPassed;
@@ -157,11 +168,19 @@ public class GameManager : MonoBehaviour
         // set start date
         TimePassed = 0;
 
+        CurrentCarnivorousCount = 0;
+        CurrentHerbivoresCount = 0;
+
+        HasWon = false;
+        HasLost = false;
+
         EntryFee = 50;
         scoreText.text = "$" + EntryFee.ToString();
         visitorTimer = visitorInterval;
         Visitors = 0;
         UpdateVisitorCount();
+
+        
     }
 
     private void SetDifficulty()
@@ -174,6 +193,7 @@ public class GameManager : MonoBehaviour
                 howManyAnimalsNeededCarnivorous = 20;
                 howManyAnimalsNeededHerbivore = 20;
                 howManyDaysNeeded = 180;
+                howMuchMoneyNeeded = 2000;
                 break;
             case Difficulty.Medium:
                 Money = 750;
@@ -181,6 +201,7 @@ public class GameManager : MonoBehaviour
                 howManyAnimalsNeededCarnivorous = 30;
                 howManyAnimalsNeededHerbivore = 30;
                 howManyDaysNeeded = 270;
+                howMuchMoneyNeeded = 3000;
                 break;
             case Difficulty.Hard:
                 Money = 500;
@@ -188,13 +209,43 @@ public class GameManager : MonoBehaviour
                 howManyAnimalsNeededCarnivorous = 50;
                 howManyAnimalsNeededHerbivore = 50;
                 howManyDaysNeeded = 360;
+                howMuchMoneyNeeded = 4000;
                 break;
         }
     }
-    internal void NotifyTileFoodDepleted(Vector2Int pos)
+    public void NotifyTileFoodDepleted(Vector2Int pos)
     {
         currentMap.ReplaceTileWithPlains(pos);
     }
+
+    private void WinningConditionCheck()
+    {
+        if (HasWon) return; // ha már nyertél, nem ellenőrzünk többször
+
+        bool enoughVisitors = Visitors >= howManyVisitorsNeeded;
+        bool enoughCarnivores = CurrentCarnivorousCount >= howManyAnimalsNeededCarnivorous;
+        bool enoughHerbivores = CurrentHerbivoresCount >= howManyAnimalsNeededHerbivore;
+        bool enoughDaysPassed = (TimePassed / 24) >= howManyDaysNeeded; // órából napra váltunk
+        bool enoughMoney = Money >= howMuchMoneyNeeded;
+
+        if (enoughVisitors && enoughCarnivores && enoughHerbivores && enoughDaysPassed && enoughMoney)
+        {
+            Debug.Log("You Win!");
+            HasWon = true;
+            if (endGameScreen != null)
+            {
+                endGameScreen.SetActive(true);
+            }
+        }
+        if (Money < 0 || (CurrentCarnivorousCount < 0 && CurrentHerbivoresCount < 0)) //ha elfogyott a pénz vagy az összes állat elpusztult
+        {
+            HasLost = true;
+            endGameScreen.SetActive(true);
+        }
+
+    }
+
+
     void Update()
     {
 
@@ -294,6 +345,9 @@ public class GameManager : MonoBehaviour
             visitorTimer = visitorInterval;
             AttemptVisitorSpawn();
         }
+
+        WinningConditionCheck(); // Check for winning conditions
+
 
     }
 
