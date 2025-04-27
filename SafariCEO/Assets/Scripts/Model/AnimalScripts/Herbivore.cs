@@ -1,11 +1,14 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
 using static Tile;
+using System;
+using Random = UnityEngine.Random;
+using UnityEngine.EventSystems;
 
-public class Herbivore : MonoBehaviour, IHasVision
+public class Herbivore : Animal, IHasVision
 {
     //for debugging
     private SpriteRenderer spriteRenderer;
@@ -14,6 +17,7 @@ public class Herbivore : MonoBehaviour, IHasVision
     public Color eatingColor = Color.green;
     public Color drinkingColor = Color.cyan;
     public Color searchingColor = Color.yellow;
+    public string uuid;
 
     // Movement parameters
     public float moveRange = 100f;
@@ -35,15 +39,20 @@ public class Herbivore : MonoBehaviour, IHasVision
     private float starvationTimer;
     private float dehydrationTimer;
 
+    public float StarvationTimer { get; }
+    public float DehydrationTimer { get; }
+
     public float age = 0f;
     public float maxAge = 1000f;
 
     private NavMeshAgent agent;
     private List<Tile> exploredTiles = new List<Tile>();
     private Tile currentTarget = null;
-    private enum State { Wander, SearchFood, SearchWater, Eating, Drinking, Rest, Mature, FindMate, Mating }
+    public enum StateHerbivore { Wander, SearchFood, SearchWater, Eating, Drinking, Rest, Mature, FindMate, Mating }
 
-    private State currentState = State.Wander;
+    private StateHerbivore currentState = StateHerbivore.Wander;
+
+    public StateHerbivore CurrentState { get { return currentState; } }
     public bool beingAttacked = false;
     public bool isMating;
 
@@ -71,6 +80,8 @@ public class Herbivore : MonoBehaviour, IHasVision
     private void Start()
     {
         //debugging
+        uuid = Guid.NewGuid().ToString();
+        diet = Diet.Herbivore;
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
         {
@@ -98,10 +109,10 @@ public class Herbivore : MonoBehaviour, IHasVision
         thirstTimer = thirstInterval;
 
 
-        //matehez be kell ·llÌtani itt,  ami v·ltozik
+        //matehez be kell √°ll√≠tani itt,  ami v√°ltozik
         mateTimer = 0;
         age = 0;
-        currentState = State.Wander;
+        currentState = StateHerbivore.Wander;
         beingAttacked = false;
         isMating = false;
         currentTarget = null;
@@ -118,8 +129,29 @@ public class Herbivore : MonoBehaviour, IHasVision
         InvokeRepeating(nameof(UpdateVision), 0f, 0.5f);
     }
 
+    private void OnClick()
+    {
+        GameObject inspection = GameObject.FindWithTag("InspectionWindow");
+        if (inspection != null)
+        {
+            inspection.GetComponent<InspectionManager>().Display(gameObject);
+        }
+    }
+
     private void Update()
     {
+        SortByY();
+
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, 1 << LayerMask.NameToLayer("Animals"));
+            if (hit.collider != null && hit.transform == transform)
+            {
+                OnClick();
+            }
+        }
+
         if (!beingAttacked || !isMating)
         {
             // Aging
@@ -136,17 +168,17 @@ public class Herbivore : MonoBehaviour, IHasVision
             // Prioritize needs - if either hunger or thirst is critical, switch to searching
 
 
-            if (currentState != State.Mating && currentState != State.FindMate)//Mate system
+            if (currentState != StateHerbivore.Mating && currentState != StateHerbivore.FindMate)//Mate system
             {
                 mateTimer += Time.deltaTime;
             }
 
-            if (currentState != State.Eating && currentState != State.SearchFood)            // Hunger system
+            if (currentState != StateHerbivore.Eating && currentState != StateHerbivore.SearchFood)            // Hunger system
             {
                 hungerTimer -= Time.deltaTime;
             }
 
-            if (currentState != State.Drinking && currentState != State.SearchWater)// Thirst system
+            if (currentState != StateHerbivore.Drinking && currentState != StateHerbivore.SearchWater)// Thirst system
             {
                 thirstTimer -= Time.deltaTime;
             }
@@ -191,7 +223,7 @@ public class Herbivore : MonoBehaviour, IHasVision
 
 
     }
-    public void SetVisionRadius(float radius)//IHasVision interface implement·ciÛ
+    public void SetVisionRadius(float radius)//IHasVision interface implement√°ci√≥
     {
         visionRadius = radius;
     }
@@ -203,7 +235,7 @@ public class Herbivore : MonoBehaviour, IHasVision
         foreach (var hit in hits)
         {
             if (hit.gameObject == this.gameObject)
-                continue; //saj·t mag·t kihagyja
+                continue; //saj√°t mag√°t kihagyja
             Tile tile = hit.GetComponent<Tile>();
             if (tile != null && !exploredTiles.Contains(tile))
             {
@@ -224,7 +256,7 @@ public class Herbivore : MonoBehaviour, IHasVision
         if (other == this || other.isInHerd)
             return;
 
-        // Elmentj¸k a m·sik adatait
+        // Elmentj√ºk a m√°sik adatait
         HerdMemberData data = new HerdMemberData
         {
             HungerTimer = other.hungerTimer,
@@ -237,11 +269,11 @@ public class Herbivore : MonoBehaviour, IHasVision
 
 
 
-        // Vizualit·s csere
-        if(!isInHerd)//ha m·r van csapatban, akkor nem cserÈlj¸k le
+        // Vizualit√°s csere
+        if(!isInHerd)//ha m√°r van csapatban, akkor nem cser√©lj√ºk le
             GetComponent<SpriteRenderer>().sprite = herdSprite;
         isInHerd = true;
-        Destroy(other.gameObject); // A m·sik elt˚nik
+        Destroy(other.gameObject); // A m√°sik elt√ªnik
     }
 
 
@@ -254,22 +286,22 @@ public class Herbivore : MonoBehaviour, IHasVision
             {
                 if (hungerTimer <= thirstTimer)
                 {
-                    currentState = State.SearchFood;
+                    currentState = StateHerbivore.SearchFood;
                 }
                 else
                 {
-                    currentState = State.SearchWater;
+                    currentState = StateHerbivore.SearchWater;
                 }
             }
         else if (age >= minMateAge && mateTimer >= mateInterval) //mating 
         {
-            currentState = State.Mature;
+            currentState = StateHerbivore.Mature;
         }
         switch (currentState)
         {
-            case State.Wander:
+            case StateHerbivore.Wander:
                 this.agent.isStopped = false;
-                if (spottedMates.Count > 0) //ha l·tott m·r ·llatot
+                if (spottedMates.Count > 0) //ha l√°tott m√°r √°llatot
                 {
                     FindClosestMate();
                 }
@@ -281,7 +313,7 @@ public class Herbivore : MonoBehaviour, IHasVision
                 }
                 break;
 
-            case State.SearchFood:
+            case StateHerbivore.SearchFood:
                 this.agent.isStopped = false;
                 spriteRenderer.color = searchingColor;
 
@@ -289,7 +321,7 @@ public class Herbivore : MonoBehaviour, IHasVision
                 if (currentTarget != null)
                 {
                     agent.SetDestination(currentTarget.transform.position);
-                    moveCoroutine = StartCoroutine(CheckIfReachedDestination(State.Eating));
+                    moveCoroutine = StartCoroutine(CheckIfReachedDestination(StateHerbivore.Eating));
                     Debug.Log("Corutin called food" + moveCoroutine);
 
                 }
@@ -300,7 +332,7 @@ public class Herbivore : MonoBehaviour, IHasVision
                 }
                 break;
 
-            case State.SearchWater:
+            case StateHerbivore.SearchWater:
                 this.agent.isStopped = false;
                 spriteRenderer.color = searchingColor;
 
@@ -308,7 +340,7 @@ public class Herbivore : MonoBehaviour, IHasVision
                 if (currentTarget != null)
                 {
                     agent.SetDestination(currentTarget.transform.position);
-                    moveCoroutine = StartCoroutine(CheckIfReachedDestination(State.Drinking));
+                    moveCoroutine = StartCoroutine(CheckIfReachedDestination(StateHerbivore.Drinking));
                 }
                 else
                 {
@@ -316,25 +348,25 @@ public class Herbivore : MonoBehaviour, IHasVision
                     Debug.Log(transform.name + " exploring new area for water.");
                 }
                 break;
-            case State.Mature:
+            case StateHerbivore.Mature:
                 this.agent.isStopped = false;
                 spriteRenderer.color = searchingColor;
-                if (spottedMates.Count > 0) //ha l·tott m·r ·llatot
+                if (spottedMates.Count > 0) //ha l√°tott m√°r √°llatot
                 {
-                    currentState = State.FindMate;
+                    currentState = StateHerbivore.FindMate;
                     FindClosestMate();
                 }
                 else MoveToRandomPosition();
                 break;
-            case State.Eating:
+            case StateHerbivore.Eating:
                 // Handled by coroutine
                 break;
 
-            case State.Drinking:
+            case StateHerbivore.Drinking:
                 // Handled by coroutine
                 break;
 
-            case State.Rest:
+            case StateHerbivore.Rest:
                 agent.isStopped = true;
                 Invoke(nameof(ResumeWander), Random.Range(5f, 10f));
                 break;
@@ -350,16 +382,16 @@ public class Herbivore : MonoBehaviour, IHasVision
 
         if (spottedMates.Count == 0)
         {
-            currentState = State.Wander;
+            currentState = StateHerbivore.Wander;
             return;
         }
 
-        // Kiv·lasztjuk a legkˆzelebbi prÈd·t
+        // Kiv√°lasztjuk a legk√∂zelebbi pr√©d√°t
         var closestMate = spottedMates
             .OrderBy(p => Vector3.Distance(transform.position, p.Value))
             .FirstOrDefault();
 
-        // Ha a prÈda t˙l kˆzel van (1 egysÈgnÈl kˆzelebb), mate
+        // Ha a pr√©da t√∫l k√∂zel van (1 egys√©gn√©l k√∂zelebb), mate
         if (closestMate.Key != null && Vector3.Distance(transform.position, closestMate.Value) < 1f && age >= minMateAge && mateTimer >= mateInterval) //ha mature
         {
             Debug.Log($"Try mate  (by mate closest): {closestMate.Key.name} pos: {closestMate.Value}");
@@ -369,7 +401,7 @@ public class Herbivore : MonoBehaviour, IHasVision
         {
             AbsorbOther(closestMate.Key.GetComponent<Herbivore>());
         }
-        else if (closestMate.Key != null)        // K¸lˆnben kˆvetj¸k
+        else if (closestMate.Key != null)        // K√ºl√∂nben k√∂vetj√ºk
         {
             agent.SetDestination(closestMate.Value);
         }
@@ -382,20 +414,20 @@ public class Herbivore : MonoBehaviour, IHasVision
 
         Debug.Log($"Started mating with: {mate.name}");
 
-        // ¡llapotbe·llÌt·sok
-        currentState = State.Mating;
+        // √Ållapotbe√°ll√≠t√°sok
+        currentState = StateHerbivore.Mating;
         spriteRenderer.color = Color.magenta;
 
-        // RagadozÛ mozg·s le·llÌt·sa
+        // Ragadoz√≥ mozg√°s le√°ll√≠t√°sa
         agent.isStopped = true;
         
-        // PrÈda mozg·s letilt·sa (ha van NavMeshAgent-je)
+        // Pr√©da mozg√°s letilt√°sa (ha van NavMeshAgent-je)
         NavMeshAgent mateAgent = mate.GetComponent<NavMeshAgent>();
         Herbivore mateScript = mate.GetComponent<Herbivore>();
-        if (mateAgent != null) mateScript.isMating = true; //meg·llÌtja
+        if (mateAgent != null) mateScript.isMating = true; //meg√°ll√≠tja
         Debug.Log($"Stopped mate agent: {mate.name}");
-        currentTargetAnimal = mate.gameObject; //valamiÈrt ˙jra be kell ·llÌtani, mert ha nincs akkor a prÈda nem t˚nik el
-        // 10 m·sodperc ut·n vÈge az evÈsnek
+        currentTargetAnimal = mate.gameObject; //valami√©rt √∫jra be kell √°ll√≠tani, mert ha nincs akkor a pr√©da nem t√ªnik el
+        // 10 m√°sodperc ut√°n v√©ge az ev√©snek
         Invoke(nameof(FinishMating), mateDuration);
     }
     private void FinishMating()
@@ -405,8 +437,8 @@ public class Herbivore : MonoBehaviour, IHasVision
             Debug.Log($"Finished mating: {currentTargetAnimal.name}");
             currentTargetAnimal.GetComponent<Herbivore>().isMating = false;
 
-            // VÈletlenszer˚ pozÌciÛ gener·l·sa a sz¸lı kˆzelÈben (pl. 1-3 egysÈg t·vols·gra)
-            Vector3 randomOffset = Random.insideUnitCircle * 2f; // 2 egysÈg sugar˙ kˆrben
+            // V√©letlenszer√ª poz√≠ci√≥ gener√°l√°sa a sz√ºl√µ k√∂zel√©ben (pl. 1-3 egys√©g t√°vols√°gra)
+            Vector3 randomOffset = Random.insideUnitCircle * 2f; // 2 egys√©g sugar√∫ k√∂rben
             Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
 
             GameObject prefabToSpawn = null;
@@ -423,7 +455,7 @@ public class Herbivore : MonoBehaviour, IHasVision
 
             if (prefabToSpawn != null)
             {
-                // LÈtrehozzuk az ˙j ·llatot a megadott pozÌciÛban
+                // L√©trehozzuk az √∫j √°llatot a megadott poz√≠ci√≥ban
                 Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             }
             else
@@ -432,9 +464,9 @@ public class Herbivore : MonoBehaviour, IHasVision
             }
         }
 
-        // Vissza·llÌt·sok
+        // Vissza√°ll√≠t√°sok
         agent.isStopped = false;
-        currentState = State.Rest;
+        currentState = StateHerbivore.Rest;
         mateTimer = 0f;
         currentTargetAnimal = null;
 
@@ -457,7 +489,7 @@ public class Herbivore : MonoBehaviour, IHasVision
             .FirstOrDefault();
     }
 
-    private IEnumerator CheckIfReachedDestination(State nextState)
+    private IEnumerator CheckIfReachedDestination(StateHerbivore nextState)
     {
         while (currentTarget != null &&
                (agent.pathPending ||
@@ -470,10 +502,10 @@ public class Herbivore : MonoBehaviour, IHasVision
         {
             switch (nextState)
             {
-                case State.Eating:
+                case StateHerbivore.Eating:
                     StartEating();
                     break;
-                case State.Drinking:
+                case StateHerbivore.Drinking:
                     StartDrinking();
                     break;
             }
@@ -485,7 +517,7 @@ public class Herbivore : MonoBehaviour, IHasVision
     {
         spriteRenderer.color = eatingColor;
 
-        currentState = State.Eating;
+        currentState = StateHerbivore.Eating;
         agent.isStopped = true;
         Debug.Log(transform.name + " is eating at " + currentTarget.name);
         Invoke(nameof(FinishEating), eatingDuration);
@@ -510,9 +542,9 @@ public class Herbivore : MonoBehaviour, IHasVision
         }
 
         currentTarget = null;
-        currentState = State.Rest;
+        currentState = StateHerbivore.Rest;
         Debug.Log(transform.name + " finished eating and is now resting.");
-        moveCoroutine = null; // ha vÈgzett a coroutine, akkor null·zzuk
+        moveCoroutine = null; // ha v√©gzett a coroutine, akkor null√°zzuk
     }
 
 
@@ -520,7 +552,7 @@ public class Herbivore : MonoBehaviour, IHasVision
     {
         spriteRenderer.color = drinkingColor;
 
-        currentState = State.Drinking;
+        currentState = StateHerbivore.Drinking;
         agent.isStopped = true;
         Debug.Log(transform.name + " is drinking at " + currentTarget.name);
         Invoke(nameof(FinishDrinking), drinkingDuration);
@@ -532,15 +564,15 @@ public class Herbivore : MonoBehaviour, IHasVision
 
         thirstTimer = thirstInterval;
         currentTarget = null;
-        currentState = State.Rest;
+        currentState = StateHerbivore.Rest;
         Debug.Log(transform.name + " finished drinking and is now resting.");
-        moveCoroutine = null; // ha vÈgzett a coroutine, akkor null·zzuk
+        moveCoroutine = null; // ha v√©gzett a coroutine, akkor null√°zzuk
     }
 
     private void ResumeWander()
     {
         agent.isStopped = false;
-        currentState = State.Wander;
+        currentState = StateHerbivore.Wander;
 
         spriteRenderer.color = normalColor;
     }

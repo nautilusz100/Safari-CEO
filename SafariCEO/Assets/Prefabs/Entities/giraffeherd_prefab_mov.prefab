@@ -10,13 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4306476373819746280}
   - component: {fileID: 1259210409706356065}
-  - component: {fileID: 3094677464632427663}
   - component: {fileID: 3335253368240376763}
   - component: {fileID: 546026443148668779}
   - component: {fileID: -8461357255759682603}
   - component: {fileID: -4870601444093044318}
   - component: {fileID: -97177680024767047}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: giraffeherd_prefab_mov
   m_TagString: Giraffes
   m_Icon: {fileID: 0}
@@ -90,18 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!114 &3094677464632427663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5855485762125835324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a8adc83f23ab9649988b89f3704e6bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!70 &3335253368240376763
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -198,11 +185,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1193744decfa93346816b7a358808579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  diet: 0
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   restingColor: {r: 0, g: 0, b: 1, a: 1}
   eatingColor: {r: 0, g: 1, b: 0, a: 1}
   drinkingColor: {r: 0, g: 1, b: 1, a: 1}
   searchingColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  uuid: 
   moveRange: 100
   normalSpeed: 3
   visionRadius: 10

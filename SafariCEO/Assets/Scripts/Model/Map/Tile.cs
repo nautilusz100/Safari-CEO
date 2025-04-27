@@ -24,7 +24,7 @@ public class Tile : MonoBehaviour
     public ShopType Type { get; set; }
 
 
-    [SerializeField] private int FoodAmount;
+    [SerializeField] public int FoodAmount;
     public bool isLocked;
 
     void Awake()

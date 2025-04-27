@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private float visitorInterval = 5f; // Time in seconds between each visitor
     public float visitorTimer = 0f; // Timer to track the interval
     public int jeepCount = 0;
+    public int totalJeepCount = 0;
 
     public float satisfaction = 0;
     
@@ -332,6 +333,7 @@ public class GameManager : MonoBehaviour
         else if (IsBuilding == Tile.ShopType.Jeep && Money >= jeepPrice)
         {
             jeepCount++;
+            totalJeepCount++;
             IsBuilding = Tile.ShopType.None;
             Money = Money - jeepPrice;
         }
@@ -361,28 +363,30 @@ public class GameManager : MonoBehaviour
 
         if(UnityEngine.Random.value < finalSpawnChance && jeepCount > 0)
         {
-            int tourists = UnityEngine.Random.Range(1, 4);
+            int tourists = UnityEngine.Random.Range(1, 5);
             money += EntryFee * tourists;
             Visitors += tourists;
             UpdateVisitorCount();
-            SpawnJeep();
+            SpawnJeep(tourists);
         }
     }
 
-    private void SpawnJeep()
+    private void SpawnJeep(int tourists)
     {
         // Spawn a new Jeep
         GameObject jeep = Instantiate(currentMap.prefab_jeep, new Vector3(39f,39.5f,0f) , Quaternion.identity );
         jeep.GetComponent<Jeep>().SetManager(this);
+        jeep.GetComponent<Jeep>().tourists = tourists;
         jeepCount--;
+        jeep.GetComponent<Jeep>().id = totalJeepCount - jeepCount;
     }
 
-    public void JeepIsHome(int animalCount)
+    public void JeepIsHome(int animalCount, int differentAnimals)
     {
-        
+        Debug.Log(differentAnimals + " different animals seen by the visitor.");
         Debug.Log("Visitor seen this many animals: " + animalCount);
         // Review calculation
-        int review = CalculateReview(animalCount);
+        int review = CalculateReview(animalCount, differentAnimals);
         if (satisfaction == 0)
         {
             satisfaction = review;
@@ -393,6 +397,48 @@ public class GameManager : MonoBehaviour
         }
         jeepCount++;
 
+    }
+
+    private int CalculateReview(int animalCount, int differentAnimals)
+    {
+        int difficultyAdjustment = 0;
+
+        switch (differentAnimals)
+        {
+            case 1:
+                animalCount = (int)(animalCount * 0.5);
+                break;
+            case 2:
+                break;
+            case 3:
+                animalCount = animalCount * 2;
+                break;
+            case 4:
+                animalCount = animalCount * 3;
+                break;
+            default:
+                break;
+        }
+
+        switch (gameDifficulty)
+        {
+            case Difficulty.Easy:
+                difficultyAdjustment = 0;
+                break;
+            case Difficulty.Medium:
+                difficultyAdjustment = 3;
+                break;
+            case Difficulty.Hard:
+                difficultyAdjustment = 5;
+                break;
+        }
+
+        if (animalCount < (1 + difficultyAdjustment)) return 1;
+        if (animalCount < (3 + difficultyAdjustment)) return 2;
+        if (animalCount < (5 + difficultyAdjustment)) return 3;
+        if (animalCount < (7 + difficultyAdjustment)) return 4;
+        if (animalCount < (10 + difficultyAdjustment)) return 5;
+        return 0;
     }
 
     private int CalculateReview(int animalCount)

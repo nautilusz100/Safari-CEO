@@ -2,21 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Animal : MonoBehaviour
+public abstract class Animal : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public enum Diet {
+        Carnivore,
+        Herbivore
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        SortByY();
-    }
+    public Diet diet;
 
-    void SortByY()
+    protected void SortByY()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 10);

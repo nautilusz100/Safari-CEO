@@ -1,11 +1,14 @@
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 using static Tile;
+using Random = UnityEngine.Random;
 
-public class Carnivorous : MonoBehaviour, IHasVision
+public class Carnivorous : Animal, IHasVision
 {
     // Debugging
     private SpriteRenderer spriteRenderer;
@@ -15,6 +18,7 @@ public class Carnivorous : MonoBehaviour, IHasVision
     public Color drinkingColor = Color.cyan;
     public Color searchingColor = Color.yellow;
     public Color huntingColor = Color.red;
+    public string uuid;
 
     // Movement parameters
     public float moveRange = 100f;
@@ -35,7 +39,10 @@ public class Carnivorous : MonoBehaviour, IHasVision
     public float hungerTimer;
     public float thirstTimer;
     private float starvationTimer;
+    public float StarvationTimer {  get;}
+
     private float dehydrationTimer;
+    public float DehydrationTimer { get; }
     public float age = 0f;
     public float maxAge = 1000f;
 
@@ -43,17 +50,20 @@ public class Carnivorous : MonoBehaviour, IHasVision
     private List<Tile> exploredTiles = new List<Tile>();
     private Dictionary<GameObject, Vector3> spottedPreyPositions = new Dictionary<GameObject, Vector3>();
 
-    private enum State { Wander, SearchFood, SearchWater, Eating, Drinking, Hunt, Rest }
-    private State currentState = State.Wander;
+    public enum StateCarnivore { Wander, SearchFood, SearchWater, Eating, Drinking, Hunt, Rest }
+    private StateCarnivore currentState = StateCarnivore.Wander;
 
-    //épen aktuális célpontok
+    public StateCarnivore CurrentState { get { return currentState; }}
+
+    //Ã©pen aktuÃ¡lis cÃ©lpontok
     private GameObject currentTargetAnimal;
     private Tile currentTargetTile;
     private void Start()
     {
+        uuid = Guid.NewGuid().ToString();
         spriteRenderer = GetComponent<SpriteRenderer>();
         agent = GetComponent<NavMeshAgent>();
-
+        diet = Diet.Carnivore;
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.speed = normalSpeed;
@@ -69,12 +79,34 @@ public class Carnivorous : MonoBehaviour, IHasVision
 
     }
 
+    private void OnClick()
+    {
+        Debug.Log("Clicked");
+        GameObject inspection = GameObject.FindWithTag("InspectionWindow");
+        if (inspection != null)
+        {
+            inspection.GetComponent<InspectionManager>().Display(gameObject);
+        }
+    }
+
     private void Update()
     {
-        // Ha a prédát elkapta, akkor az állapotot át kell állítani, ez a agent coliderrel mûkdöik, TODO nem így kene sztem
-        if (currentState == State.Hunt && currentTargetAnimal != null)
+
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            // Ha a préda elég közel van (3 egység)
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, 1 << LayerMask.NameToLayer("Animals"));
+            if (hit.collider != null && hit.transform == transform)
+            {
+                OnClick();
+            }
+        }
+
+        SortByY();
+        // Ha a prÃ©dÃ¡t elkapta, akkor az Ã¡llapotot Ã¡t kell Ã¡llÃ­tani, ez a agent coliderrel mÃ»kdÃ¶ik, TODO nem Ã­gy kene sztem
+        if (currentState == StateCarnivore.Hunt && currentTargetAnimal != null)
+        {
+            // Ha a prÃ©da elÃ©g kÃ¶zel van (3 egysÃ©g)
             Debug.Log($"Distance to prey: {Vector3.Distance(transform.position, currentTargetAnimal.transform.position)}");
             if (Vector3.Distance(transform.position, currentTargetAnimal.transform.position) < 1f)
             {
@@ -85,10 +117,10 @@ public class Carnivorous : MonoBehaviour, IHasVision
         age += Time.deltaTime;
         if (age >= maxAge) Die();
 
-        if (currentState != State.Eating && currentState != State.Hunt)
+        if (currentState != StateCarnivore.Eating && currentState != StateCarnivore.Hunt)
             hungerTimer -= Time.deltaTime;
 
-        if (currentState != State.Drinking && currentState != State.SearchWater)
+        if (currentState != StateCarnivore.Drinking && currentState != StateCarnivore.SearchWater)
             thirstTimer -= Time.deltaTime;
 
         if (hungerTimer <= 0)
@@ -111,7 +143,7 @@ public class Carnivorous : MonoBehaviour, IHasVision
             dehydrationTimer = dehydrationTime;
         }
     }
-    public void SetVisionRadius(float radius)//IHasVision interface implementáció
+    public void SetVisionRadius(float radius)//IHasVision interface implementÃ¡ciÃ³
     {
         visionRadius = radius;
     }
@@ -123,7 +155,7 @@ public class Carnivorous : MonoBehaviour, IHasVision
         foreach (var hit in hits)
         {
             if (hit.gameObject == this.gameObject)
-                continue; //saját magát kihagyja
+                continue; //sajÃ¡t magÃ¡t kihagyja
             if (hit.CompareTag("Zebra") || hit.CompareTag("Giraffe") || hit.CompareTag("Giraffes") || hit.CompareTag("Zebras"))
             {
                 GameObject prey = hit.gameObject;
@@ -145,40 +177,40 @@ public class Carnivorous : MonoBehaviour, IHasVision
     {
         if (hungerTimer <= hungerInterval * 0.2f && spottedPreyPositions.Count > 0)
         {
-            currentState = State.Hunt;
+            currentState = StateCarnivore.Hunt;
             HuntClosestPrey();
             return;
         }
         else if (thirstTimer <= thirstInterval * 0.2f)
         {
-            currentState = State.SearchWater;
+            currentState = StateCarnivore.SearchWater;
             SearchForWater();
             return;
         }
 
         switch (currentState)
         {
-            case State.Wander:
+            case StateCarnivore.Wander:
                 spriteRenderer.color = normalColor;
                 MoveToRandomPosition();
                 break;
 
-            case State.SearchFood:
+            case StateCarnivore.SearchFood:
                 spriteRenderer.color = searchingColor;
-                if (spottedPreyPositions.Count > 0) //ha látott már állatot
+                if (spottedPreyPositions.Count > 0) //ha lÃ¡tott mÃ¡r Ã¡llatot
                 {
-                    currentState = State.Hunt;
+                    currentState = StateCarnivore.Hunt;
                     HuntClosestPrey();
                 }
                 else MoveToRandomPosition();
                 break;
 
-            case State.SearchWater:
+            case StateCarnivore.SearchWater:
                 spriteRenderer.color = searchingColor;
                 SearchForWater();
                 break;
 
-            case State.Rest:
+            case StateCarnivore.Rest:
                 spriteRenderer.color = restingColor;
                 agent.isStopped = true;
                 Invoke(nameof(ResumeWander), Random.Range(3f, 7f));
@@ -191,29 +223,29 @@ public class Carnivorous : MonoBehaviour, IHasVision
         spriteRenderer.color = huntingColor;
         agent.speed = huntingSpeed;
 
-        // Frissítjük a prédák pozícióját (eltávolítjuk a null elemeket)
+        // FrissÃ­tjÃ¼k a prÃ©dÃ¡k pozÃ­ciÃ³jÃ¡t (eltÃ¡volÃ­tjuk a null elemeket)
         spottedPreyPositions = spottedPreyPositions
             .Where(p => p.Key != null)
             .ToDictionary(p => p.Key, p => p.Key.transform.position);
 
         if (spottedPreyPositions.Count == 0)
         {
-            currentState = State.Wander;
+            currentState = StateCarnivore.Wander;
             return;
         }
 
-        // Kiválasztjuk a legközelebbi prédát
+        // KivÃ¡lasztjuk a legkÃ¶zelebbi prÃ©dÃ¡t
         var closestPrey = spottedPreyPositions
             .OrderBy(p => Vector3.Distance(transform.position, p.Value))
             .FirstOrDefault();
 
-        // Ha a préda túl közel van (3 egységnél közelebb), megtámadjuk
+        // Ha a prÃ©da tÃºl kÃ¶zel van (3 egysÃ©gnÃ©l kÃ¶zelebb), megtÃ¡madjuk
         if (closestPrey.Key != null && Vector3.Distance(transform.position, closestPrey.Value) < 1f)
         {
             Debug.Log($"Attacking prey (by hunt closest): {closestPrey.Key.name}");
             StartEating(closestPrey.Key.transform);
         }
-        // Különben követjük
+        // KÃ¼lÃ¶nben kÃ¶vetjÃ¼k
         else if (closestPrey.Key != null)
         {
             agent.SetDestination(closestPrey.Value);
@@ -226,20 +258,20 @@ public class Carnivorous : MonoBehaviour, IHasVision
 
         Debug.Log($"Started eating prey: {prey.name}");
 
-        // Állapotbeállítások
-        currentState = State.Eating;
+        // ÃllapotbeÃ¡llÃ­tÃ¡sok
+        currentState = StateCarnivore.Eating;
         spriteRenderer.color = eatingColor;
 
-        // Ragadozó mozgás leállítása
+        // RagadozÃ³ mozgÃ¡s leÃ¡llÃ­tÃ¡sa
         agent.isStopped = true;
 
-        // Préda mozgás letiltása (ha van NavMeshAgent-je)
+        // PrÃ©da mozgÃ¡s letiltÃ¡sa (ha van NavMeshAgent-je)
         NavMeshAgent preyAgent = prey.GetComponent<NavMeshAgent>();
         Herbivore herbivore = prey.GetComponent<Herbivore>();
         if (preyAgent != null) herbivore.beingAttacked = true;
         Debug.Log($"Stopped prey agent: {prey.name}");
-        currentTargetAnimal = prey.gameObject; //valamiért újra be kell állítani, mert ha nincs akkor a préda nem tûnik el
-        // 10 másodperc után vége az evésnek
+        currentTargetAnimal = prey.gameObject; //valamiÃ©rt Ãºjra be kell Ã¡llÃ­tani, mert ha nincs akkor a prÃ©da nem tÃ»nik el
+        // 10 mÃ¡sodperc utÃ¡n vÃ©ge az evÃ©snek
         Invoke(nameof(FinishEating), eatingDuration);
     }
     private void FinishEating()
@@ -247,13 +279,13 @@ public class Carnivorous : MonoBehaviour, IHasVision
         if (currentTargetAnimal != null)
         {
             Debug.Log($"Finished eating prey: {currentTargetAnimal.name}");
-            Destroy(currentTargetAnimal); // Préda megsemmisítése
+            Destroy(currentTargetAnimal); // PrÃ©da megsemmisÃ­tÃ©se
         }
 
-        // Visszaállítások
+        // VisszaÃ¡llÃ­tÃ¡sok
         hungerTimer = hungerInterval;
         currentTargetAnimal = null;
-        currentState = State.Rest;
+        currentState = StateCarnivore.Rest;
         spriteRenderer.color = restingColor;
         agent.isStopped = false;
     }
@@ -284,26 +316,26 @@ public class Carnivorous : MonoBehaviour, IHasVision
         if (currentTargetTile != null)
             StartDrinking();
         else
-            currentState = State.Wander;
+            currentState = StateCarnivore.Wander;
     }
 
     private void StartDrinking()
     {
         spriteRenderer.color = drinkingColor;
-        currentState = State.Drinking;
+        currentState = StateCarnivore.Drinking;
         agent.isStopped = true;
 
         thirstTimer = thirstInterval;
         dehydrationTimer = dehydrationTime;
 
-        currentState = State.Rest;
+        currentState = StateCarnivore.Rest;
         spriteRenderer.color = restingColor;
         currentTargetTile = null;
     }
     private void ResumeWander()
     {
         agent.isStopped = false;
-        currentState = State.Wander;
+        currentState = StateCarnivore.Wander;
         spriteRenderer.color = normalColor;
     }
 

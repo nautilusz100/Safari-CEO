@@ -10,13 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 879733843471139930}
   - component: {fileID: 805893717395891845}
-  - component: {fileID: 6305354601004502628}
   - component: {fileID: 4901001747764424916}
   - component: {fileID: 3836230655731566231}
   - component: {fileID: 4592569953141203528}
   - component: {fileID: 1358045962049438094}
   - component: {fileID: 912986367699730713}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: lionherd_prefeab_mov
   m_TagString: Lions
   m_Icon: {fileID: 0}
@@ -90,18 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!114 &6305354601004502628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5312220684229478086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a8adc83f23ab9649988b89f3704e6bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!195 &4901001747764424916
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -208,19 +195,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce75c95cde08a4449a46e0cd88a5f6c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  diet: 0
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   restingColor: {r: 0, g: 0, b: 1, a: 1}
   eatingColor: {r: 0, g: 1, b: 0, a: 1}
   drinkingColor: {r: 0, g: 1, b: 1, a: 1}
   searchingColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   huntingColor: {r: 1, g: 0, b: 0, a: 1}
+  uuid: 
   moveRange: 100
-  slowedSpeedWater: 0.5
-  slowedSpeedHills: 0.7
   huntingSpeed: 5
   normalSpeed: 3
   visionRadius: 15
-  visionAngle: 120
   hungerInterval: 120
   thirstInterval: 90
   starvationTime: 300
@@ -245,6 +231,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slowedSpeedWater: 2
   slowedSpeedHills: 1.5
-  normalSpeed: 3.5
   visionRadiusNormal: 5
   visionRadiusHills: 10

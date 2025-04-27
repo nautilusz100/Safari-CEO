@@ -128,7 +128,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             out localPoint))
         
         {
-            ghostRectTransform.anchoredPosition = localPoint;
+            if (ghostRectTransform != null)
+                ghostRectTransform.anchoredPosition = localPoint;
         }
 
     }

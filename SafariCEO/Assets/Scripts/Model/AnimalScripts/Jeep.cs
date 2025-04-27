@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,14 +16,20 @@ public class Jeep : MonoBehaviour
     // general
     private GameManager gameManager;
     private NavMeshAgent agent;
+    private GameObject inspection;
+
+    public int id = 0;
+    
     private Vector2 safariEntry;
     private Vector2 safariExit;
     private bool isReturningHome = false;
+    public int tourists = 0;
 
     // Vision, Pathfinding
     public float roadVisionRadius = 0.65f;
     public float animalVisionRadius = 2f;
     public Vector2 destinationTilePos;
+    
 
     private Dictionary<Tile, int> traversedRoads = new Dictionary<Tile, int>();
     [SerializeField]private List<Tile> detectedRoads = new List<Tile>();
@@ -37,6 +44,8 @@ public class Jeep : MonoBehaviour
 
     void Start()
     {
+        inspection = GameObject.FindWithTag("InspectionWindow");
+
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -67,6 +76,11 @@ public class Jeep : MonoBehaviour
         }
     }
 
+    private void OnMouseDown()
+    {
+        inspection.GetComponent<InspectionManager>().Display(tourists,id);
+    }
+
     private void CheckIfStuck()
     {
         float distanceMoved = Vector3.Distance(transform.position, lastPosition);
@@ -79,6 +93,7 @@ public class Jeep : MonoBehaviour
             if (stuckTimer >= 6f) // Stuck for 6 seconds total
             {
                 Debug.LogWarning("Jeep confirmed stuck! Killing...");
+                gameManager.totalJeepCount--;
                 KillJeep();
             }
         }
@@ -111,9 +126,19 @@ public class Jeep : MonoBehaviour
         bool isAtHome = Vector2.Distance(transform.position, safariEntry) < 0.25f;
         if (isAtHome)
         {
-            gameManager.JeepIsHome(detectedAnimals.Count);
+            int differentAnimals = DifferentAnimalCount();
+            gameManager.JeepIsHome(detectedAnimals.Count, differentAnimals);
             KillJeep();
         }
+    }
+
+    private int DifferentAnimalCount()
+    {
+        return detectedAnimals
+        .Where(animal => animal != null)
+        .Select(animal => animal.tag)
+        .Distinct()
+        .Count();
     }
 
 
@@ -124,6 +149,7 @@ public class Jeep : MonoBehaviour
         {
             Debug.Log("Jeep has reached the exit");
             isReturningHome = true;
+            tourists = 0;
             agent.SetDestination(safariEntry);
         }
     }
