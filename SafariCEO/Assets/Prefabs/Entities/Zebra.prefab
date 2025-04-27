@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1193744decfa93346816b7a358808579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  diet: 0
+  diet: 1
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   restingColor: {r: 0, g: 0, b: 1, a: 1}
   eatingColor: {r: 0, g: 1, b: 0, a: 1}

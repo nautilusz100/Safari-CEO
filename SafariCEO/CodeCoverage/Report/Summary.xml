@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CoverageReport scope="Summary">
+  <Summary>
+    <Generatedon>4/27/2025 - 10:27:54 PM</Generatedon>
+    <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
+    <Assemblies>3</Assemblies>
+    <Classes>22</Classes>
+    <Files>22</Files>
+    <Coveredlines>36</Coveredlines>
+    <Uncoveredlines>2320</Uncoveredlines>
+    <Coverablelines>2356</Coverablelines>
+    <Totallines>3869</Totallines>
+    <Linecoverage>1.5</Linecoverage>
+    <Coveredbranches>0</Coveredbranches>
+    <Totalbranches>0</Totalbranches>
+    <Coveredmethods>9</Coveredmethods>
+    <Totalmethods>218</Totalmethods>
+    <Methodcoverage>4.1</Methodcoverage>
+  </Summary>
+  <Coverage>
+    <Assembly name="Assembly-CSharp" classes="20" coverage="1.5" coveredlines="33" coverablelines="2194" totallines="3597" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="203" methodcoverage="3.9">
+      <Class name="Animal" coverage="0" coveredlines="0" coverablelines="4" totallines="19" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
+      <Class name="CameraManager" coverage="9.2" coveredlines="6" coverablelines="65" totallines="107" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="8" methodcoverage="12.5" />
+      <Class name="Carnivorous" coverage="0" coveredlines="0" coverablelines="240" totallines="360" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="19" methodcoverage="0" />
+      <Class name="Draggable" coverage="0" coveredlines="0" coverablelines="80" totallines="159" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
+      <Class name="EnablePauseMenu" coverage="0" coveredlines="0" coverablelines="8" totallines="21" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
+      <Class name="Enemy" coverage="0" coveredlines="0" coverablelines="8" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
+      <Class name="GameManager" coverage="5.3" coveredlines="18" coverablelines="337" totallines="559" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="39" methodcoverage="12.8" />
+      <Class name="GameSettings" coverage="0" coveredlines="0" coverablelines="1" totallines="8" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
+      <Class name="gameUIButtonsManager" coverage="0.6" coveredlines="1" coverablelines="151" totallines="252" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="15" methodcoverage="6.6" />
+      <Class name="Herbivore" coverage="0" coveredlines="0" coverablelines="380" totallines="599" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="24" methodcoverage="0" />
+      <Class name="HerdMemberData" coverage="0" coveredlines="0" coverablelines="6" totallines="15" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="12" methodcoverage="0" />
+      <Class name="Jeep" coverage="0" coveredlines="0" coverablelines="167" totallines="259" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="18" methodcoverage="0" />
+      <Class name="MainMenu" coverage="0" coveredlines="0" coverablelines="109" totallines="185" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="10" methodcoverage="0" />
+      <Class name="PauseMenu" coverage="0" coveredlines="0" coverablelines="45" totallines="84" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
+      <Class name="Player" coverage="0" coveredlines="0" coverablelines="62" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
+      <Class name="SafariMap" coverage="1.7" coveredlines="8" coverablelines="455" totallines="679" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="20" methodcoverage="5" />
+      <Class name="ShopElement" coverage="0" coveredlines="0" coverablelines="6" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
+      <Class name="SlowZoneHandler" coverage="0" coveredlines="0" coverablelines="23" totallines="48" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
+      <Class name="Tile" coverage="0" coveredlines="0" coverablelines="42" totallines="88" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
+      <Class name="TileEventArgs" coverage="0" coveredlines="0" coverablelines="5" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
+    </Assembly>
+    <Assembly name="Assembly-CSharp-Editor" classes="1" coverage="0" coveredlines="0" coverablelines="159" totallines="262" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="14" methodcoverage="0">
+      <Class name="BuildCommand" coverage="0" coveredlines="0" coverablelines="159" totallines="262" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="14" methodcoverage="0" />
+    </Assembly>
+    <Assembly name="EditMode" classes="1" coverage="100" coveredlines="3" coverablelines="3" totallines="10" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100">
+      <Class name="SanityTest" coverage="100" coveredlines="3" coverablelines="3" totallines="10" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
+    </Assembly>
+  </Coverage>
+</CoverageReport>

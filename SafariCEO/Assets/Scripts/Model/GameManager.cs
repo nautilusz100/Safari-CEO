@@ -277,7 +277,11 @@ public class GameManager : MonoBehaviour
 
                         Vector2 tilePosition = hit.collider.gameObject.transform.position;
                         currentMap.ChangeTileToRoad(tilePosition);
-
+                        Tile tile = hit.transform.gameObject.GetComponent<Tile>();
+                        if (tile != null)
+                        {
+                            if (tile.isLocked) return;
+                        }
                         Money = Money -roadPrice;
                         navMeshSurface.UpdateNavMesh(navMeshSurface.navMeshData);
                     }
@@ -289,7 +293,11 @@ public class GameManager : MonoBehaviour
                 {
                     // Raycast from camera position
                     RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
+                    Tile tile = hit.transform.gameObject.GetComponent<Tile>();
+                    if (tile != null)
+                    {
+                        if (tile.isLocked) return;
+                    }
                     int price = 0;
 
                     switch (IsBuilding)

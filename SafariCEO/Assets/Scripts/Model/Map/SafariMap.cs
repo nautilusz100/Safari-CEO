@@ -35,7 +35,6 @@ public class SafariMap : MonoBehaviour
     // Jeep
     public GameObject prefab_jeep;
 
-
     public Vector2 map_dimensions = new Vector2(160, 90);
 
     List<List<int>> noise_grid = new List<List<int>>();
@@ -241,10 +240,10 @@ public class SafariMap : MonoBehaviour
         Vector2Int left = new Vector2Int(tilePosition.x - 1, tilePosition.y);
         Vector2Int right = new Vector2Int(tilePosition.x + 1, tilePosition.y);
         // Ellenőrizzük a szomszédos tile-ok típusát
-        bool upTile = IsRoad(up)        || tile_grid[up.x][up.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
-        bool downTile = IsRoad(down)    || tile_grid[down.x][down.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
-        bool leftTile = IsRoad(left)    || tile_grid[left.x][left.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
-        bool rightTile = IsRoad(right)  || tile_grid[right.x][right.y].GetComponent<Tile>().Type == Tile.ShopType.MainBuilding;
+        bool upTile = IsRoad(up) || IsMainBuilding(up);
+        bool downTile = IsRoad(down) || IsMainBuilding(down);
+        bool leftTile = IsRoad(left) || IsMainBuilding(left);
+        bool rightTile = IsRoad(right) || IsMainBuilding(right);
         Debug.Log("Road u: " + upTile + " d" + downTile + " l" + leftTile+  " r" + rightTile);
         // Új út prefab kiválasztása a szomszédos tile-ok alapján
         GameObject selectedPrefab = prefab_road1010; // Alapértelmezett prefab
@@ -323,7 +322,21 @@ public class SafariMap : MonoBehaviour
             if (tile != null)
             {
                 Tile tileComponent = tile.GetComponent<Tile>();
-                return tileComponent != null && tileComponent.Type == Tile.ShopType.Road;
+                return tileComponent.Type == Tile.ShopType.Road;
+            }
+        }
+        return false;
+    }
+
+    private bool IsMainBuilding(Vector2Int position)
+    {
+        if (position.x >= 0 && position.x < tile_grid.Count && position.y >= 0 && position.y < tile_grid[0].Count)
+        {
+            GameObject tile = tile_grid[position.x][position.y];
+            if (tile != null)
+            {
+                Tile tileComponent = tile.GetComponent<Tile>();
+                return tileComponent.Type == Tile.ShopType.MainBuilding;
             }
         }
         return false;

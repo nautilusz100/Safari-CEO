@@ -1,0 +1,47 @@
+{
+  "summary": {
+    "generatedon": "2025-04-27T20:27:54Z",
+    "parser": "MultiReportParser (2x OpenCoverParser)",
+    "assemblies": 3,
+    "classes": 22,
+    "files": 22,
+    "coveredlines": 36,
+    "uncoveredlines": 2320,
+    "coverablelines": 2356,
+    "totallines": 3869,
+    "linecoverage": 1.5,
+    "coveredbranches": 0,
+    "totalbranches": 0,
+    "coveredmethods": 9,
+    "totalmethods": 218,
+    "methodcoverage": 4.1
+ },
+  "coverage": {
+    "assemblies": [
+      { "name": "Assembly-CSharp", "classes": 20, "coverage": 1.5, "coveredlines": 33, "coverablelines": 2194, "totallines": 3597, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 3.9, "coveredmethods": 8, "totalmethods": 203, "classesinassembly": [
+        { "name": "Animal", "coverage": 0, "coveredlines": 0, "coverablelines": 4, "totallines": 19, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
+        { "name": "CameraManager", "coverage": 9.2, "coveredlines": 6, "coverablelines": 65, "totallines": 107, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 12.5, "coveredmethods": 1, "totalmethods": 8 },
+        { "name": "Carnivorous", "coverage": 0, "coveredlines": 0, "coverablelines": 240, "totallines": 360, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 19 },
+        { "name": "Draggable", "coverage": 0, "coveredlines": 0, "coverablelines": 80, "totallines": 159, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 7 },
+        { "name": "EnablePauseMenu", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 21, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
+        { "name": "Enemy", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 24, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
+        { "name": "GameManager", "coverage": 5.3, "coveredlines": 18, "coverablelines": 337, "totallines": 559, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 12.8, "coveredmethods": 5, "totalmethods": 39 },
+        { "name": "GameSettings", "coverage": 0, "coveredlines": 0, "coverablelines": 1, "totallines": 8, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
+        { "name": "gameUIButtonsManager", "coverage": 0.6, "coveredlines": 1, "coverablelines": 151, "totallines": 252, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 6.6, "coveredmethods": 1, "totalmethods": 15 },
+        { "name": "Herbivore", "coverage": 0, "coveredlines": 0, "coverablelines": 380, "totallines": 599, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 24 },
+        { "name": "HerdMemberData", "coverage": 0, "coveredlines": 0, "coverablelines": 6, "totallines": 15, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 12 },
+        { "name": "Jeep", "coverage": 0, "coveredlines": 0, "coverablelines": 167, "totallines": 259, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 18 },
+        { "name": "MainMenu", "coverage": 0, "coveredlines": 0, "coverablelines": 109, "totallines": 185, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 10 },
+        { "name": "PauseMenu", "coverage": 0, "coveredlines": 0, "coverablelines": 45, "totallines": 84, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
+        { "name": "Player", "coverage": 0, "coveredlines": 0, "coverablelines": 62, "totallines": 99, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 6 },
+        { "name": "SafariMap", "coverage": 1.7, "coveredlines": 8, "coverablelines": 455, "totallines": 679, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 5, "coveredmethods": 1, "totalmethods": 20 },
+        { "name": "ShopElement", "coverage": 0, "coveredlines": 0, "coverablelines": 6, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
+        { "name": "SlowZoneHandler", "coverage": 0, "coveredlines": 0, "coverablelines": 23, "totallines": 48, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 3 },
+        { "name": "Tile", "coverage": 0, "coveredlines": 0, "coverablelines": 42, "totallines": 88, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 8 },
+        { "name": "TileEventArgs", "coverage": 0, "coveredlines": 0, "coverablelines": 5, "totallines": 14, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 } ] },
+      { "name": "Assembly-CSharp-Editor", "classes": 1, "coverage": 0, "coveredlines": 0, "coverablelines": 159, "totallines": 262, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 14, "classesinassembly": [
+        { "name": "BuildCommand", "coverage": 0, "coveredlines": 0, "coverablelines": 159, "totallines": 262, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 14 } ] },
+      { "name": "EditMode", "classes": 1, "coverage": 100, "coveredlines": 3, "coverablelines": 3, "totallines": 10, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1, "classesinassembly": [
+        { "name": "SanityTest", "coverage": 100, "coveredlines": 3, "coverablelines": 3, "totallines": 10, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 } ] } ]
+  }
+}

@@ -144,6 +144,7 @@ public class gameUIButtonsManager : MonoBehaviour
         {
             enableShop.SetActive(false);
             currentShopType = ShopTypes.NONE;
+            gameManager.IsBuilding = Tile.ShopType.None;
         }
         else
         {
