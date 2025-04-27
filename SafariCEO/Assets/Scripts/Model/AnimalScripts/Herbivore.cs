@@ -54,14 +54,20 @@ public class Herbivore : MonoBehaviour, IHasVision
     private Dictionary<GameObject, Vector3> spottedMates = new Dictionary<GameObject, Vector3>();
 
     private float mateDuration = 5f;
-    private float minMateAge = 80f;
+    private float minMateAge = 20f;
     public float mateTimer = 0f;
-    public float mateInterval = 100f;
+    public float mateInterval = 30f;
 
 
     public GameObject zebraPrefab;
     public GameObject giraffePrefab;
     public Sprite herdSprite;
+
+    // stuck check
+    private Vector3 lastPosition;
+    private float stuckTimer = 0f;
+    private float stuckCheckInterval = 5f; // Check every 2 seconds
+    private float minDistanceDelta = 0.5f; // Must move at least this much
 
 
     private void Start()
@@ -110,11 +116,12 @@ public class Herbivore : MonoBehaviour, IHasVision
 
         //InvokeRepeating("DecideNextAction", 0f, 2f);
         InvokeRepeating(nameof(UpdateVision), 0f, 0.5f);
+        InvokeRepeating("CheckIfStuck", stuckCheckInterval, stuckCheckInterval);
     }
 
     private void Update()
     {
-        if (!beingAttacked || !isMating)
+        if (!beingAttacked && !isMating)
         {
             // Aging
             age += Time.deltaTime;
@@ -176,6 +183,7 @@ public class Herbivore : MonoBehaviour, IHasVision
         else
         {
             agent.isStopped = true;
+            agent.ResetPath();
         }
 
 
@@ -183,6 +191,29 @@ public class Herbivore : MonoBehaviour, IHasVision
     public void SetVisionRadius(float radius)//IHasVision interface implementáció
     {
         visionRadius = radius;
+    }
+
+    private void CheckIfStuck()
+    {
+        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+
+        if (distanceMoved < minDistanceDelta)
+        {
+            stuckTimer += stuckCheckInterval;
+            Debug.Log("Animal might be stuck... (" + stuckTimer + "s)");
+
+            if (stuckTimer >= 20f) // Stuck for 6 seconds total
+            {
+                Debug.LogWarning("Animal confirmed stuck! Moving...");
+                MoveRandom();
+            }
+        }
+        else
+        {
+            stuckTimer = 0f; // Reset timer if moved enough
+        }
+
+        lastPosition = transform.position;
     }
 
     // Vision of the animal, adding tile to the explored list
@@ -326,7 +357,8 @@ public class Herbivore : MonoBehaviour, IHasVision
             .FirstOrDefault();
 
         // Ha a préda túl közel van (1 egységnél közelebb), mate
-        if (closestMate.Key != null && Vector3.Distance(transform.position, closestMate.Value) < 1f && age >= minMateAge && mateTimer >= mateInterval && !closestMate.Key.GetComponent<Herbivore>().isMating) //ha mature
+        if (closestMate.Key != null && Vector3.Distance(transform.position, closestMate.Value) < 1f &&
+            age >= minMateAge && mateTimer >= mateInterval && !closestMate.Key.GetComponent<Herbivore>().isMating) //ha mature
         {
             Debug.Log($"Try mate  (by mate closest): {closestMate.Key.name} pos: {closestMate.Value}");
             StartMating(closestMate.Key.transform);
@@ -341,6 +373,14 @@ public class Herbivore : MonoBehaviour, IHasVision
     private void StartMating(Transform mate)
     {
         if (mate == null) return;
+        currentTargetAnimal = mate.gameObject; 
+        Herbivore mateScript = mate.GetComponent<Herbivore>();
+
+        if (mateScript.mateTimer < mateInterval || mateScript.age < minMateAge || mateScript.isMating || mateScript == null)
+        {
+            MoveRandom(); // menjen kicsit arréb hogy új matet keressen majd
+            return;
+        }
 
         Debug.Log($"Started mating with: {mate.name}");
 
@@ -348,24 +388,29 @@ public class Herbivore : MonoBehaviour, IHasVision
         currentState = State.Mating;
         spriteRenderer.color = Color.magenta;
 
-        // Ragadozó mozgás leállítása
+        // kezdeményezõ megállítása
         agent.isStopped = true;
-        
-        // Préda mozgás letiltása (ha van NavMeshAgent-je)
-        Herbivore mateScript = mate.GetComponent<Herbivore>();
+        agent.ResetPath(); // <- Important! Cancel the current path completely.
+        agent.velocity = Vector3.zero; // <- Immediately stop any leftover movement.
+
+        isMating = true;
+
+        // Társ mozgás letiltása (ha van NavMeshAgent-je)
         if (mateScript != null)
         {
             mateScript.isMating = true; //megállítja havert
-            isMating = true; //megállítja magát
-            agent.isStopped = true; //leállítja magát
-            mateScript.agent.isStopped = true; //mate agent is stopped
+
+            mateScript.agent.isStopped = true;
+            mateScript.agent.ResetPath();
+            mateScript.agent.velocity = Vector3.zero;
+
         }
         else return;
 
 
         Debug.Log($"Stopped mate agent: mate: {mateScript.agent.isStopped} and me: {agent.isStopped}");
-        currentTargetAnimal = mate.gameObject; //valamiért újra be kell állítani, mert ha nincs akkor a préda nem tûnik el
         // 5 másodperc után vége az mate-nek
+        currentTargetAnimal = mate.gameObject;
         Invoke(nameof(FinishMating), mateDuration);
     }
     private void FinishMating()
@@ -373,10 +418,13 @@ public class Herbivore : MonoBehaviour, IHasVision
         if (currentTargetAnimal != null)
         {
             Debug.Log($"Finished mating: {currentTargetAnimal.name}");
-            currentTargetAnimal.GetComponent<Herbivore>().isMating = false;
-            currentTargetAnimal.GetComponent<Herbivore>().agent.isStopped = false; //mate agent is stopped
-            isMating = false;
+            // Társ statok resetelése
+            Herbivore targetScript = currentTargetAnimal.GetComponent<Herbivore>();
 
+            targetScript.isMating = false; //mate agent is stopped
+            targetScript.mateTimer = 0f; //mate timer reset
+            targetScript.agent.isStopped = false; //mate agent is stopped
+            targetScript.spriteRenderer.color = targetScript.normalColor; //mate agent is stopped
 
             Vector3 randomOffset = Random.insideUnitCircle * 1f;
             Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
@@ -404,8 +452,9 @@ public class Herbivore : MonoBehaviour, IHasVision
             }
         }
 
-        // Visszaállítások
+        // Kezdemményezõ statok resetelése
         agent.isStopped = false;
+        isMating = false;
         currentState = State.Rest;
         mateTimer = 0f;
         currentTargetAnimal = null;
@@ -551,21 +600,30 @@ public class Herbivore : MonoBehaviour, IHasVision
                 destination = matePosition + randomOffset;
 
                 //Debug.Log($"Moving towards mate: {oldestMate.name} at {matePosition}");
+                if (NavMesh.SamplePosition(destination, out NavMeshHit hit, moveRange, NavMesh.AllAreas))
+                {
+                    agent.SetDestination(hit.position);
+                }
             }
             else
             {
-                destination = Random.insideUnitSphere * moveRange;
-                destination += transform.position;
-                //Debug.Log($"Moving randomly to: {destination}");
-            }
-
-
-            if (NavMesh.SamplePosition(destination, out NavMeshHit hit, moveRange, NavMesh.AllAreas))
-            {
-                agent.SetDestination(hit.position);
+                MoveRandom();
             }
         }
     }
+
+    public void MoveRandom()
+    {
+        Vector3 destination = Vector3.zero;
+        destination = Random.insideUnitSphere * moveRange;
+        destination += transform.position;
+
+        if (NavMesh.SamplePosition(destination, out NavMeshHit hit, moveRange, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
+    }
+
 
     private Herbivore FindOldestSeenMate()
     {
