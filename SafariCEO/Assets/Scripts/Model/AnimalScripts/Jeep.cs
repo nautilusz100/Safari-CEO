@@ -1,15 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-/*
- TODO:
-    - Add animal detection logic
-    - Add post-ride satisfaction logic
-    - Add fail-safe incase jeep gets stuck
- */
+
 public class Jeep : MonoBehaviour
 {
     // general
@@ -111,11 +107,34 @@ public class Jeep : MonoBehaviour
         bool isAtHome = Vector2.Distance(transform.position, safariEntry) < 0.25f;
         if (isAtHome)
         {
-            gameManager.JeepIsHome(detectedAnimals.Count);
+            int differentAnimals = DifferentAnimalCount();
+            gameManager.JeepIsHome(detectedAnimals.Count, differentAnimals);
             KillJeep();
         }
     }
 
+    private int DifferentAnimalCount()
+    {
+        int count = 0;
+        List<string> animalTags = new List<string>();
+
+        foreach (var animal in detectedAnimals)
+        {
+            if (animal != null)
+            {
+                var tag = animal.tag;
+                if (animalTags.Contains(tag))
+                {
+                    count++;
+                }
+                else
+                {
+                    animalTags.Add(tag);
+                }
+            }
+        }
+        return count;
+    }
 
     private void AtExit()
     {

@@ -18,8 +18,8 @@ public class Carnivorous : MonoBehaviour, IHasVision
 
     // Movement parameters
     public float moveRange = 100f;
-    public float huntingSpeed = 5f;
-    public float normalSpeed = 3f;
+    public float huntingSpeed = 3f;
+    public float normalSpeed = 1f;
 
     // Perception
     public float visionRadius = 5f;
@@ -132,7 +132,6 @@ public class Carnivorous : MonoBehaviour, IHasVision
                 spottedPreyPositions[prey] = preyPosition;
                 Debug.Log($"Spotted prey: {prey.name} at {preyPosition}"); 
                 
-
             }
 
             Tile tile = hit.GetComponent<Tile>();

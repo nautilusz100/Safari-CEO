@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour
                 howManyVisitorsNeeded = 25;
                 howManyAnimalsNeededCarnivorous = 20;
                 howManyAnimalsNeededHerbivore = 20;
-                howManyDaysNeeded = 180;
+                howManyDaysNeeded = 90;
                 howMuchMoneyNeeded = 2000;
                 break;
             case Difficulty.Medium:
@@ -200,7 +200,7 @@ public class GameManager : MonoBehaviour
                 howManyVisitorsNeeded = 50;
                 howManyAnimalsNeededCarnivorous = 30;
                 howManyAnimalsNeededHerbivore = 30;
-                howManyDaysNeeded = 270;
+                howManyDaysNeeded = 180;
                 howMuchMoneyNeeded = 3000;
                 break;
             case Difficulty.Hard:
@@ -242,7 +242,6 @@ public class GameManager : MonoBehaviour
             HasLost = true;
             endGameScreen.SetActive(true);
         }
-
     }
 
 
@@ -347,8 +346,6 @@ public class GameManager : MonoBehaviour
         }
 
         WinningConditionCheck(); // Check for winning conditions
-
-
     }
 
     private void AttemptVisitorSpawn()
@@ -377,12 +374,12 @@ public class GameManager : MonoBehaviour
         jeepCount--;
     }
 
-    public void JeepIsHome(int animalCount)
+    public void JeepIsHome(int animalCount, int differentAnimals)
     {
-        
+        Debug.Log(differentAnimals + " different animals seen by the visitor.");
         Debug.Log("Visitor seen this many animals: " + animalCount);
         // Review calculation
-        int review = CalculateReview(animalCount);
+        int review = CalculateReview(animalCount, differentAnimals);
         if (satisfaction == 0)
         {
             satisfaction = review;
@@ -395,9 +392,27 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private int CalculateReview(int animalCount)
+    private int CalculateReview(int animalCount, int differentAnimals)
     {
         int difficultyAdjustment = 0;
+
+        switch(differentAnimals)
+        {
+            case 1:
+                animalCount = (int)(animalCount * 0.5);
+                break;
+            case 2:
+                break;
+            case 3:
+                animalCount = animalCount * 2;
+                break;
+            case 4:
+                animalCount = animalCount * 3;
+                break;
+            default:
+                break;
+        }
+
         switch (gameDifficulty)
         {
             case Difficulty.Easy:

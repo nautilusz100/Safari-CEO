@@ -17,7 +17,7 @@ public class Herbivore : MonoBehaviour, IHasVision
 
     // Movement parameters
     public float moveRange = 100f;
-    public float normalSpeed = 3f;
+    public float normalSpeed = 1f;
 
     // Perception
     public float visionRadius = 5f;
@@ -189,6 +189,7 @@ public class Herbivore : MonoBehaviour, IHasVision
     private void UpdateVision()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, visionRadius);
+        spottedMates = spottedMates.Where(p => p.Key != null).ToDictionary(p => p.Key, p => p.Key.transform.position); //ha már nem létezik a játékban, akkor törli a szótárból
         foreach (var hit in hits)
         {
             if (hit.gameObject == this.gameObject)
@@ -204,13 +205,11 @@ public class Herbivore : MonoBehaviour, IHasVision
                 Vector3 matePosition = mate.transform.position;
 
                 spottedMates[mate] = matePosition;
-                Debug.Log($"Spotted mate: {mate.name} at {matePosition}");
             }
         }
     }
     private void DecideNextAction()
     {
-        Debug.Log($"Current state: {currentState}");
         // Set State
         if (moveCoroutine != null)
             return;
@@ -237,21 +236,23 @@ public class Herbivore : MonoBehaviour, IHasVision
                 this.agent.isStopped = false;
                 spriteRenderer.color = normalColor;
                 MoveTowardsHerdOrRandom();
-                Debug.Log(transform.name + " is wandering.");
                 break;
 
             case State.SearchFood:
                 this.agent.isStopped = false;
                 spriteRenderer.color = searchingColor;
-
                 currentTarget = FindClosestFood();
                 if (currentTarget != null)
                 {
                     Vector3 randomOffset = Random.insideUnitCircle;
-                    agent.SetDestination(currentTarget.transform.position+randomOffset);
+                    agent.SetDestination(currentTarget.transform.position + randomOffset);
+                    if (moveCoroutine != null) // ha már fut egy coroutine, akkor leállítja
+                    {
+                        StopCoroutine(moveCoroutine);
+                        moveCoroutine = null;
+                    }
                     moveCoroutine = StartCoroutine(CheckIfReachedDestination(State.Eating));
-                    Debug.Log("Corutin called food" + moveCoroutine);
-
+                    Debug.Log("Coroutine started for food");
                 }
                 else
                 {
@@ -263,12 +264,16 @@ public class Herbivore : MonoBehaviour, IHasVision
             case State.SearchWater:
                 this.agent.isStopped = false;
                 spriteRenderer.color = searchingColor;
-
                 currentTarget = FindClosestWater();
                 if (currentTarget != null)
                 {
-                    Vector3 randomOffset = Random.insideUnitCircle; 
+                    Vector3 randomOffset = Random.insideUnitCircle;
                     agent.SetDestination(currentTarget.transform.position + randomOffset);
+                    if (moveCoroutine != null)
+                    {
+                        StopCoroutine(moveCoroutine);
+                        moveCoroutine = null;
+                    }
                     moveCoroutine = StartCoroutine(CheckIfReachedDestination(State.Drinking));
                 }
                 else
@@ -321,7 +326,7 @@ public class Herbivore : MonoBehaviour, IHasVision
             .FirstOrDefault();
 
         // Ha a préda túl közel van (1 egységnél közelebb), mate
-        if (closestMate.Key != null && Vector3.Distance(transform.position, closestMate.Value) < 1f && age >= minMateAge && mateTimer >= mateInterval) //ha mature
+        if (closestMate.Key != null && Vector3.Distance(transform.position, closestMate.Value) < 1f && age >= minMateAge && mateTimer >= mateInterval && !closestMate.Key.GetComponent<Herbivore>().isMating) //ha mature
         {
             Debug.Log($"Try mate  (by mate closest): {closestMate.Key.name} pos: {closestMate.Value}");
             StartMating(closestMate.Key.transform);
@@ -330,7 +335,7 @@ public class Herbivore : MonoBehaviour, IHasVision
         {
             agent.SetDestination(closestMate.Value);
         }
-        Debug.Log($"Closest mate: {closestMate.Key.name} at {closestMate.Value}");
+        //Debug.Log($"Closest mate: {closestMate.Key.name} at {closestMate.Value}");
 
     }
     private void StartMating(Transform mate)
@@ -347,12 +352,20 @@ public class Herbivore : MonoBehaviour, IHasVision
         agent.isStopped = true;
         
         // Préda mozgás letiltása (ha van NavMeshAgent-je)
-        NavMeshAgent mateAgent = mate.GetComponent<NavMeshAgent>();
         Herbivore mateScript = mate.GetComponent<Herbivore>();
-        if (mateAgent != null) mateScript.isMating = true; //megállítja
-        Debug.Log($"Stopped mate agent: {mate.name}");
+        if (mateScript != null)
+        {
+            mateScript.isMating = true; //megállítja havert
+            isMating = true; //megállítja magát
+            agent.isStopped = true; //leállítja magát
+            mateScript.agent.isStopped = true; //mate agent is stopped
+        }
+        else return;
+
+
+        Debug.Log($"Stopped mate agent: mate: {mateScript.agent.isStopped} and me: {agent.isStopped}");
         currentTargetAnimal = mate.gameObject; //valamiért újra be kell állítani, mert ha nincs akkor a préda nem tûnik el
-        // 10 másodperc után vége az evésnek
+        // 5 másodperc után vége az mate-nek
         Invoke(nameof(FinishMating), mateDuration);
     }
     private void FinishMating()
@@ -361,9 +374,11 @@ public class Herbivore : MonoBehaviour, IHasVision
         {
             Debug.Log($"Finished mating: {currentTargetAnimal.name}");
             currentTargetAnimal.GetComponent<Herbivore>().isMating = false;
+            currentTargetAnimal.GetComponent<Herbivore>().agent.isStopped = false; //mate agent is stopped
+            isMating = false;
 
-            // Véletlenszerû pozíció generálása a szülõ közelében (pl. 1-3 egység távolságra)
-            Vector3 randomOffset = Random.insideUnitCircle * 2f; // 2 egység sugarú körben
+
+            Vector3 randomOffset = Random.insideUnitCircle * 1f;
             Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
 
             GameObject prefabToSpawn = null;
@@ -395,6 +410,8 @@ public class Herbivore : MonoBehaviour, IHasVision
         mateTimer = 0f;
         currentTargetAnimal = null;
 
+        spriteRenderer.color = normalColor;
+
     }
 
     private Tile FindClosestFood()
@@ -415,11 +432,18 @@ public class Herbivore : MonoBehaviour, IHasVision
 
     private IEnumerator CheckIfReachedDestination(State nextState)
     {
-        while (currentTarget != null &&
-               (agent.pathPending ||
-                agent.remainingDistance > agent.stoppingDistance))
+        while (currentTarget != null &&(agent.pathPending ||agent.remainingDistance > agent.stoppingDistance))
         {
-            yield return null;
+            if (currentTarget == null) //
+            {
+                Debug.Log($"{name} target tile is gone or depleted, searching for new target.");
+                currentTarget = null;
+                currentState = nextState == State.Eating ? State.SearchFood : State.SearchWater;
+                agent.isStopped = false;
+                moveCoroutine = null;
+                yield break;
+            }
+            yield return null; // wait for the next frame
         }
 
         if (currentTarget != null)
@@ -439,11 +463,21 @@ public class Herbivore : MonoBehaviour, IHasVision
 
     private void StartEating()
     {
-        spriteRenderer.color = eatingColor;
+        if (currentTarget == null) // safe check, hogy még létezik-e a tile
+        {
+            Debug.Log($"{name} arrived at food tile, but it's depleted or destroyed!");
+            currentTarget = null;
+            currentState = State.SearchFood;
+            agent.isStopped = false;
+            spriteRenderer.color = searchingColor;
+            moveCoroutine = null;
+            return;
+        }
 
+        spriteRenderer.color = eatingColor;
         currentState = State.Eating;
         agent.isStopped = true;
-        Debug.Log(transform.name + " is eating at " + currentTarget.name);
+        Debug.Log($"{name} is eating at {currentTarget.name}");
         Invoke(nameof(FinishEating), eatingDuration);
     }
 
@@ -512,17 +546,17 @@ public class Herbivore : MonoBehaviour, IHasVision
             if (oldestMate != null && age < oldestMate.age)
             {
                 Vector3 matePosition = oldestMate.transform.position;
-                Vector3 randomOffset = Random.insideUnitCircle * 2.5f;
+                Vector3 randomOffset = Random.insideUnitCircle * 2f;
 
                 destination = matePosition + randomOffset;
 
-                Debug.Log($"Moving towards mate: {oldestMate.name} at {matePosition}");
+                //Debug.Log($"Moving towards mate: {oldestMate.name} at {matePosition}");
             }
             else
             {
                 destination = Random.insideUnitSphere * moveRange;
                 destination += transform.position;
-                Debug.Log($"Moving randomly to: {destination}");
+                //Debug.Log($"Moving randomly to: {destination}");
             }
 
 
