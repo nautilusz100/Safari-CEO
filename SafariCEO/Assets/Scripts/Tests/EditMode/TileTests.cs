@@ -1,8 +1,7 @@
+using Assets.Scripts.Model.Map;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Assets.Scripts.Tests.EditMode
-{
     public class TileTests : MonoBehaviour
     {
         private GameObject tileObject;
@@ -142,4 +141,3 @@ namespace Assets.Scripts.Tests.EditMode
             Destroy(tileObject);
         }
     }
-}
