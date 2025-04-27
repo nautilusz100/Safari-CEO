@@ -204,9 +204,15 @@ MonoBehaviour:
   huntingColor: {r: 1, g: 0, b: 0, a: 1}
   uuid: 
   moveRange: 100
+<<<<<<< HEAD:SafariCEO/Assets/Prefabs/Entities/Lion.prefab
   huntingSpeed: 5
   normalSpeed: 3
   visionRadius: 15
+=======
+  huntingSpeed: 3
+  normalSpeed: 1
+  visionRadius: 5
+>>>>>>> Advanced-Animal-Script:SafariCEO/Assets/Prefabs/Entities/lion_prefeab_mov.prefab
   hungerInterval: 120
   thirstInterval: 90
   starvationTime: 300
@@ -229,7 +235,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8858ed646a0dfda4499810152771ad4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD:SafariCEO/Assets/Prefabs/Entities/Lion.prefab
   slowedSpeedWater: 2
   slowedSpeedHills: 1.5
+=======
+  slowedSpeedWater: 0.5
+  slowedSpeedHills: 0.7
+>>>>>>> Advanced-Animal-Script:SafariCEO/Assets/Prefabs/Entities/lion_prefeab_mov.prefab
   visionRadiusNormal: 5
   visionRadiusHills: 10

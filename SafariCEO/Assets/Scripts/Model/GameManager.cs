@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
                 howManyVisitorsNeeded = 25;
                 howManyAnimalsNeededCarnivorous = 20;
                 howManyAnimalsNeededHerbivore = 20;
-                howManyDaysNeeded = 180;
+                howManyDaysNeeded = 90;
                 howMuchMoneyNeeded = 2000;
                 break;
             case Difficulty.Medium:
@@ -201,7 +201,7 @@ public class GameManager : MonoBehaviour
                 howManyVisitorsNeeded = 50;
                 howManyAnimalsNeededCarnivorous = 30;
                 howManyAnimalsNeededHerbivore = 30;
-                howManyDaysNeeded = 270;
+                howManyDaysNeeded = 180;
                 howMuchMoneyNeeded = 3000;
                 break;
             case Difficulty.Hard:
@@ -243,7 +243,6 @@ public class GameManager : MonoBehaviour
             HasLost = true;
             endGameScreen.SetActive(true);
         }
-
     }
 
 
@@ -349,8 +348,6 @@ public class GameManager : MonoBehaviour
         }
 
         WinningConditionCheck(); // Check for winning conditions
-
-
     }
 
     private void AttemptVisitorSpawn()
@@ -400,6 +397,7 @@ public class GameManager : MonoBehaviour
     }
 
     private int CalculateReview(int animalCount, int differentAnimals)
+<<<<<<< HEAD
     {
         int difficultyAdjustment = 0;
 
@@ -442,8 +440,28 @@ public class GameManager : MonoBehaviour
     }
 
     private int CalculateReview(int animalCount)
+=======
+>>>>>>> Advanced-Animal-Script
     {
         int difficultyAdjustment = 0;
+
+        switch(differentAnimals)
+        {
+            case 1:
+                animalCount = (int)(animalCount * 0.5);
+                break;
+            case 2:
+                break;
+            case 3:
+                animalCount = animalCount * 2;
+                break;
+            case 4:
+                animalCount = animalCount * 3;
+                break;
+            default:
+                break;
+        }
+
         switch (gameDifficulty)
         {
             case Difficulty.Easy:

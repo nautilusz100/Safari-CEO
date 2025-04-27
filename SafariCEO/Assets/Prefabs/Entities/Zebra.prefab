@@ -193,8 +193,8 @@ MonoBehaviour:
   searchingColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   uuid: 
   moveRange: 100
-  normalSpeed: 3
-  visionRadius: 10
+  normalSpeed: 1
+  visionRadius: 5
   hungerInterval: 120
   thirstInterval: 90
   starvationTime: 300
@@ -209,11 +209,9 @@ MonoBehaviour:
   isMating: 0
   mateTimer: 0
   mateInterval: 100
-  zebraPrefab: {fileID: 5855485762125835324}
-  giraffePrefab: {fileID: 5855485762125835324, guid: abe507b1e91a5834bb0a6dc6ac6aeab1, type: 3}
+  zebraPrefab: {fileID: 0}
+  giraffePrefab: {fileID: 0}
   herdSprite: {fileID: 0}
-  isInHerd: 0
-  herdMembersData: []
 --- !u!114 &1748907634682305134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8858ed646a0dfda4499810152771ad4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slowedSpeedWater: 2
-  slowedSpeedHills: 1.5
+  slowedSpeedWater: 0.5
+  slowedSpeedHills: 0.7
   visionRadiusNormal: 5
   visionRadiusHills: 10

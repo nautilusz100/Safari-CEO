@@ -5,12 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-/*
- TODO:
-    - Add animal detection logic
-    - Add post-ride satisfaction logic
-    - Add fail-safe incase jeep gets stuck
- */
+
 public class Jeep : MonoBehaviour
 {
     // general
@@ -134,6 +129,7 @@ public class Jeep : MonoBehaviour
 
     private int DifferentAnimalCount()
     {
+<<<<<<< HEAD
         return detectedAnimals
         .Where(animal => animal != null)
         .Select(animal => animal.tag)
@@ -141,6 +137,28 @@ public class Jeep : MonoBehaviour
         .Count();
     }
 
+=======
+        int count = 0;
+        List<string> animalTags = new List<string>();
+
+        foreach (var animal in detectedAnimals)
+        {
+            if (animal != null)
+            {
+                var tag = animal.tag;
+                if (animalTags.Contains(tag))
+                {
+                    count++;
+                }
+                else
+                {
+                    animalTags.Add(tag);
+                }
+            }
+        }
+        return count;
+    }
+>>>>>>> Advanced-Animal-Script
 
     private void AtExit()
     {
