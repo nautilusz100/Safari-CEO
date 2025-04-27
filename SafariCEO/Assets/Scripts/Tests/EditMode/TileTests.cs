@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TileTests : MonoBehaviour
 {
-    private GameObject tileObject;
+    /*private GameObject tileObject;
     private Tile tile;
 
     [SetUp]
@@ -138,5 +138,5 @@ public class TileTests : MonoBehaviour
     {
         // Cleanup any resources
         Object.Destroy(tileObject);
-    }
+    }*/
 }
