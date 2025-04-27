@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
                 howManyVisitorsNeeded = 25;
                 howManyAnimalsNeededCarnivorous = 20;
                 howManyAnimalsNeededHerbivore = 20;
-                howManyDaysNeeded = 180;
+                howManyDaysNeeded = 90;
                 howMuchMoneyNeeded = 2000;
                 break;
             case Difficulty.Medium:
@@ -201,7 +201,7 @@ public class GameManager : MonoBehaviour
                 howManyVisitorsNeeded = 50;
                 howManyAnimalsNeededCarnivorous = 30;
                 howManyAnimalsNeededHerbivore = 30;
-                howManyDaysNeeded = 270;
+                howManyDaysNeeded = 180;
                 howMuchMoneyNeeded = 3000;
                 break;
             case Difficulty.Hard:
@@ -243,7 +243,6 @@ public class GameManager : MonoBehaviour
             HasLost = true;
             endGameScreen.SetActive(true);
         }
-
     }
 
 
@@ -357,8 +356,6 @@ public class GameManager : MonoBehaviour
         }
 
         WinningConditionCheck(); // Check for winning conditions
-
-
     }
 
     private void AttemptVisitorSpawn()
@@ -411,7 +408,7 @@ public class GameManager : MonoBehaviour
     {
         int difficultyAdjustment = 0;
 
-        switch (differentAnimals)
+        switch(differentAnimals)
         {
             case 1:
                 animalCount = (int)(animalCount * 0.5);
@@ -428,30 +425,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        switch (gameDifficulty)
-        {
-            case Difficulty.Easy:
-                difficultyAdjustment = 0;
-                break;
-            case Difficulty.Medium:
-                difficultyAdjustment = 3;
-                break;
-            case Difficulty.Hard:
-                difficultyAdjustment = 5;
-                break;
-        }
-
-        if (animalCount < (1 + difficultyAdjustment)) return 1;
-        if (animalCount < (3 + difficultyAdjustment)) return 2;
-        if (animalCount < (5 + difficultyAdjustment)) return 3;
-        if (animalCount < (7 + difficultyAdjustment)) return 4;
-        if (animalCount < (10 + difficultyAdjustment)) return 5;
-        return 0;
-    }
-
-    private int CalculateReview(int animalCount)
-    {
-        int difficultyAdjustment = 0;
         switch (gameDifficulty)
         {
             case Difficulty.Easy:

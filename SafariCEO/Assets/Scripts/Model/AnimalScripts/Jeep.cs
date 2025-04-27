@@ -5,12 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-/*
- TODO:
-    - Add animal detection logic
-    - Add post-ride satisfaction logic
-    - Add fail-safe incase jeep gets stuck
- */
+
 public class Jeep : MonoBehaviour
 {
     // general
