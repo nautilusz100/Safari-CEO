@@ -1,3 +1,4 @@
+using Assets.Scripts.Model.Map;
 using UnityEngine;
 using UnityEngine.AI;
 using static Tile;

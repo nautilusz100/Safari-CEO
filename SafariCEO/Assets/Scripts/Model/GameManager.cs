@@ -11,6 +11,7 @@ using System;
 using System.Net;
 using UnityEngine.UIElements;
 using static Draggable;
+using Assets.Scripts.Model.Map;
 //https://www.flaticon.com/free-icons/next icons credit - Flaticon
 
 public class GameManager : MonoBehaviour

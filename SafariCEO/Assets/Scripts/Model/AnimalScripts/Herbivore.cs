@@ -7,6 +7,7 @@ using static Tile;
 using System;
 using Random = UnityEngine.Random;
 using UnityEngine.EventSystems;
+using Assets.Scripts.Model.Map;
 
 public class Herbivore : Animal, IHasVision
 {
