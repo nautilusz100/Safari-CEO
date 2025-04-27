@@ -50,7 +50,7 @@ public class Herbivore : Animal, IHasVision
     private Tile currentTarget = null;
     public enum StateHerbivore { Wander, SearchFood, SearchWater, Eating, Drinking, Rest, Mature, FindMate, Mating }
 
-    private StateHerbivore currentState = StateHerbivore.Wander;
+    [SerializeField]private StateHerbivore currentState = StateHerbivore.Wander;
 
     public StateHerbivore CurrentState { get { return currentState; } }
     public bool beingAttacked = false;
@@ -463,6 +463,7 @@ public class Herbivore : Animal, IHasVision
             targetScript.isMating = false; //mate agent is stopped
             targetScript.mateTimer = 0f; //mate timer reset
             targetScript.agent.isStopped = false; //mate agent is stopped
+            targetScript.currentState = StateHerbivore.Rest; //mate agent is stopped
             targetScript.spriteRenderer.color = targetScript.normalColor; //mate agent is stopped
 
             Vector3 randomOffset = Random.insideUnitCircle * 1f;
@@ -496,9 +497,12 @@ public class Herbivore : Animal, IHasVision
         isMating = false;
         currentState = StateHerbivore.Rest;
         mateTimer = 0f;
+        Debug.Log("Target is stopped: " + currentTargetAnimal.GetComponent<Herbivore>().agent.isStopped);
+        Debug.Log("agent is stopped: " + agent.isStopped);
         currentTargetAnimal = null;
 
         spriteRenderer.color = normalColor;
+
 
     }
 

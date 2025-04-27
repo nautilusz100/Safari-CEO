@@ -229,12 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8858ed646a0dfda4499810152771ad4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD:SafariCEO/Assets/Prefabs/Entities/Fox.prefab
-  slowedSpeedWater: 2
-  slowedSpeedHills: 1.5
-=======
   slowedSpeedWater: 0.5
   slowedSpeedHills: 0.7
->>>>>>> Advanced-Animal-Script:SafariCEO/Assets/Prefabs/Entities/fox_prefab_mov.prefab
   visionRadiusNormal: 5
   visionRadiusHills: 10

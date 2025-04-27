@@ -129,7 +129,6 @@ public class Jeep : MonoBehaviour
 
     private int DifferentAnimalCount()
     {
-<<<<<<< HEAD
         return detectedAnimals
         .Where(animal => animal != null)
         .Select(animal => animal.tag)
@@ -137,28 +136,6 @@ public class Jeep : MonoBehaviour
         .Count();
     }
 
-=======
-        int count = 0;
-        List<string> animalTags = new List<string>();
-
-        foreach (var animal in detectedAnimals)
-        {
-            if (animal != null)
-            {
-                var tag = animal.tag;
-                if (animalTags.Contains(tag))
-                {
-                    count++;
-                }
-                else
-                {
-                    animalTags.Add(tag);
-                }
-            }
-        }
-        return count;
-    }
->>>>>>> Advanced-Animal-Script
 
     private void AtExit()
     {

@@ -397,51 +397,6 @@ public class GameManager : MonoBehaviour
     }
 
     private int CalculateReview(int animalCount, int differentAnimals)
-<<<<<<< HEAD
-    {
-        int difficultyAdjustment = 0;
-
-        switch (differentAnimals)
-        {
-            case 1:
-                animalCount = (int)(animalCount * 0.5);
-                break;
-            case 2:
-                break;
-            case 3:
-                animalCount = animalCount * 2;
-                break;
-            case 4:
-                animalCount = animalCount * 3;
-                break;
-            default:
-                break;
-        }
-
-        switch (gameDifficulty)
-        {
-            case Difficulty.Easy:
-                difficultyAdjustment = 0;
-                break;
-            case Difficulty.Medium:
-                difficultyAdjustment = 3;
-                break;
-            case Difficulty.Hard:
-                difficultyAdjustment = 5;
-                break;
-        }
-
-        if (animalCount < (1 + difficultyAdjustment)) return 1;
-        if (animalCount < (3 + difficultyAdjustment)) return 2;
-        if (animalCount < (5 + difficultyAdjustment)) return 3;
-        if (animalCount < (7 + difficultyAdjustment)) return 4;
-        if (animalCount < (10 + difficultyAdjustment)) return 5;
-        return 0;
-    }
-
-    private int CalculateReview(int animalCount)
-=======
->>>>>>> Advanced-Animal-Script
     {
         int difficultyAdjustment = 0;
 
