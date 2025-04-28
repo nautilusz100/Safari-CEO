@@ -44,8 +44,14 @@ public class gameUIButtonsManager : MonoBehaviour
     public event EventHandler JeepShopClicked;
     public event EventHandler ParkStatClicked;
 
+    bool testMode = false;
+    public void TestMode()
+    {
+        testMode = true;
+    }
     void Start()
     {
+        if (testMode) { return; }
         uIDocument = GetComponent<UIDocument>();
         if (uIDocument == null)
         {
@@ -93,6 +99,7 @@ public class gameUIButtonsManager : MonoBehaviour
 
     private void Update()
     {
+        if (testMode) return;
         if (enableParkStat.activeSelf)
         {
             UpdateSatisfactionIcon();
