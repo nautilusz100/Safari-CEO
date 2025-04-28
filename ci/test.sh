@@ -5,8 +5,7 @@ set -x
 echo "Testing for $TEST_PLATFORM"
 
 CODE_COVERAGE_PACKAGE="com.unity.testtools.codecoverage"
-PACKAGE_MANIFEST_PATH="$UNITY_DIR/Packages/manifest.json"
-
+PACKAGE_MANIFEST_PATH="Packages/manifest.json"
 
 ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' unity-editor} \
   -projectPath $UNITY_DIR \
