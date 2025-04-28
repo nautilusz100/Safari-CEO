@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<coverage version="1.0" date="2025-04-27_22-26-19" tag="">
-  <assembly name="EditMode">
-    <class name="SanityTest" coveredlines="3" coverablelines="3" totallines="10" coveredbranches="0" totalbranches="0" />
-  </assembly>
-</coverage>

@@ -194,8 +194,16 @@ public class Jeep : MonoBehaviour
     private void KillJeep()
     {
         Debug.Log("Jeep has been killed");
-        Destroy(gameObject);
+
+        #if UNITY_EDITOR
+            // In EditMode, use DestroyImmediate to prevent the warning
+            DestroyImmediate(gameObject);
+        #else
+            // In runtime, use Destroy normally
+            Destroy(gameObject);
+        #endif
     }
+
 
 
     private void AddToTraversedRoads(Tile tile)
