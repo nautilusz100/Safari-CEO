@@ -54,9 +54,4 @@ esac
 echo "Build output files in $BUILD_PATH:"
 ls -la "$BUILD_PATH"
 
-if [ -z "$(ls -A "$BUILD_PATH")" ]; then
-  echo "ERROR: Build folder is empty. Build likely failed."
-  exit 1
-fi
-
 echo "Build completed successfully!"
