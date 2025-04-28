@@ -203,7 +203,8 @@ MonoBehaviour:
   searchingColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   huntingColor: {r: 1, g: 0, b: 0, a: 1}
   uuid: 
-  moveRange: 100
+  moveRange: 10
+  herdOffset: 2
   huntingSpeed: 3
   normalSpeed: 1
   visionRadius: 5
@@ -217,6 +218,11 @@ MonoBehaviour:
   thirstTimer: 0
   age: 0
   maxAge: 1000
+  mateTimer: 0
+  mateInterval: 100
+  isMating: 0
+  lionPrefab: {fileID: 5312220684229478086, guid: 6b82723cd67f0eb42b7c1f534a12d5ae, type: 3}
+  foxPrefab: {fileID: 5312220684229478086}
 --- !u!114 &1923998233737064615
 MonoBehaviour:
   m_ObjectHideFlags: 0
