@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>2025. 04. 28. - 12:31:02</Generatedon>
-    <Parser>MultiReportParser (15x OpenCoverParser)</Parser>
+    <Generatedon>2025. 04. 28. - 14:04:09</Generatedon>
+    <Parser>MultiReportParser (19x OpenCoverParser)</Parser>
     <Assemblies>3</Assemblies>
-    <Classes>27</Classes>
-    <Files>27</Files>
-    <Coveredlines>185</Coveredlines>
-    <Uncoveredlines>2559</Uncoveredlines>
-    <Coverablelines>2744</Coverablelines>
-    <Totallines>4574</Totallines>
-    <Linecoverage>6.7</Linecoverage>
+    <Classes>29</Classes>
+    <Files>29</Files>
+    <Coveredlines>548</Coveredlines>
+    <Uncoveredlines>2328</Uncoveredlines>
+    <Coverablelines>2876</Coverablelines>
+    <Totallines>4798</Totallines>
+    <Linecoverage>19</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
-    <Coveredmethods>31</Coveredmethods>
-    <Totalmethods>256</Totalmethods>
-    <Methodcoverage>12.1</Methodcoverage>
+    <Coveredmethods>53</Coveredmethods>
+    <Totalmethods>264</Totalmethods>
+    <Methodcoverage>20</Methodcoverage>
   </Summary>
   <Coverage>
     <Assembly name="Assembly-CSharp" classes="1" coverage="0" coveredlines="0" coverablelines="22" totallines="39" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0">
       <Class name="MusicManager" coverage="0" coveredlines="0" coverablelines="22" totallines="39" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
     </Assembly>
-    <Assembly name="EditMode" classes="2" coverage="100" coveredlines="125" coverablelines="125" totallines="259" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="18" totalmethods="18" methodcoverage="100">
+    <Assembly name="EditMode" classes="4" coverage="81.3" coveredlines="209" coverablelines="257" totallines="483" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="26" totalmethods="26" methodcoverage="100">
+      <Class name="MinimapTests" coverage="100" coveredlines="56" coverablelines="56" totallines="116" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
+      <Class name="SafariMapTests" coverage="36.8" coveredlines="28" coverablelines="76" totallines="108" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="SanityTest" coverage="100" coveredlines="3" coverablelines="3" totallines="10" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="TileTests" coverage="100" coveredlines="122" coverablelines="122" totallines="249" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="17" totalmethods="17" methodcoverage="100" />
     </Assembly>
-    <Assembly name="ModelRef" classes="24" coverage="2.3" coveredlines="60" coverablelines="2597" totallines="4276" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="13" totalmethods="233" methodcoverage="5.5">
+    <Assembly name="ModelRef" classes="24" coverage="13" coveredlines="339" coverablelines="2597" totallines="4276" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="27" totalmethods="233" methodcoverage="11.5">
       <Class name="Animal" coverage="0" coveredlines="0" coverablelines="4" totallines="19" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
-      <Class name="Assets.Scripts.Model.Map.Minimap" coverage="0" coveredlines="0" coverablelines="22" totallines="72" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Assets.Scripts.Model.Map.SafariMap" coverage="0" coveredlines="0" coverablelines="455" totallines="681" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="20" methodcoverage="0" />
+      <Class name="Assets.Scripts.Model.Map.Minimap" coverage="100" coveredlines="22" coverablelines="22" totallines="72" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
+      <Class name="Assets.Scripts.Model.Map.SafariMap" coverage="56.4" coveredlines="257" coverablelines="455" totallines="681" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="12" totalmethods="20" methodcoverage="60" />
       <Class name="BuildCommand" coverage="0" coveredlines="0" coverablelines="159" totallines="262" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="14" methodcoverage="0" />
       <Class name="CameraManager" coverage="0" coveredlines="0" coverablelines="69" totallines="117" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
       <Class name="Carnivorous" coverage="0" coveredlines="0" coverablelines="240" totallines="360" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="19" methodcoverage="0" />

@@ -40,7 +40,7 @@ namespace Assets.Scripts.Model.Map
         public Vector2 map_dimensions = new Vector2(160, 90);
 
         List<List<int>> noise_grid = new List<List<int>>();
-        List<List<GameObject>> tile_grid = new List<List<GameObject>>();
+        public List<List<GameObject>> tile_grid = new List<List<GameObject>>();
         List<List<Vector2Int>> rivers = new List<List<Vector2Int>>();
         private Dictionary<Vector2Int, Tile.ShopType> originalTileTypes = new Dictionary<Vector2Int, Tile.ShopType>();
 

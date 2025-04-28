@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<coverage version="1.0" date="2025-04-28_13-47-53" tag="">
+  <assembly name="Assembly-CSharp">
+    <class name="MusicManager" coveredlines="0" coverablelines="22" totallines="39" coveredbranches="0" totalbranches="0" />
+  </assembly>
+  <assembly name="EditMode">
+    <class name="MinimapTests" coveredlines="56" coverablelines="56" totallines="116" coveredbranches="0" totalbranches="0" />
+    <class name="SanityTest" coveredlines="3" coverablelines="3" totallines="10" coveredbranches="0" totalbranches="0" />
+    <class name="TileTests" coveredlines="122" coverablelines="122" totallines="249" coveredbranches="0" totalbranches="0" />
+  </assembly>
+  <assembly name="ModelRef">
+    <class name="Animal" coveredlines="0" coverablelines="4" totallines="19" coveredbranches="0" totalbranches="0" />
+    <class name="Assets.Scripts.Model.Map.Minimap" coveredlines="22" coverablelines="22" totallines="72" coveredbranches="0" totalbranches="0" />
+    <class name="Assets.Scripts.Model.Map.SafariMap" coveredlines="8" coverablelines="455" totallines="681" coveredbranches="0" totalbranches="0" />
+    <class name="BuildCommand" coveredlines="0" coverablelines="159" totallines="262" coveredbranches="0" totalbranches="0" />
+    <class name="CameraManager" coveredlines="0" coverablelines="69" totallines="117" coveredbranches="0" totalbranches="0" />
+    <class name="Carnivorous" coveredlines="0" coverablelines="240" totallines="360" coveredbranches="0" totalbranches="0" />
+    <class name="Draggable" coveredlines="0" coverablelines="80" totallines="160" coveredbranches="0" totalbranches="0" />
+    <class name="EnablePauseMenu" coveredlines="0" coverablelines="8" totallines="21" coveredbranches="0" totalbranches="0" />
+    <class name="EndPopUpUiScript" coveredlines="0" coverablelines="29" totallines="60" coveredbranches="0" totalbranches="0" />
+    <class name="Enemy" coveredlines="0" coverablelines="8" totallines="24" coveredbranches="0" totalbranches="0" />
+    <class name="GameManager" coveredlines="18" coverablelines="321" totallines="535" coveredbranches="0" totalbranches="0" />
+    <class name="GameSettings" coveredlines="0" coverablelines="1" totallines="8" coveredbranches="0" totalbranches="0" />
+    <class name="gameUIButtonsManager" coveredlines="0" coverablelines="151" totallines="253" coveredbranches="0" totalbranches="0" />
+    <class name="Herbivore" coveredlines="0" coverablelines="469" totallines="697" coveredbranches="0" totalbranches="0" />
+    <class name="HerdMemberData" coveredlines="0" coverablelines="6" totallines="15" coveredbranches="0" totalbranches="0" />
+    <class name="InspectionManager" coveredlines="0" coverablelines="116" totallines="199" coveredbranches="0" totalbranches="0" />
+    <class name="Jeep" coveredlines="0" coverablelines="167" totallines="255" coveredbranches="0" totalbranches="0" />
+    <class name="MainMenu" coveredlines="0" coverablelines="109" totallines="185" coveredbranches="0" totalbranches="0" />
+    <class name="PauseMenu" coveredlines="0" coverablelines="45" totallines="84" coveredbranches="0" totalbranches="0" />
+    <class name="Player" coveredlines="0" coverablelines="62" totallines="100" coveredbranches="0" totalbranches="0" />
+    <class name="ShopElement" coveredlines="0" coverablelines="6" totallines="18" coveredbranches="0" totalbranches="0" />
+    <class name="SlowZoneHandler" coveredlines="0" coverablelines="23" totallines="49" coveredbranches="0" totalbranches="0" />
+    <class name="Tile" coveredlines="42" coverablelines="42" totallines="88" coveredbranches="0" totalbranches="0" />
+    <class name="TileEventArgs" coveredlines="0" coverablelines="5" totallines="14" coveredbranches="0" totalbranches="0" />
+  </assembly>
+</coverage>
