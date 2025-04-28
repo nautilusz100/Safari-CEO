@@ -18,10 +18,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public SafariMap map;
 
     private AnimalType animalType;
-    [SerializeField] private GameObject foxPrefab;
-    [SerializeField] private GameObject lionPrefab;
-    [SerializeField] private GameObject giraffePrefab;
-    [SerializeField] private GameObject zebraPrefab;
+    public GameObject foxPrefab;
+    [SerializeField] public GameObject lionPrefab;
+    [SerializeField] public GameObject giraffePrefab;
+    [SerializeField] public GameObject zebraPrefab;
     public enum AnimalType
     {
         Fox,

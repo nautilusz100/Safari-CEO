@@ -53,8 +53,8 @@ namespace Assets.Scripts.Model.Map
 
         public void CreateMap()
         {
-            x_offset = UnityEngine.Random.Range(0, 1000);
-            y_offset = UnityEngine.Random.Range(0, 1000);
+            x_offset = UnityEngine.Random.Range(-10000, 10000);
+            y_offset = UnityEngine.Random.Range(-10000, 10000);
             GenerateMap();
             GenerateMainBuilding();
         }
@@ -567,7 +567,6 @@ namespace Assets.Scripts.Model.Map
             double area = (double)map_dimensions.y * map_dimensions.x;
             int maxRivers = (int)Math.Round(area * 0.001);
             int riverNumber = UnityEngine.Random.Range(maxRivers / 2, maxRivers);
-            Console.WriteLine(riverNumber);
 
 
             Vector2Int regionSize = new Vector2Int((int)Math.Round(map_dimensions.x / maxRivers), (int)Math.Round(map_dimensions.y / maxRivers));
