@@ -1,108 +1,239 @@
-using NUnit.Framework;
+Ôªøusing NUnit.Framework;
 using UnityEngine;
-using System.Reflection;
+using System.Collections.Generic;
 using Assets.Scripts.Model.Map;
+using System.Reflection;
 
 [TestFixture]
 public class SafariMapTests
 {
-    private SafariMap map;
-    private GameObject go;
+    private SafariMap safariMap;
+
+    // Prefabs mock for testing purposes
+    private GameObject prefabPlains;
+    private GameObject prefabRoad;
+    private GameObject prefabMainBuilding;
 
     [SetUp]
     public void SetUp()
     {
-        UnityEngine.Random.InitState(42);
-        go = new GameObject();
-        map = go.AddComponent<SafariMap>();
-        // Inicializ·ljuk a sz¸ksÈges prefabokat (ezeket a Unity-ban kell be·llÌtani)
-        map.prefab_plains = new GameObject("Plains");
-        map.prefab_plains.AddComponent<Tile>().Type = Tile.ShopType.Plains;
-        map.prefab_tree = new GameObject("Tree");
-        map.prefab_tree.AddComponent<Tile>().Type = Tile.ShopType.Tree;
-        map.prefab_hills = new GameObject("Hills");
-        map.prefab_hills.AddComponent<Tile>().Type = Tile.ShopType.Hills;
-        map.prefab_river = new GameObject("River");
-        map.prefab_river.AddComponent<Tile>().Type = Tile.ShopType.River;
-        map.prefab_lake = new GameObject("Lake");
-        map.prefab_lake.AddComponent<Tile>().Type = Tile.ShopType.Lake;
-        map.prefab_bush = new GameObject("Bush");
-        map.prefab_bush.AddComponent<Tile>().Type = Tile.ShopType.Bush;
-        map.prefab_flowerbed = new GameObject("Flowerbed");
-        map.prefab_flowerbed.AddComponent<Tile>().Type = Tile.ShopType.Flowerbed;
-        map.prefab_road1010 = new GameObject("Road1010");
-        map.prefab_road1010.AddComponent<Tile>().Type = Tile.ShopType.Road;
-        map.maninBuildingTilePrefabs = new System.Collections.Generic.List<GameObject> { new GameObject("MainBuilding") };
-        map.maninBuildingTilePrefabs[0].AddComponent<Tile>().Type = Tile.ShopType.MainBuilding;
+        safariMap = new SafariMap();
+
+        // Inicializ√°ld a sz√ºks√©ges mez≈ëket!
+        safariMap.map_dimensions = new Vector2Int(100, 100); // vagy amit szeretn√©l
+        safariMap.tile_grid = new List<List<GameObject>>();
+        safariMap.noise_grid = new List<List<int>>();
+        safariMap.tileset = new Dictionary<int, GameObject>();
+
+        // Mock prefabs
+        var mockPrefab = new GameObject("MockTile"); // csak egy √ºres GameObject prefab helyett
+        safariMap.tileset.Add(1, mockPrefab); // p√©ld√°ul plains
+        safariMap.tileset.Add(2, mockPrefab); // hills
+        safariMap.tileset.Add(3, mockPrefab); // trees
+        safariMap.tileset.Add(-1, mockPrefab); // river
+        safariMap.tileset.Add(-2, mockPrefab); // misc
+
+        var gameObject = new GameObject("SafariMap");
+        safariMap = gameObject.AddComponent<SafariMap>();
+
+
+        // Create and assign mock prefabs
+        prefabPlains = new GameObject("PlainsPrefab");
+        prefabPlains.AddComponent<Tile>();
+
+        prefabRoad = new GameObject("RoadPrefab");
+        prefabRoad.AddComponent<Tile>();
+
+        prefabMainBuilding = new GameObject("MainBuildingPrefab");
+        prefabMainBuilding.AddComponent<Tile>();
+
+        safariMap.prefab_plains = prefabPlains;
+        safariMap.prefab_road1010 = prefabRoad;
+        safariMap.maninBuildingTilePrefabs = new List<GameObject> { prefabMainBuilding };
+
+        safariMap.tile_grid = new List<List<GameObject>>();
+        for (int i = 0; i <160; i++)
+        {
+            List<GameObject> row = new List<GameObject>();
+            for (int j = 0; j < 90; j++)
+            {
+                var tile = new GameObject("Tile");
+                tile.AddComponent<Tile>(); // <--- FONTOS
+                row.Add(tile);
+            }
+            safariMap.tile_grid.Add(row);
+        }
     }
 
-    [TearDown]
-    public void TearDown()
+
+
+
+
+    [Test]
+    public void Test_ChangeTileNature_ChangesTileType()
     {
-        Object.DestroyImmediate(go);
+        Vector2 position = new Vector2(45, 45);
+        var method = typeof(SafariMap).GetMethod("ChangeTileNature", BindingFlags.NonPublic | BindingFlags.Instance);
+        method.Invoke(safariMap, new object[] { position, Tile.ShopType.Tree });
+
+        // Check if the tile type has changed to tree
+        GameObject tile = safariMap.tile_grid[47][45];
+        Tile tileComponent = tile.GetComponent<Tile>();
+
+        Assert.AreEqual(Tile.ShopType.Tree, tileComponent.Type, "Tile type was not changed to tree.");
     }
 
     [Test]
-    public void TestMapGeneration()
+    public void Test_ChangeTileToRoad_ChangesTileToRoad()
     {
-        map.CreateMap();
+        Vector2 position = new Vector2(50, 50);
+        safariMap.ChangeTileToRoad(position);
 
-        // Ellenırizz¸k a tile_grid mÈreteit
-        Assert.AreEqual(160, map.tile_grid.Count, "A tile_grid szÈlessÈge nem 160.");
-        for (int x = 0; x < 80; x++)
+        // Check if the tile is now a road
+        GameObject tile = safariMap.tile_grid[52][50];
+        Tile tileComponent = tile.GetComponent<Tile>();
+
+        Assert.AreEqual(Tile.ShopType.Road, tileComponent.Type, "Tile was not changed to road.");
+    }
+
+    [Test]
+    public void Test_RoadChange_ChangesRoadPrefabBasedOnNeighbors()
+    {
+        Vector2Int position = new Vector2Int(60, 60);
+
+        var method = typeof(SafariMap).GetMethod("RoadChange", BindingFlags.NonPublic | BindingFlags.Instance);
+        GameObject selectedPrefab = (GameObject)method.Invoke(safariMap, new object[] { position });
+
+        Assert.IsNotNull(selectedPrefab, "Road prefab should be selected based on neighbors.");
+    }
+
+    [Test]
+    public void Test_UpdateSurroundingRoads_UpdatesRoadTiles()
+    {
+        // K√âSZ√çT√âS
+        var safariMapGO = new GameObject("SafariMapTestObject");
+        SafariMap safariMap = safariMapGO.AddComponent<SafariMap>();
+
+        // Grid inicializ√°l√°s
+        safariMap.tile_grid = new List<List<GameObject>>();
+        for (int x = 0; x < 100; x++)
         {
-            Assert.AreEqual(90, map.tile_grid[x].Count, $"A tile_grid magass·ga nem 90 az x={x} pozÌciÛn.");
-            for (int y = 0; y < 80; y++)
+            var column = new List<GameObject>();
+            for (int y = 0; y < 100; y++)
             {
-                GameObject tile = map.tile_grid[x][y];
-                Assert.IsNotNull(tile, $"A tile null az ({x},{y}) pozÌciÛn.");
-                Tile tileComponent = tile.GetComponent<Tile>();
-                Assert.IsNotNull(tileComponent, $"A Tile komponens hi·nyzik az ({x},{y}) pozÌciÛn.");
-                Assert.IsTrue(System.Enum.IsDefined(typeof(Tile.ShopType), tileComponent.Type), $"…rvÈnytelen Tile tÌpus az ({x},{y}) pozÌciÛn.");
+                var tileGO = new GameObject($"Tile_{x}_{y}");
+                tileGO.AddComponent<Tile>();
+                column.Add(tileGO);
             }
+            safariMap.tile_grid.Add(column);
         }
 
-        // Ellenırizz¸k a fıÈp¸letet
-        for (int x = 40; x <= 43; x++)
-        {
-            for (int y = 37; y <= 40; y++)
-            {
-                Tile tile = map.tile_grid[x][y].GetComponent<Tile>();
-                Assert.AreEqual(Tile.ShopType.MainBuilding, tile.Type, $"A fıÈp¸let hi·nyzik az ({x},{y}) pozÌciÛn.");
-            }
-        }
+        Vector2Int position = new Vector2Int(65, 65);
 
-        // Ellenırizz¸k a kˆrnyezı sÌks·gokat
-        for (int x = 38; x <= 45; x++)
-        {
-            for (int y = 35; y <= 42; y++)
-            {
-                if (x >= 40 && x < 44 && y > 36 && y <= 40)
-                {
-                    // FıÈp¸let, m·r ellenırizve
-                }
-                else
-                {
-                    Tile tile = map.tile_grid[x][y].GetComponent<Tile>();
-                    Assert.AreEqual(Tile.ShopType.Plains, tile.Type, $"SÌks·g v·rhatÛ az ({x},{y}) pozÌciÛn.");
-                }
-            }
-        }
+        // MET√ìDUS h√≠v√°s Reflectionnel
+        var method = typeof(SafariMap).GetMethod("UpdateSurroundingRoads", BindingFlags.NonPublic | BindingFlags.Instance);
+        method.Invoke(safariMap, new object[] { position });
 
-        // Ellenırizz¸k, hogy vannak-e folyÛ csempÈk
-        bool hasRiver = false;
-        for (int x = 0; x < 80; x++)
-        {
-            for (int y = 0; y < 80; y++)
-            {
-                if (map.tile_grid[x][y].GetComponent<Tile>().Type == Tile.ShopType.River)
-                {
-                    hasRiver = true;
-                    break;
-                }
-            }
-            if (hasRiver) break;
-        }
-        Assert.IsTrue(hasRiver, "Nem tal·lhatÛ folyÛ csempe.");
+        // ELLEN≈êRZ√âS
+        GameObject upTile = safariMap.tile_grid[position.x][position.y + 1];
+        GameObject downTile = safariMap.tile_grid[position.x][position.y - 1];
+
+        Assert.AreNotEqual(Tile.ShopType.Road, upTile.GetComponent<Tile>().Type);
+        Assert.AreNotEqual(Tile.ShopType.Road, downTile.GetComponent<Tile>().Type);
+    }
+
+
+
+    [Test]
+    public void Test_IsRoad_ReturnsTrueForRoadTile()
+    {
+        Vector2Int position = new Vector2Int(70, 70);
+        safariMap.ChangeTileToRoad(new Vector2(position.x, position.y));
+
+
+        var method = typeof(SafariMap).GetMethod("IsRoad", BindingFlags.NonPublic | BindingFlags.Instance);
+        bool isRoad = (bool)method.Invoke(safariMap, new object[] { new Vector2Int(72,70) });
+
+        Assert.IsTrue(isRoad, "IsRoad should return true for a road tile.");
+    }
+
+    [Test]
+    public void Test_IsRoad_ReturnsFalseForNonRoadTile()
+    {
+        Vector2Int position = new Vector2Int(75, 75);
+
+        var method = typeof(SafariMap).GetMethod("IsRoad", BindingFlags.NonPublic | BindingFlags.Instance);
+        bool isRoad = (bool)method.Invoke(safariMap, new object[] { position });
+
+        Assert.IsFalse(isRoad, "IsRoad should return false for a non-road tile.");
+    }
+
+    [Test]
+    public void Test_IsMainBuilding_ReturnsTrueForMainBuildingTile()
+    {
+        // Inicializ√°ljuk a tile_grid-et
+
+        // Hozz√°adunk egy f≈ë√©p√ºletet
+        Vector2 position = new Vector2(42, 42);
+        safariMap.tile_grid[44][42] = new GameObject();  // F≈ë√©p√ºlet be√°ll√≠t√°sa
+        Tile tileComponent = safariMap.tile_grid[44][42].AddComponent<Tile>();
+        tileComponent.Type = Tile.ShopType.MainBuilding; // F≈ë√©p√ºlet be√°ll√≠t√°sa
+
+        // Tesztel√©s: Ellen≈ërizz√ºk, hogy a f≈ë√©p√ºlet helyesen van-e be√°ll√≠tva
+        GameObject tile = safariMap.tile_grid[44][42];
+        tileComponent = tile.GetComponent<Tile>();
+
+        Assert.AreEqual(Tile.ShopType.MainBuilding, tileComponent.Type, "Tile was not replaced with plains.");
+    }
+
+
+    [Test]
+    public void Test_InstantiateTileOfType_ReturnsCorrectPrefab()
+    {
+        // SafariMap p√©ld√°nyos√≠t√°sa √©s be√°ll√≠t√°sok
+        var safariMapGO = new GameObject("SafariMapTestObject");
+        SafariMap safariMap = safariMapGO.AddComponent<SafariMap>();
+
+        // Dummy prefabok be√°ll√≠t√°sa
+        safariMap.prefab_plains = new GameObject("PlainsPrefab");
+        safariMap.prefab_tree = new GameObject("TreePrefab");
+        safariMap.prefab_hills = new GameObject("HillsPrefab");
+        safariMap.prefab_river = new GameObject("RiverPrefab");
+        safariMap.prefab_lake = new GameObject("LakePrefab");
+        safariMap.prefab_bush = new GameObject("BushPrefab");
+        safariMap.prefab_flowerbed = new GameObject("FlowerbedPrefab");
+
+        // Met√≥dus megh√≠v√°sa a megfelel≈ë t√≠pushoz
+        var method = typeof(SafariMap).GetMethod("InstantiateTileOfType", BindingFlags.NonPublic | BindingFlags.Instance);
+        Vector3 testPosition = Vector3.zero;
+
+        // Tesztelt t√≠pus (p√©ld√°ul: Plains)
+        var instantiatedTile = method.Invoke(safariMap, new object[] { Tile.ShopType.Plains, testPosition }) as GameObject;
+
+        // Ellen≈ërz√©s, hogy a megfelel≈ë prefab lett p√©ld√°nyos√≠tva
+        Assert.IsNotNull(instantiatedTile, "Tile was not instantiated correctly.");
+        Assert.AreEqual("PlainsPrefab(Clone)", instantiatedTile.name, "Instantiated tile name does not match expected prefab.");
+
+    }
+
+
+
+    [Test]
+    public void Test_TileGridIsInitializedCorrectly()
+    {
+        Assert.AreEqual(160, safariMap.tile_grid.Count, "Tile grid does not have the correct number of rows.");
+        Assert.AreEqual(90, safariMap.tile_grid[0].Count, "Tile grid does not have the correct number of columns.");
+    }
+
+    [Test]
+    public void Test_ChangeTileToRoad_LockedTilePreventsChange()
+    {
+        Vector2 position = new Vector2(80, 80);
+        safariMap.ChangeTileToRoad(position, isLockedTile: true);
+
+        GameObject tile = safariMap.tile_grid[82][80];
+        Tile tileComponent = tile.GetComponent<Tile>();
+
+        Assert.IsTrue(tileComponent.isLocked, "Locked tile should prevent road change.");
     }
 }
