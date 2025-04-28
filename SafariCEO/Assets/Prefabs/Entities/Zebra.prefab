@@ -192,7 +192,8 @@ MonoBehaviour:
   drinkingColor: {r: 0, g: 1, b: 1, a: 1}
   searchingColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   uuid: 
-  moveRange: 100
+  moveRange: 10
+  herdOffset: 2
   normalSpeed: 1
   visionRadius: 5
   hungerInterval: 120
@@ -205,10 +206,11 @@ MonoBehaviour:
   thirstTimer: 0
   age: 0
   maxAge: 1000
+  currentState: 0
   beingAttacked: 0
-  isMating: 0
   mateTimer: 0
   mateInterval: 100
+  isMating: 0
   zebraPrefab: {fileID: 0}
   giraffePrefab: {fileID: 0}
   herdSprite: {fileID: 0}
