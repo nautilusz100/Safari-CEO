@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Reflection;
 using UnityEngine;
 
 public class TileTests
@@ -115,6 +116,122 @@ public class TileTests
 
         Assert.IsTrue(mockManager.notified); // <- ezt nézzük
     }
+    [Test]
+    public void Tile_Awake_InitializesFoodAmountCorrectly()
+    {
+        // Arrange
+        var tileObj = new GameObject();
+        var tile = tileObj.AddComponent<Tile>();
+
+        // initialType private mezõt Reflectionnel állítjuk
+        typeof(Tile)
+            .GetField("initialType", BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(tile, Tile.ShopType.Tree);
+
+        // Act
+        MethodInfo awakeMethod = typeof(Tile).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic);
+        awakeMethod.Invoke(tile, null);
+
+        // Assert
+        Assert.AreEqual(10, tile.FoodAmount);
+    }
+    [Test]
+    public void Tile_Awake_InitializesFoodAmountCorrectly_ForBush()
+    {
+        // Arrange
+        var tileObj = new GameObject();
+        var tile = tileObj.AddComponent<Tile>();
+
+        typeof(Tile)
+            .GetField("initialType", BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(tile, Tile.ShopType.Bush);
+
+        // Act
+        MethodInfo awakeMethod = typeof(Tile).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic);
+        awakeMethod.Invoke(tile, null);
+
+        // Assert
+        Assert.AreEqual(6, tile.FoodAmount);
+    }
+
+    [Test]
+    public void Tile_Awake_InitializesFoodAmountCorrectly_ForFlowerbed()
+    {
+        // Arrange
+        var tileObj = new GameObject();
+        var tile = tileObj.AddComponent<Tile>();
+
+        typeof(Tile)
+            .GetField("initialType", BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(tile, Tile.ShopType.Flowerbed);
+
+        // Act
+        MethodInfo awakeMethod = typeof(Tile).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic);
+        awakeMethod.Invoke(tile, null);
+
+        // Assert
+        Assert.AreEqual(3, tile.FoodAmount);
+    }
+
+    [Test]
+    public void Tile_Awake_InitializesFoodAmountCorrectly_ForDefault()
+    {
+        // Arrange
+        var tileObj = new GameObject();
+        var tile = tileObj.AddComponent<Tile>();
+
+        typeof(Tile)
+            .GetField("initialType", BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(tile, Tile.ShopType.Plains); // vagy bármi ami nem Tree/Bush/Flowerbed
+
+        // Act
+        MethodInfo awakeMethod = typeof(Tile).GetMethod("Awake", BindingFlags.Instance | BindingFlags.NonPublic);
+        awakeMethod.Invoke(tile, null);
+
+        // Assert
+        Assert.AreEqual(0, tile.FoodAmount);
+    }
+
+
+    [Test]
+    public void Tile_Start_SetsSortingOrderBasedOnPosition()
+    {
+        // Arrange
+        var tileObj = new GameObject();
+        var spriteRenderer = tileObj.AddComponent<SpriteRenderer>();
+        var tile = tileObj.AddComponent<Tile>();
+        tileObj.transform.position = new Vector3(0, -2, 0); // y = -2
+
+        // Act
+        MethodInfo startMethod = typeof(Tile).GetMethod("Start", BindingFlags.Instance | BindingFlags.NonPublic);
+        startMethod.Invoke(tile, null);
+
+        // Assert
+        int expectedSortingOrder = 20; // helyes: -(-2) * 10 = 20
+        Assert.AreEqual(expectedSortingOrder, spriteRenderer.sortingOrder);
+    }
+
+
+    [Test]
+    public void Tile_Update_WhenFoodDepletedAndTypeTree_BecomesPlains()
+    {
+        // Arrange
+        var mockManager = new GameObject().AddComponent<MockGameManager>();
+        GameManager.Instance = mockManager;
+
+        tile.Type = Tile.ShopType.Tree;
+        tile.FoodAmount = 0;
+        tile.transform.position = new Vector3(5, 5, 0);
+
+        // Act
+        MethodInfo updateMethod = typeof(Tile).GetMethod("Update", BindingFlags.Instance | BindingFlags.NonPublic);
+        updateMethod.Invoke(tile, null);
+
+        // Assert
+        Assert.IsTrue(mockManager.notified); // Ellenõrizzük, hogy váltott plains-re
+    }
+
+
 
 
     // Helper Mock Class

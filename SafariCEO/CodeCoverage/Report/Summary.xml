@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>2025. 04. 28. - 9:39:45</Generatedon>
-    <Parser>MultiReportParser (9x OpenCoverParser)</Parser>
+    <Generatedon>2025. 04. 28. - 12:31:02</Generatedon>
+    <Parser>MultiReportParser (15x OpenCoverParser)</Parser>
     <Assemblies>3</Assemblies>
     <Classes>27</Classes>
     <Files>27</Files>
-    <Coveredlines>110</Coveredlines>
-    <Uncoveredlines>2582</Uncoveredlines>
-    <Coverablelines>2692</Coverablelines>
-    <Totallines>4457</Totallines>
-    <Linecoverage>4</Linecoverage>
+    <Coveredlines>185</Coveredlines>
+    <Uncoveredlines>2559</Uncoveredlines>
+    <Coverablelines>2744</Coverablelines>
+    <Totallines>4574</Totallines>
+    <Linecoverage>6.7</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
-    <Coveredmethods>22</Coveredmethods>
-    <Totalmethods>250</Totalmethods>
-    <Methodcoverage>8.8</Methodcoverage>
+    <Coveredmethods>31</Coveredmethods>
+    <Totalmethods>256</Totalmethods>
+    <Methodcoverage>12.1</Methodcoverage>
   </Summary>
   <Coverage>
     <Assembly name="Assembly-CSharp" classes="1" coverage="0" coveredlines="0" coverablelines="22" totallines="39" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0">
       <Class name="MusicManager" coverage="0" coveredlines="0" coverablelines="22" totallines="39" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
     </Assembly>
-    <Assembly name="EditMode" classes="2" coverage="100" coveredlines="73" coverablelines="73" totallines="142" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="12" totalmethods="12" methodcoverage="100">
+    <Assembly name="EditMode" classes="2" coverage="100" coveredlines="125" coverablelines="125" totallines="259" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="18" totalmethods="18" methodcoverage="100">
       <Class name="SanityTest" coverage="100" coveredlines="3" coverablelines="3" totallines="10" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
-      <Class name="TileTests" coverage="100" coveredlines="70" coverablelines="70" totallines="132" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="11" totalmethods="11" methodcoverage="100" />
+      <Class name="TileTests" coverage="100" coveredlines="122" coverablelines="122" totallines="249" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="17" totalmethods="17" methodcoverage="100" />
     </Assembly>
-    <Assembly name="ModelRef" classes="24" coverage="1.4" coveredlines="37" coverablelines="2597" totallines="4276" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="10" totalmethods="233" methodcoverage="4.2">
+    <Assembly name="ModelRef" classes="24" coverage="2.3" coveredlines="60" coverablelines="2597" totallines="4276" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="13" totalmethods="233" methodcoverage="5.5">
       <Class name="Animal" coverage="0" coveredlines="0" coverablelines="4" totallines="19" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="Assets.Scripts.Model.Map.Minimap" coverage="0" coveredlines="0" coverablelines="22" totallines="72" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="Assets.Scripts.Model.Map.SafariMap" coverage="0" coveredlines="0" coverablelines="455" totallines="681" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="20" methodcoverage="0" />
@@ -48,7 +48,7 @@
       <Class name="Player" coverage="0" coveredlines="0" coverablelines="62" totallines="100" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
       <Class name="ShopElement" coverage="0" coveredlines="0" coverablelines="6" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="SlowZoneHandler" coverage="0" coveredlines="0" coverablelines="23" totallines="49" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
-      <Class name="Tile" coverage="45.2" coveredlines="19" coverablelines="42" totallines="88" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="8" methodcoverage="62.5" />
+      <Class name="Tile" coverage="100" coveredlines="42" coverablelines="42" totallines="88" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
       <Class name="TileEventArgs" coverage="0" coveredlines="0" coverablelines="5" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
     </Assembly>
   </Coverage>

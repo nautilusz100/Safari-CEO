@@ -1,29 +1,29 @@
 {
   "summary": {
-    "generatedon": "2025-04-28T07:39:45Z",
-    "parser": "MultiReportParser (9x OpenCoverParser)",
+    "generatedon": "2025-04-28T10:31:02Z",
+    "parser": "MultiReportParser (15x OpenCoverParser)",
     "assemblies": 3,
     "classes": 27,
     "files": 27,
-    "coveredlines": 110,
-    "uncoveredlines": 2582,
-    "coverablelines": 2692,
-    "totallines": 4457,
-    "linecoverage": 4,
+    "coveredlines": 185,
+    "uncoveredlines": 2559,
+    "coverablelines": 2744,
+    "totallines": 4574,
+    "linecoverage": 6.7,
     "coveredbranches": 0,
     "totalbranches": 0,
-    "coveredmethods": 22,
-    "totalmethods": 250,
-    "methodcoverage": 8.8
+    "coveredmethods": 31,
+    "totalmethods": 256,
+    "methodcoverage": 12.1
  },
   "coverage": {
     "assemblies": [
       { "name": "Assembly-CSharp", "classes": 1, "coverage": 0, "coveredlines": 0, "coverablelines": 22, "totallines": 39, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 5, "classesinassembly": [
         { "name": "MusicManager", "coverage": 0, "coveredlines": 0, "coverablelines": 22, "totallines": 39, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 5 } ] },
-      { "name": "EditMode", "classes": 2, "coverage": 100, "coveredlines": 73, "coverablelines": 73, "totallines": 142, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 12, "totalmethods": 12, "classesinassembly": [
+      { "name": "EditMode", "classes": 2, "coverage": 100, "coveredlines": 125, "coverablelines": 125, "totallines": 259, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 18, "totalmethods": 18, "classesinassembly": [
         { "name": "SanityTest", "coverage": 100, "coveredlines": 3, "coverablelines": 3, "totallines": 10, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 },
-        { "name": "TileTests", "coverage": 100, "coveredlines": 70, "coverablelines": 70, "totallines": 132, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 11, "totalmethods": 11 } ] },
-      { "name": "ModelRef", "classes": 24, "coverage": 1.4, "coveredlines": 37, "coverablelines": 2597, "totallines": 4276, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 4.2, "coveredmethods": 10, "totalmethods": 233, "classesinassembly": [
+        { "name": "TileTests", "coverage": 100, "coveredlines": 122, "coverablelines": 122, "totallines": 249, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 17, "totalmethods": 17 } ] },
+      { "name": "ModelRef", "classes": 24, "coverage": 2.3, "coveredlines": 60, "coverablelines": 2597, "totallines": 4276, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 5.5, "coveredmethods": 13, "totalmethods": 233, "classesinassembly": [
         { "name": "Animal", "coverage": 0, "coveredlines": 0, "coverablelines": 4, "totallines": 19, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
         { "name": "Assets.Scripts.Model.Map.Minimap", "coverage": 0, "coveredlines": 0, "coverablelines": 22, "totallines": 72, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
         { "name": "Assets.Scripts.Model.Map.SafariMap", "coverage": 0, "coveredlines": 0, "coverablelines": 455, "totallines": 681, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 20 },
@@ -46,7 +46,7 @@
         { "name": "Player", "coverage": 0, "coveredlines": 0, "coverablelines": 62, "totallines": 100, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 6 },
         { "name": "ShopElement", "coverage": 0, "coveredlines": 0, "coverablelines": 6, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
         { "name": "SlowZoneHandler", "coverage": 0, "coveredlines": 0, "coverablelines": 23, "totallines": 49, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 3 },
-        { "name": "Tile", "coverage": 45.2, "coveredlines": 19, "coverablelines": 42, "totallines": 88, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 62.5, "coveredmethods": 5, "totalmethods": 8 },
+        { "name": "Tile", "coverage": 100, "coveredlines": 42, "coverablelines": 42, "totallines": 88, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 8, "totalmethods": 8 },
         { "name": "TileEventArgs", "coverage": 0, "coveredlines": 0, "coverablelines": 5, "totallines": 14, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 } ] } ]
   }
 }

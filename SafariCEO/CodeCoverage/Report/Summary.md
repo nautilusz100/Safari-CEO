@@ -1,30 +1,30 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 2025. 04. 28. - 9:39:45 |
-| Parser: | MultiReportParser (9x OpenCoverParser) |
+| Generated on: | 2025. 04. 28. - 12:31:02 |
+| Parser: | MultiReportParser (15x OpenCoverParser) |
 | Assemblies: | 3 |
 | Classes: | 27 |
 | Files: | 27 |
-| Covered lines: | 110 |
-| Uncovered lines: | 2582 |
-| Coverable lines: | 2692 |
-| Total lines: | 4457 |
-| Line coverage: | 4% (110 of 2692) |
+| Covered lines: | 185 |
+| Uncovered lines: | 2559 |
+| Coverable lines: | 2744 |
+| Total lines: | 4574 |
+| Line coverage: | 6.7% (185 of 2744) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 22 |
-| Total methods: | 250 |
-| Method coverage: | 8.8% (22 of 250) |
+| Covered methods: | 31 |
+| Total methods: | 256 |
+| Method coverage: | 12.1% (31 of 256) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 |**Assembly-CSharp**|**0**|**22**|**22**|**39**|**0%**|**0**|**0**|****|**0**|**5**|**0%**|
 |MusicManager|0|22|22|39|0%|0|0||0|5|0%|
-|**EditMode**|**73**|**0**|**73**|**142**|**100%**|**0**|**0**|****|**12**|**12**|**100%**|
+|**EditMode**|**125**|**0**|**125**|**259**|**100%**|**0**|**0**|****|**18**|**18**|**100%**|
 |SanityTest|3|0|3|10|100%|0|0||1|1|100%|
-|TileTests|70|0|70|132|100%|0|0||11|11|100%|
-|**ModelRef**|**37**|**2560**|**2597**|**4276**|**1.4%**|**0**|**0**|****|**10**|**233**|**4.2%**|
+|TileTests|122|0|122|249|100%|0|0||17|17|100%|
+|**ModelRef**|**60**|**2537**|**2597**|**4276**|**2.3%**|**0**|**0**|****|**13**|**233**|**5.5%**|
 |Animal|0|4|4|19|0%|0|0||0|1|0%|
 |Assets.Scripts.Model.Map.Minimap|0|22|22|72|0%|0|0||0|2|0%|
 |Assets.Scripts.Model.Map.SafariMap|0|455|455|681|0%|0|0||0|20|0%|
@@ -47,5 +47,5 @@
 |Player|0|62|62|100|0%|0|0||0|6|0%|
 |ShopElement|0|6|6|18|0%|0|0||0|1|0%|
 |SlowZoneHandler|0|23|23|49|0%|0|0||0|3|0%|
-|Tile|19|23|42|88|45.2%|0|0||5|8|62.5%|
+|Tile|42|0|42|88|100%|0|0||8|8|100%|
 |TileEventArgs|0|5|5|14|0%|0|0||0|2|0%|

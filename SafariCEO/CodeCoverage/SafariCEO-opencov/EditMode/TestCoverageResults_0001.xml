@@ -62,17 +62,17 @@
               <Name>System.Void SanityTest::Addition_Works()</Name>
               <FileRef uid="26" />
               <SequencePoints>
-                <SequencePoint vc="1" uspid="112714" ordinal="0" offset="0" sl="7" sc="5" el="7" ec="5" bec="0" bev="0" fileid="26">
+                <SequencePoint vc="1" uspid="11384" ordinal="0" offset="0" sl="7" sc="5" el="7" ec="5" bec="0" bev="0" fileid="26">
                   <TrackedMethodRefs>
                     <TrackedMethodRef uid="1" vc="1" />
                   </TrackedMethodRefs>
                 </SequencePoint>
-                <SequencePoint vc="1" uspid="112715" ordinal="0" offset="1" sl="8" sc="9" el="8" ec="9" bec="0" bev="0" fileid="26">
+                <SequencePoint vc="1" uspid="11385" ordinal="0" offset="1" sl="8" sc="9" el="8" ec="9" bec="0" bev="0" fileid="26">
                   <TrackedMethodRefs>
                     <TrackedMethodRef uid="1" vc="1" />
                   </TrackedMethodRefs>
                 </SequencePoint>
-                <SequencePoint vc="1" uspid="112716" ordinal="0" offset="19" sl="9" sc="5" el="9" ec="5" bec="0" bev="0" fileid="26">
+                <SequencePoint vc="1" uspid="11386" ordinal="0" offset="19" sl="9" sc="5" el="9" ec="5" bec="0" bev="0" fileid="26">
                   <TrackedMethodRefs>
                     <TrackedMethodRef uid="1" vc="1" />
                   </TrackedMethodRefs>
