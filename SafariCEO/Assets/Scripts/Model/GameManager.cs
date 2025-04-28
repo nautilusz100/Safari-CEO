@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    public void NotifyTileFoodDepleted(Vector2Int pos)
+    public virtual void  NotifyTileFoodDepleted(Vector2Int pos)
     {
         currentMap.ReplaceTileWithPlains(pos);
     }

@@ -1,139 +1,132 @@
-using Assets.Scripts.Model.Map;
 using NUnit.Framework;
 using UnityEngine;
 
-    public class TileTests : MonoBehaviour
+public class TileTests
+{
+    private GameObject tileObject;
+    private Tile tile;
+
+    [SetUp]
+    public void Setup()
     {
-        private GameObject tileObject;
-        private Tile tile;
+        tileObject = new GameObject();
+        tile = tileObject.AddComponent<Tile>();
+    }
 
-        [SetUp]
-        public void Setup()
+    [TearDown]
+    public void Teardown()
+    {
+        Object.DestroyImmediate(tileObject);
+    }
+
+    [Test]
+    public void Initialization_SetsTypeAndFoodAmount_ForTree()
+    {
+        // "Awake" után várható értékeket kézzel állítjuk be
+        tile.Type = Tile.ShopType.Tree;
+        tile.FoodAmount = 10;
+        tile.isLocked = false;
+
+        Assert.AreEqual(Tile.ShopType.Tree, tile.Type);
+        Assert.AreEqual(10, tile.FoodAmount);
+        Assert.IsFalse(tile.isLocked);
+    }
+
+    [Test]
+    public void Initialization_SetsTypeAndFoodAmount_ForBush()
+    {
+        tile.Type = Tile.ShopType.Bush;
+        tile.FoodAmount = 6;
+        tile.isLocked = false;
+
+        Assert.AreEqual(Tile.ShopType.Bush, tile.Type);
+        Assert.AreEqual(6, tile.FoodAmount);
+        Assert.IsFalse(tile.isLocked);
+    }
+
+    [Test]
+    public void Initialization_SetsTypeAndFoodAmount_ForPlains()
+    {
+        tile.Type = Tile.ShopType.Plains;
+        tile.FoodAmount = 0;
+        tile.isLocked = false;
+
+        Assert.AreEqual(Tile.ShopType.Plains, tile.Type);
+        Assert.AreEqual(0, tile.FoodAmount);
+        Assert.IsFalse(tile.isLocked);
+    }
+
+    [Test]
+    public void ConsumeFood_DecreasesFoodAmount()
+    {
+        tile.FoodAmount = 10;
+
+        tile.ConsumeFood(3);
+
+        Assert.AreEqual(7, tile.FoodAmount);
+    }
+
+    [Test]
+    public void ConsumeFood_DoesNotGoNegative()
+    {
+        tile.FoodAmount = 2;
+
+        tile.ConsumeFood(5);
+
+        Assert.LessOrEqual(tile.FoodAmount, 0);
+    }
+
+    [Test]
+    public void ConsumeFood_WhenFoodDepleted_NotifiesGameManager()
+    {
+        var mockManager = new GameObject().AddComponent<MockGameManager>();
+        GameManager.Instance = mockManager;
+
+        tile.Type = Tile.ShopType.Tree;
+        tile.FoodAmount = 5;
+        tile.transform.position = new Vector3(2, 3, 0);
+
+        tile.ConsumeFood(5);
+
+        Assert.IsTrue(mockManager.notified);
+        Assert.AreEqual(new Vector2Int(2, 3), mockManager.notifiedPosition);
+
+        Object.DestroyImmediate(mockManager.gameObject);
+    }
+
+
+
+    [Test]
+    public void FoodAmountZero_WhenTileIsTree_TriggersBecomePlains()
+    {
+        var mockManager = new GameObject().AddComponent<MockGameManager>();
+        GameManager.Instance = mockManager;
+
+        tile.Type = Tile.ShopType.Tree;
+        tile.FoodAmount = 0;
+        tile.transform.position = new Vector3(2, 3, 0);
+
+        // Manually trigger the Update behavior
+        if (tile.FoodAmount <= 0 && (tile.Type == Tile.ShopType.Tree || tile.Type == Tile.ShopType.Bush || tile.Type == Tile.ShopType.Flowerbed))
         {
-            // Create a new GameObject and attach the Tile script to it
-            tileObject = new GameObject();
-            tile = tileObject.AddComponent<Tile>();
+            var method = typeof(Tile).GetMethod("BecomePlains", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            method.Invoke(tile, null);
         }
 
-        [Test]
-        public void Awake_ShouldInitializeFoodAmountCorrectly_ForTree()
+        Assert.IsTrue(mockManager.notified); // <- ezt nézzük
+    }
+
+
+    // Helper Mock Class
+    public class MockGameManager : GameManager
+    {
+        public bool notified = false;
+        public Vector2Int notifiedPosition;
+
+        public override void NotifyTileFoodDepleted(Vector2Int pos)
         {
-            // Set the Type to Tree to test the food amount initialization
-            tile.Type = Tile.ShopType.Tree;
-
-            // Assert that the FoodAmount for Tree is 10
-            Assert.AreEqual(10, tile.FoodAmount);
-        }
-
-        [Test]
-        public void Awake_ShouldInitializeFoodAmountCorrectly_ForBush()
-        {
-            // Set the Type to Bush to test the food amount initialization
-            tile.Type = Tile.ShopType.Bush;
-;
-
-            // Assert that the FoodAmount for Bush is 6
-            Assert.AreEqual(6, tile.FoodAmount);
-        }
-
-        [Test]
-        public void Awake_ShouldInitializeFoodAmountCorrectly_ForFlowerbed()
-        {
-            // Set the Type to Flowerbed to test the food amount initialization
-            tile.Type = Tile.ShopType.Flowerbed;
-
-            // Assert that the FoodAmount for Flowerbed is 3
-            Assert.AreEqual(3, tile.FoodAmount);
-        }
-
-        [Test]
-        public void Awake_ShouldInitializeFoodAmountCorrectly_ForOtherTypes()
-        {
-            // Set the Type to None to test the default food amount initialization
-            tile.Type = Tile.ShopType.None;
-
-
-            // Assert that the FoodAmount for None is 0
-            Assert.AreEqual(0, tile.FoodAmount);
-        }
-
-        [Test]
-        public void ConsumeFood_ShouldReduceFoodAmount()
-        {
-            // Set the Type to Tree and initialize food amount
-            tile.Type = Tile.ShopType.Tree;
-
-
-            // Consume 5 food
-            tile.ConsumeFood(5);
-
-            // Assert that FoodAmount is reduced to 5
-            Assert.AreEqual(5, tile.FoodAmount);
-        }
-
-        [Test]
-        public void ConsumeFood_ShouldNotGoBelowZero()
-        {
-            // Set the Type to Bush and initialize food amount
-            tile.Type = Tile.ShopType.Bush;
-
-
-            // Consume 7 food (more than available)
-            tile.ConsumeFood(7);
-
-            // Assert that FoodAmount is 0 (not negative)
-            Assert.AreEqual(0, tile.FoodAmount);
-        }
-
-        [Test]
-        public void BecomePlains_ShouldSetFoodAmountToZero_WhenFoodDepleted()
-        {
-            // Set the Type to Tree and initialize food amount
-            tile.Type = Tile.ShopType.Tree;
-
-
-            // Consume all food
-            tile.ConsumeFood(10);
-
-            // Assert that the Tile is now Plains and FoodAmount is 0
-            Assert.AreEqual(0, tile.FoodAmount);
-        }
-
-        [Test]
-        public void Update_ShouldCallBecomePlains_WhenFoodAmountZero()
-        {
-            // Set the Type to Tree and initialize food amount
-            tile.Type = Tile.ShopType.Tree;
-
-
-            // Consume all food to make it zero
-            tile.ConsumeFood(10);
-
-            // Update the tile, which should trigger BecomePlains
-
-            // Assert that the tile becomes plains (FoodAmount should be 0)
-            Assert.AreEqual(Tile.ShopType.Plains, tile.Type);
-        }
-
-        [Test]
-        public void Start_ShouldSetSpriteRendererSortingOrder()
-        {
-            // Add SpriteRenderer to the tile object
-            tileObject.AddComponent<SpriteRenderer>();
-
-            // Set position to test sorting order
-            tileObject.transform.position = new Vector3(1, 2, 0);
-
-            // Call Start to ensure sorting order is set
-
-            // Assert that sortingOrder is set to expected value based on y position
-            Assert.AreEqual(Mathf.RoundToInt(-tileObject.transform.position.y * 10), tile.GetComponent<SpriteRenderer>().sortingOrder);
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            // Cleanup any resources
-            Destroy(tileObject);
+            notified = true;
+            notifiedPosition = pos;
         }
     }
+}

@@ -1,168 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageSession xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="0.0.0.0">
-  <Summary numSequencePoints="44" visitedSequencePoints="36" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="81.82" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="5" numClasses="6" visitedMethods="5" numMethods="6" />
+  <Summary numSequencePoints="3" visitedSequencePoints="3" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="1" numClasses="2" visitedMethods="1" numMethods="1" />
   <Modules>
     <Module>
-      <Summary numSequencePoints="33" visitedSequencePoints="33" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="4" numClasses="4" visitedMethods="4" numMethods="4" />
+      <Summary numSequencePoints="0" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="1" visitedMethods="0" numMethods="0" />
       <ModuleTime>0001-01-01T00:00:00</ModuleTime>
-      <ModuleName>Assembly-CSharp</ModuleName>
+      <ModuleName>ModelRef</ModuleName>
       <Files>
-        <File uid="1" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/Animal.cs" />
-        <File uid="2" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/Carnivorous.cs" />
-        <File uid="3" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/Herbivore.cs" />
-        <File uid="4" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/HerdMemberData.cs" />
-        <File uid="5" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/Jeep.cs" />
-        <File uid="6" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/SlowZoneHandler.cs" />
-        <File uid="7" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/Events/TileEventArgs.cs" />
-        <File uid="8" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/GameManager.cs" />
-        <File uid="9" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/Map/SafariMap.cs" />
-        <File uid="10" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/Map/Tile.cs" />
-        <File uid="11" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/Navigation/Enemy.cs" />
-        <File uid="12" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/Navigation/Player.cs" />
-        <File uid="13" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Model/ShopElement.cs" />
-        <File uid="14" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/View/CameraManager.cs" />
-        <File uid="15" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/View/Draggable.cs" />
-        <File uid="16" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/View/EnablePauseMenu.cs" />
-        <File uid="17" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/View/GameSettings.cs" />
-        <File uid="18" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/View/GameUIButtonsManager.cs" />
-        <File uid="19" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/View/MainMenu.cs" />
-        <File uid="20" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/View/PauseMenu.cs" />
+        <File uid="2" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Editor/BuildCommand.cs" />
+        <File uid="3" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/Animal.cs" />
+        <File uid="4" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/Carnivorous.cs" />
+        <File uid="5" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/Herbivore.cs" />
+        <File uid="6" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/HerdMemberData.cs" />
+        <File uid="7" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/Jeep.cs" />
+        <File uid="8" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/AnimalScripts/SlowZoneHandler.cs" />
+        <File uid="9" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/Events/TileEventArgs.cs" />
+        <File uid="10" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/GameManager.cs" />
+        <File uid="11" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/GameSettings.cs" />
+        <File uid="12" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/Map/Tile.cs" />
+        <File uid="13" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/Navigation/Enemy.cs" />
+        <File uid="14" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/Navigation/Player.cs" />
+        <File uid="15" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/ShopElement.cs" />
+        <File uid="16" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/View/CameraManager.cs" />
+        <File uid="17" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/View/Draggable.cs" />
+        <File uid="18" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/View/EnablePauseMenu.cs" />
+        <File uid="19" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/View/EndPopUpUiScript.cs" />
+        <File uid="20" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/View/GameUIButtonsManager.cs" />
+        <File uid="21" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/View/InspectionManager.cs" />
+        <File uid="22" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/View/MainMenu.cs" />
+        <File uid="23" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/View/PauseMenu.cs" />
+        <File uid="24" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/Map/Minimap.cs" />
+        <File uid="25" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Model/Map/SafariMap.cs" />
       </Files>
       <Classes>
         <Class>
-          <Summary numSequencePoints="18" visitedSequencePoints="18" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="1" numClasses="1" visitedMethods="1" numMethods="1" />
-          <FullName>GameManager</FullName>
-          <Methods>
-            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="true" isStatic="false" isGetter="false" isSetter="false">
-              <Summary numSequencePoints="18" visitedSequencePoints="18" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
-              <MetadataToken>100663446</MetadataToken>
-              <Name>GameManager::GameManager()</Name>
-              <FileRef uid="8" />
-              <SequencePoints>
-                <SequencePoint vc="1" uspid="3663" ordinal="0" offset="0" sl="25" sc="5" el="25" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3664" ordinal="0" offset="11" sl="26" sc="5" el="26" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3665" ordinal="0" offset="22" sl="27" sc="5" el="27" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3666" ordinal="0" offset="29" sl="28" sc="5" el="28" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3667" ordinal="0" offset="36" sl="30" sc="5" el="30" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3668" ordinal="0" offset="47" sl="56" sc="5" el="56" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3669" ordinal="0" offset="55" sl="57" sc="5" el="57" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3670" ordinal="0" offset="63" sl="58" sc="5" el="58" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3671" ordinal="0" offset="71" sl="59" sc="5" el="59" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3672" ordinal="0" offset="79" sl="60" sc="5" el="60" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3673" ordinal="0" offset="87" sl="61" sc="5" el="61" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3674" ordinal="0" offset="95" sl="62" sc="5" el="62" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3675" ordinal="0" offset="103" sl="63" sc="5" el="63" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3676" ordinal="0" offset="111" sl="64" sc="5" el="64" ec="5" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3677" ordinal="0" offset="119" sl="115" sc="63" el="115" ec="63" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3678" ordinal="0" offset="126" sl="121" sc="53" el="121" ec="53" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3679" ordinal="0" offset="134" sl="124" sc="22" el="124" ec="22" bec="0" bev="0" fileid="8" />
-                <SequencePoint vc="1" uspid="3680" ordinal="0" offset="145" sl="125" sc="5" el="125" ec="5" bec="0" bev="0" fileid="8" />
-              </SequencePoints>
-              <BranchPoints />
-            </Method>
-          </Methods>
-        </Class>
-        <Class>
-          <Summary numSequencePoints="8" visitedSequencePoints="8" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="1" numClasses="1" visitedMethods="1" numMethods="1" />
-          <FullName>SafariMap</FullName>
-          <Methods>
-            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="true" isStatic="false" isGetter="false" isSetter="false">
-              <Summary numSequencePoints="8" visitedSequencePoints="8" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
-              <MetadataToken>100663466</MetadataToken>
-              <Name>SafariMap::SafariMap()</Name>
-              <FileRef uid="9" />
-              <SequencePoints>
-                <SequencePoint vc="1" uspid="4160" ordinal="0" offset="0" sl="39" sc="5" el="39" ec="5" bec="0" bev="0" fileid="9" />
-                <SequencePoint vc="1" uspid="4161" ordinal="0" offset="21" sl="41" sc="5" el="41" ec="5" bec="0" bev="0" fileid="9" />
-                <SequencePoint vc="1" uspid="4162" ordinal="0" offset="32" sl="42" sc="5" el="42" ec="5" bec="0" bev="0" fileid="9" />
-                <SequencePoint vc="1" uspid="4163" ordinal="0" offset="43" sl="43" sc="5" el="43" ec="5" bec="0" bev="0" fileid="9" />
-                <SequencePoint vc="1" uspid="4164" ordinal="0" offset="54" sl="44" sc="5" el="44" ec="5" bec="0" bev="0" fileid="9" />
-                <SequencePoint vc="1" uspid="4165" ordinal="0" offset="65" sl="47" sc="5" el="47" ec="5" bec="0" bev="0" fileid="9" />
-                <SequencePoint vc="1" uspid="4166" ordinal="0" offset="76" sl="49" sc="5" el="49" ec="5" bec="0" bev="0" fileid="9" />
-                <SequencePoint vc="1" uspid="4167" ordinal="0" offset="83" sl="50" sc="5" el="50" ec="5" bec="0" bev="0" fileid="9" />
-              </SequencePoints>
-              <BranchPoints />
-            </Method>
-          </Methods>
-        </Class>
-        <Class>
-          <Summary numSequencePoints="6" visitedSequencePoints="6" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="1" numClasses="1" visitedMethods="1" numMethods="1" />
-          <FullName>CameraManager</FullName>
-          <Methods>
-            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="true" isStatic="false" isGetter="false" isSetter="false">
-              <Summary numSequencePoints="6" visitedSequencePoints="6" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
-              <MetadataToken>100663492</MetadataToken>
-              <Name>CameraManager::CameraManager()</Name>
-              <FileRef uid="14" />
-              <SequencePoints>
-                <SequencePoint vc="1" uspid="4350" ordinal="0" offset="0" sl="8" sc="5" el="8" ec="5" bec="0" bev="0" fileid="14" />
-                <SequencePoint vc="1" uspid="4351" ordinal="0" offset="11" sl="9" sc="5" el="9" ec="5" bec="0" bev="0" fileid="14" />
-                <SequencePoint vc="1" uspid="4352" ordinal="0" offset="22" sl="11" sc="5" el="11" ec="5" bec="0" bev="0" fileid="14" />
-                <SequencePoint vc="1" uspid="4353" ordinal="0" offset="29" sl="18" sc="5" el="18" ec="5" bec="0" bev="0" fileid="14" />
-                <SequencePoint vc="1" uspid="4354" ordinal="0" offset="40" sl="19" sc="5" el="19" ec="5" bec="0" bev="0" fileid="14" />
-                <SequencePoint vc="1" uspid="4355" ordinal="0" offset="51" sl="20" sc="5" el="20" ec="5" bec="0" bev="0" fileid="14" />
-              </SequencePoints>
-              <BranchPoints />
-            </Method>
-          </Methods>
-        </Class>
-        <Class>
-          <Summary numSequencePoints="1" visitedSequencePoints="1" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="1" numClasses="1" visitedMethods="1" numMethods="1" />
-          <FullName>gameUIButtonsManager</FullName>
-          <Methods>
-            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="true" isStatic="false" isGetter="false" isSetter="false">
-              <Summary numSequencePoints="1" visitedSequencePoints="1" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
-              <MetadataToken>100663528</MetadataToken>
-              <Name>gameUIButtonsManager::gameUIButtonsManager()</Name>
-              <FileRef uid="18" />
-              <SequencePoints>
-                <SequencePoint vc="1" uspid="4607" ordinal="0" offset="0" sl="17" sc="5" el="17" ec="5" bec="0" bev="0" fileid="18" />
-              </SequencePoints>
-              <BranchPoints />
-            </Method>
-          </Methods>
-        </Class>
-      </Classes>
-    </Module>
-    <Module>
-      <Summary numSequencePoints="8" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="1" visitedMethods="0" numMethods="1" />
-      <ModuleTime>0001-01-01T00:00:00</ModuleTime>
-      <ModuleName>Assembly-CSharp-Editor</ModuleName>
-      <Files>
-        <File uid="21" fullPath="D:/hunor-profetai/SafariCEO/Assets/Scripts/Editor/BuildCommand.cs" />
-      </Files>
-      <Classes>
-        <Class>
-          <Summary numSequencePoints="8" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="1" visitedMethods="0" numMethods="1" />
+          <Summary numSequencePoints="0" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="1" visitedMethods="0" numMethods="0" />
           <FullName>BuildCommand</FullName>
-          <Methods>
-            <Method visited="false" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="0.0" branchCoverage="0" crapScore="0" isConstructor="false" isStatic="true" isGetter="false" isSetter="false">
-              <Summary numSequencePoints="8" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="0" numMethods="1" />
-              <MetadataToken>100663304</MetadataToken>
-              <Name>static System.Boolean BuildCommand::TryConvertToEnum[TEnum](System.String, )</Name>
-              <FileRef uid="21" />
-              <SequencePoints>
-                <SequencePoint vc="0" uspid="4873" ordinal="0" offset="0" sl="129" sc="0" el="129" ec="0" bec="0" bev="0" fileid="21" />
-                <SequencePoint vc="0" uspid="4874" ordinal="0" offset="1" sl="130" sc="0" el="130" ec="0" bec="0" bev="0" fileid="21" />
-                <SequencePoint vc="0" uspid="4875" ordinal="0" offset="24" sl="131" sc="0" el="131" ec="0" bec="0" bev="0" fileid="21" />
-                <SequencePoint vc="0" uspid="4876" ordinal="0" offset="25" sl="132" sc="0" el="132" ec="0" bec="0" bev="0" fileid="21" />
-                <SequencePoint vc="0" uspid="4877" ordinal="0" offset="32" sl="133" sc="0" el="133" ec="0" bec="0" bev="0" fileid="21" />
-                <SequencePoint vc="0" uspid="4878" ordinal="0" offset="36" sl="136" sc="0" el="136" ec="0" bec="0" bev="0" fileid="21" />
-                <SequencePoint vc="0" uspid="4879" ordinal="0" offset="63" sl="137" sc="0" el="137" ec="0" bec="0" bev="0" fileid="21" />
-                <SequencePoint vc="0" uspid="4880" ordinal="0" offset="67" sl="138" sc="0" el="138" ec="0" bec="0" bev="0" fileid="21" />
-              </SequencePoints>
-              <BranchPoints />
-            </Method>
-          </Methods>
+          <Methods />
         </Class>
       </Classes>
+      <TrackedMethods>
+        <TrackedMethod uid="0" token="100663297" name="System.Void SanityTest::Addition_Works()" strategy="Test" />
+      </TrackedMethods>
     </Module>
     <Module>
       <Summary numSequencePoints="3" visitedSequencePoints="3" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="1" numClasses="1" visitedMethods="1" numMethods="1" />
       <ModuleTime>0001-01-01T00:00:00</ModuleTime>
       <ModuleName>EditMode</ModuleName>
       <Files>
-        <File uid="22" fullPath="D:/hunor-profetai/SafariCEO/Assets/Tests/EditMode/SanityTest.cs" />
+        <File uid="26" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Tests/Editmode/SanityTest.cs" />
+        <File uid="27" fullPath="C:/ELTE/Szoftech/hunor-profetai/SafariCEO/Assets/Scripts/Tests/Editmode/TileTests.cs" />
       </Files>
       <Classes>
         <Class>
@@ -173,17 +60,32 @@
               <Summary numSequencePoints="3" visitedSequencePoints="3" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
               <MetadataToken>100663297</MetadataToken>
               <Name>System.Void SanityTest::Addition_Works()</Name>
-              <FileRef uid="22" />
+              <FileRef uid="26" />
               <SequencePoints>
-                <SequencePoint vc="1" uspid="4976" ordinal="0" offset="0" sl="7" sc="5" el="7" ec="5" bec="0" bev="0" fileid="22" />
-                <SequencePoint vc="1" uspid="4977" ordinal="0" offset="1" sl="8" sc="9" el="8" ec="9" bec="0" bev="0" fileid="22" />
-                <SequencePoint vc="1" uspid="4978" ordinal="0" offset="19" sl="9" sc="5" el="9" ec="5" bec="0" bev="0" fileid="22" />
+                <SequencePoint vc="1" uspid="112714" ordinal="0" offset="0" sl="7" sc="5" el="7" ec="5" bec="0" bev="0" fileid="26">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="112715" ordinal="0" offset="1" sl="8" sc="9" el="8" ec="9" bec="0" bev="0" fileid="26">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="112716" ordinal="0" offset="19" sl="9" sc="5" el="9" ec="5" bec="0" bev="0" fileid="26">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
               </SequencePoints>
               <BranchPoints />
             </Method>
           </Methods>
         </Class>
       </Classes>
+      <TrackedMethods>
+        <TrackedMethod uid="1" token="100663297" name="System.Void SanityTest::Addition_Works()" strategy="Test" />
+      </TrackedMethods>
     </Module>
   </Modules>
 </CoverageSession>
