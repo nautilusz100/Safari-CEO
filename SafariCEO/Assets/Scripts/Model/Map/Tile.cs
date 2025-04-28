@@ -1,7 +1,5 @@
 using UnityEngine;
 
-namespace Assets.Scripts.Model.Map
-{
     public class Tile : MonoBehaviour
     {
         private SpriteRenderer spriteRenderer;
@@ -88,4 +86,3 @@ namespace Assets.Scripts.Model.Map
 
         }
     }
-}

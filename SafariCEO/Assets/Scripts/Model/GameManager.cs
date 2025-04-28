@@ -14,6 +14,8 @@ using static Draggable;
 using Assets.Scripts.Model.Map;
 //https://www.flaticon.com/free-icons/next icons credit - Flaticon
 
+//fuuS
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
