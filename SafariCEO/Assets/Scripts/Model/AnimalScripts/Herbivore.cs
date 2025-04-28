@@ -21,7 +21,8 @@ public class Herbivore : Animal, IHasVision
     public string uuid;
 
     // Movement parameters
-    public float moveRange = 100f;
+    public float moveRange = 10f;
+    public float herdOffset = 2f;
     public float normalSpeed = 1f;
 
     // Perception
@@ -55,7 +56,6 @@ public class Herbivore : Animal, IHasVision
 
     public StateHerbivore CurrentState { get { return currentState; } }
     public bool beingAttacked = false;
-    public bool isMating;
 
     //csak 1 rutin legyen mindig
     private Coroutine moveCoroutine;
@@ -64,9 +64,10 @@ public class Herbivore : Animal, IHasVision
     private Dictionary<GameObject, Vector3> spottedMates = new Dictionary<GameObject, Vector3>();
 
     private float mateDuration = 5f;
-    private float minMateAge = 20f;
+    private float minMateAge = 80f;
     public float mateTimer = 0f;
-    public float mateInterval = 30f;
+    public float mateInterval = 100f;
+    public bool isMating;
 
 
     public GameObject zebraPrefab;
@@ -128,7 +129,7 @@ public class Herbivore : Animal, IHasVision
 
         //InvokeRepeating("DecideNextAction", 0f, 2f);
         InvokeRepeating(nameof(UpdateVision), 0f, 0.5f);
-        InvokeRepeating("CheckIfStuck", stuckCheckInterval, stuckCheckInterval);
+        InvokeRepeating(nameof(CheckIfStuck), stuckCheckInterval, stuckCheckInterval);
     }
 
     private void OnClick()
@@ -639,12 +640,12 @@ public class Herbivore : Animal, IHasVision
             if (oldestMate != null && age < oldestMate.age)
             {
                 Vector3 matePosition = oldestMate.transform.position;
-                Vector3 randomOffset = Random.insideUnitCircle * 2f;
+                Vector3 randomOffset = Random.insideUnitCircle * herdOffset;
 
                 destination = matePosition + randomOffset;
 
                 //Debug.Log($"Moving towards mate: {oldestMate.name} at {matePosition}");
-                if (NavMesh.SamplePosition(destination, out NavMeshHit hit, moveRange, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(destination, out NavMeshHit hit, herdOffset, NavMesh.AllAreas))
                 {
                     agent.SetDestination(hit.position);
                 }
