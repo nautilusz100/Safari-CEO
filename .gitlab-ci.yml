@@ -47,7 +47,7 @@ get-activation-file:
 .test: &test
   stage: build_and_test
   <<: *unity_before_script
-  <<: *cache
+  #<<: *cache
   <<: *license
   tags:
     - unity
