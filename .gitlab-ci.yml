@@ -68,7 +68,9 @@ test-editmode:
 
 .build: &build
   stage: build
-  <<: [*unity_before_script, *cache, *license]  # Mindet egyszerre egyesítjük
+  <<: *unity_before_script
+  <<: *cache
+  <<: *license
   script:
     - chmod +x ./ci/build.sh && ./ci/build.sh
   artifacts:
