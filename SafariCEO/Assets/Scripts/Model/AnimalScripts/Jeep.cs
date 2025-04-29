@@ -20,6 +20,7 @@ public class Jeep : MonoBehaviour
     private Vector2 safariExit;
     private bool isReturningHome = false;
     public int tourists = 0;
+    float baseSpeed = 1f;
 
     // Vision, Pathfinding
     public float roadVisionRadius = 0.65f;
@@ -37,6 +38,10 @@ public class Jeep : MonoBehaviour
     private float stuckCheckInterval = 2f; // Check every 2 seconds
     private float minDistanceDelta = 0.5f; // Must move at least this much
 
+    void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 
     void Start()
     {
@@ -61,9 +66,23 @@ public class Jeep : MonoBehaviour
         gameManager = manager;
     }
 
+    float baseAcceleration = 2f;
+    float baseAngularSpeed = 60f;
+    void UpdateAgentSpeed()
+    {
+        float sp = 0.5f;
+        agent.speed = Mathf.Clamp((int)GameManager.Instance.CurrentGameSpeed * sp,0.5f,3.5f);
+        agent.acceleration = baseAcceleration * (int)GameManager.Instance.CurrentGameSpeed;
+        agent.angularSpeed = baseAngularSpeed * Mathf.Clamp((int)GameManager.Instance.CurrentGameSpeed, 1f, 3f);
+
+
+
+    }
+
     // Update is called once per frame
     void Update()
     {
+        UpdateAgentSpeed();
         if (isReturningHome) HasReachedHome();
         else
         {
@@ -79,6 +98,7 @@ public class Jeep : MonoBehaviour
 
     private void CheckIfStuck()
     {
+        if (gameObject == null) return;
         float distanceMoved = Vector3.Distance(transform.position, lastPosition);
 
         if (distanceMoved < minDistanceDelta)
@@ -97,8 +117,8 @@ public class Jeep : MonoBehaviour
         {
             stuckTimer = 0f; // Reset timer if moved enough
         }
-
-        lastPosition = transform.position;
+        if (this != null)
+            lastPosition = transform.position;
     }
 
 
@@ -119,7 +139,7 @@ public class Jeep : MonoBehaviour
 
     private void HasReachedHome()
     {
-        bool isAtHome = Vector2.Distance(transform.position, safariEntry) < 0.25f;
+        bool isAtHome = Vector2.Distance(transform.position, safariEntry) < 0.5f;
         if (isAtHome)
         {
             int differentAnimals = DifferentAnimalCount();
@@ -140,7 +160,7 @@ public class Jeep : MonoBehaviour
 
     private void AtExit()
     {
-        bool isAtExit = Vector2.Distance(transform.position, safariExit) < 0.25f;
+        bool isAtExit = Vector2.Distance(transform.position, safariExit) < 0.5f;
         if (isAtExit)
         {
             Debug.Log("Jeep has reached the exit");
@@ -232,6 +252,7 @@ public class Jeep : MonoBehaviour
 
     private void DetectAnimals()
     {
+        if (gameObject == null) return;
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, animalVisionRadius);
         foreach (var hit in hits)
         {

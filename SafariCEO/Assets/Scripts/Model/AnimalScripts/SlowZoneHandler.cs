@@ -19,7 +19,7 @@ public class SlowZoneHandler : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         visionOwner = GetComponent<IHasVision>();
-        normalSpeed = agent.speed;
+        normalSpeed = 1f;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -31,17 +31,17 @@ public class SlowZoneHandler : MonoBehaviour
         {
             case ShopType.Lake:
             case ShopType.River:
-                agent.speed = slowedSpeedWater;
+                agent.speed = slowedSpeedWater * (int) GameManager.Instance.CurrentGameSpeed;
                 visionOwner.SetVisionRadius(visionRadiusNormal);
                 break;
 
             case ShopType.Hills:
-                agent.speed = slowedSpeedHills;
+                agent.speed = slowedSpeedHills * (int) GameManager.Instance.CurrentGameSpeed;
                 visionOwner.SetVisionRadius(visionRadiusHills);
                 break;
 
             default:
-                agent.speed = normalSpeed;
+                agent.speed = normalSpeed * (int)GameManager.Instance.CurrentGameSpeed;
                 visionOwner.SetVisionRadius(visionRadiusNormal);
                 break;
         }

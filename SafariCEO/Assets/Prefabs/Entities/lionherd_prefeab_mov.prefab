@@ -204,8 +204,8 @@ MonoBehaviour:
   huntingColor: {r: 1, g: 0, b: 0, a: 1}
   uuid: 
   moveRange: 100
-  huntingSpeed: 5
-  normalSpeed: 3
+  huntingSpeed: 1.5
+  normalSpeed: 0.5
   visionRadius: 15
   hungerInterval: 120
   thirstInterval: 90
