@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
+    public bool testMode = false;
     public int TimePassed
     {
         get => hoursPassed;
@@ -132,6 +132,7 @@ public class GameManager : MonoBehaviour
     // Singleton GameManager
     void Start()
     {
+        if (testMode) return; //For testing classes that refer to gamemanager
         scoreText.text = "$" + EntryFee.ToString();
         if (Instance == null)
             Instance = this;
