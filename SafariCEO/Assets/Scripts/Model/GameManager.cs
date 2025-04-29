@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public SafariMap safariMapPrefab;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI visitorCount;
+    public TextMeshProUGUI jeepCountText;
     
     // Jeep & Tourist related information
     private float visitorInterval = 5f; // Time in seconds between each visitor
@@ -104,7 +105,7 @@ public class GameManager : MonoBehaviour
                 int hours = ((hoursPassed % 8640) % 720) % 24;
 
                 dateButton.text = "Y: "+ yearsPassed.ToString("D2") +
-                    "M: " + monthsPassed.ToString("D2") +
+                    " M: " + monthsPassed.ToString("D2") +
                     " D: " + daysPassed.ToString("D2") +
                     " H: " + hours.ToString("D2");
             }
@@ -287,8 +288,8 @@ public class GameManager : MonoBehaviour
                         if (tile != null)
                         {
                             if (tile.isLocked) return;
-                        }
                         currentMap.ChangeTileToRoad(tilePosition);
+                        }
                         Money = Money -roadPrice;
                         navMeshSurface.UpdateNavMesh(navMeshSurface.navMeshData);
                     }
@@ -348,6 +349,7 @@ public class GameManager : MonoBehaviour
         else if (IsBuilding == Tile.ShopType.Jeep && Money >= jeepPrice)
         {
             jeepCount++;
+            UpdateJeepCount();
             totalJeepCount++;
             IsBuilding = Tile.ShopType.None;
             Money = Money - jeepPrice;
@@ -391,6 +393,7 @@ public class GameManager : MonoBehaviour
         jeep.GetComponent<Jeep>().SetManager(this);
         jeep.GetComponent<Jeep>().tourists = tourists;
         jeepCount--;
+        UpdateJeepCount();
         jeep.GetComponent<Jeep>().id = totalJeepCount - jeepCount;
     }
 
@@ -409,6 +412,7 @@ public class GameManager : MonoBehaviour
             satisfaction = (satisfaction + review) / 2;
         }
         jeepCount++;
+        UpdateJeepCount();
 
     }
 
@@ -482,6 +486,10 @@ public class GameManager : MonoBehaviour
     public void UpdateVisitorCount()
     {
         visitorCount.text = Visitors.ToString();
+    }
+    public void UpdateJeepCount()
+    {
+        jeepCountText.text = jeepCount.ToString();
     }
     public int GetAnimalPrice(AnimalType type)
     {
