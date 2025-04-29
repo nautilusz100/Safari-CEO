@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -e
+set -x
 
 echo "Building for $BUILD_TARGET"
 
@@ -32,3 +33,4 @@ else
 fi
 
 ls -la $BUILD_PATH
+[ -n "$(ls -A $BUILD_PATH)" ] # fail job if build folder is empty

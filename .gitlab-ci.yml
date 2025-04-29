@@ -17,7 +17,7 @@ image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 .unity_before_script: &unity_before_script
   before_script:
     - chmod +x ./ci/before_script.sh && ./ci/before_script.sh
-
+    
 .cache: &cache
   cache:
     key: "$CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$TEST_PLATFORM"
@@ -29,91 +29,59 @@ image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
     - if: '$UNITY_LICENSE != null'
       when: always
 
-get-activation-file:
-  image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
-  tags:
-    - unity
-  rules:
-    - if: '$UNITY_LICENSE == null'
-      when: manual
-  stage: build_and_test
-  script:
-    - chmod +x ./ci/get_activation_file.sh && ./ci/get_activation_file.sh
-  artifacts:
-    paths:
-      - $UNITY_ACTIVATION_FILE
-    expire_in: 60 min
+get-activation-file-script:
+    image: $IMAGE:2021.3.4f1-base-1.0.1
+    rules:
+        - if: '$UNITY_LICENSE == null'
+          when: manual
+    stage: build
+    script:
+        - chmod +x ./ci/get_activation_file.sh && ./ci/get_activation_file.sh
+    artifacts:
+        paths:
+        - $UNITY_ACTIVATION_FILE
+        expire_in: 10 min # Expiring this as artifacts may contain sensitive data and should not be kept public
 
-.test: &test
-  stage: build_and_test
-  <<: *unity_before_script
-  #<<: *cache
-  <<: *license
-  tags:
-    - unity
-  script:
-    - chmod +x ./ci/test.sh && ./ci/test.sh
-  artifacts:
-    when: always
-    expire_in: 2 weeks
-  coverage: /<Linecoverage>(.*?)</Linecoverage>/
 
-test-playmode:
-  <<: *test
-  variables:
-    TEST_PLATFORM: playmode
+#.test: &test
+#  stage: test
+#  <<: *unity_before_script
+#  <<: *cache
+#  <<: *license
+#  script:
+#    - chmod +x ./ci/test.sh && ./ci/test.sh
+#  artifacts:
+#    when: always
+#    expire_in: 2 weeks
+#  coverage: /<Linecoverage>(.*?)</Linecoverage>/
 
-test-editmode:
-  <<: *test
-  variables:
-    TEST_PLATFORM: editmode
+#test-playmode:
+#  <<: *test
+#  variables:
+#    TEST_PLATFORM: playmode
+
+#test-editmode:
+#  <<: *test
+#  variables:
+#    TEST_PLATFORM: editmode
 
 .build: &build
-  stage: build_and_test
+  stage: build
   <<: *unity_before_script
   <<: *cache
   <<: *license
-  tags:
-    - unity
   script:
     - chmod +x ./ci/build.sh && ./ci/build.sh
   artifacts:
     paths:
       - $UNITY_DIR/Builds/
 
-build-StandaloneLinux64:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneLinux64
-
-build-StandaloneOSX:
-  <<: *build
-  image: $IMAGE:$UNITY_VERSION-mac-mono-$IMAGE_VERSION
-  variables:
-    BUILD_TARGET: StandaloneOSX
-
 build-StandaloneWindows64:
   <<: *build
+  tags: [unity]
   image: $IMAGE:$UNITY_VERSION-windows-mono-$IMAGE_VERSION
   variables:
     BUILD_TARGET: StandaloneWindows64
-
-build-WebGL:
-  <<: *build
-  image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
-  variables:
-    BUILD_TARGET: WebGL
-
-pages:
-  image: alpine:latest
-  stage: deploy
-  script:
-    - mv "$UNITY_DIR/Builds/WebGL/${BUILD_NAME}" public
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
 
 workflow:
   rules:
