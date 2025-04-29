@@ -34,8 +34,6 @@ image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
 get-activation-file:
   image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
-  tags:
-    - unity
   rules:
     - if: '$UNITY_LICENSE == null'
       when: manual
@@ -50,10 +48,8 @@ get-activation-file:
 .test: &test
   stage: build_and_test
   <<: *unity_before_script
-  #<<: *cache
+  <<: *cache
   <<: *license
-  tags:
-    - unity
   script:
     - chmod +x ./ci/test.sh && ./ci/test.sh
   artifacts:
@@ -76,8 +72,6 @@ test-editmode:
   <<: *unity_before_script
   <<: *cache
   <<: *license
-  tags:
-    - unity
   script:
     - chmod +x ./ci/build.sh && ./ci/build.sh
   artifacts:
