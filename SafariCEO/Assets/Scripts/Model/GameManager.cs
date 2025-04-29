@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
                 int daysPassed = (hoursPassed % 720) / 24;
                 int hours = (hoursPassed % 720) % 24;
 
-                dateButton.text =
+                dateButton.text = "Y: "+ yearsPassed.ToString("D2") +
                     "M: " + monthsPassed.ToString("D2") +
                     " D: " + daysPassed.ToString("D2") +
                     " H: " + hours.ToString("D2");
@@ -112,8 +112,8 @@ public class GameManager : MonoBehaviour
     public enum GameSpeed
     {
         Normal = 1,
-        Double = 2,
-        Triple = 3
+        Double = 6,
+        Triple = 12
     }
     public GameSpeed CurrentGameSpeed { get; private set; } = GameSpeed.Normal;
 
@@ -124,8 +124,9 @@ public class GameManager : MonoBehaviour
     public Tile.ShopType IsBuilding { get; set; } = Tile.ShopType.Animal;
 
     private float timer; // Real-world timer in seconds
-    [SerializeField] private float secondsPerGameHour = 1f; // 1 second = 1 game hour (adjustable)
+    [SerializeField] private float secondsPerGameHour = 5f; // 1 second = 1 game hour (adjustable)
     private float timeAccumulator = 0f;
+    public float ScaledDeltaTime { get; private set; }
 
     // Singleton GameManager
     void Start()
@@ -251,13 +252,15 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
-        timeAccumulator += Time.deltaTime * (int)CurrentGameSpeed; // gyorsítás szorzás
+        if (testMode) return;
+        ScaledDeltaTime = (Time.deltaTime * (int)CurrentGameSpeed) / secondsPerGameHour;
+        timeAccumulator += ScaledDeltaTime; // gyorsítás szorzás
         // Update the timer
-        if (timeAccumulator >= 1f) // 1 másodperc eltelt
+        if (timeAccumulator >= 1)
         {
-            TimePassed += 1; // 1 órát növelünk
-            timeAccumulator -= 1f;
+            int fullHoursPassed = Mathf.FloorToInt(timeAccumulator);
+            TimePassed += fullHoursPassed; // 1 órát növelünk
+            timeAccumulator -= fullHoursPassed;
         }
 
 
@@ -350,7 +353,7 @@ public class GameManager : MonoBehaviour
 
         if(visitorTimer > 0f)
         {
-            visitorTimer -= Time.deltaTime * (int)CurrentGameSpeed;
+            visitorTimer -= ScaledDeltaTime;
         }
         else
         {

@@ -88,7 +88,7 @@ public class Carnivorous : Animal, IHasVision
         diet = Diet.Carnivore;
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        agent.speed = normalSpeed;
+        agent.speed = (int)GameManager.Instance.CurrentGameSpeed * normalSpeed;
 
         starvationTimer = starvationTime;
         dehydrationTimer = dehydrationTime;
@@ -113,9 +113,19 @@ public class Carnivorous : Animal, IHasVision
         }
     }
 
+    float baseAcceleration = 4f;
+    float baseAngularSpeed = 120f;
+    void UpdateAgentSpeed()
+    {
+        float sp = CurrentState == StateCarnivore.Hunt ? huntingSpeed : normalSpeed;
+        agent.speed = (int)GameManager.Instance.CurrentGameSpeed * sp;
+        agent.acceleration = baseAcceleration * (int)GameManager.Instance.CurrentGameSpeed;
+        agent.angularSpeed = baseAngularSpeed * Mathf.Clamp((int)GameManager.Instance.CurrentGameSpeed, 1f, 3f);
+    }
+
     private void Update()
     {
-
+        UpdateAgentSpeed();
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -136,26 +146,28 @@ public class Carnivorous : Animal, IHasVision
             {
                 Debug.Log("Prey caught via distance check!");
                 StartEating(currentTargetAnimal.transform);
+                
             }
         }
-        age += Time.deltaTime;
+
+        age += GameManager.Instance.ScaledDeltaTime;
         if (age >= maxAge) Die();
 
         if (currentState != StateCarnivore.Eating && currentState != StateCarnivore.Hunt)
-            hungerTimer -= Time.deltaTime;
+            hungerTimer -= GameManager.Instance.ScaledDeltaTime;
 
         if (currentState != StateCarnivore.Drinking && currentState != StateCarnivore.SearchWater)
-            thirstTimer -= Time.deltaTime;
+            thirstTimer -= GameManager.Instance.ScaledDeltaTime;
 
         if (hungerTimer <= 0)
         {
-            starvationTimer -= Time.deltaTime;
+            starvationTimer -= GameManager.Instance.ScaledDeltaTime;
             if (starvationTimer <= 0) Die();
         }
 
         if (thirstTimer <= 0)
         {
-            dehydrationTimer -= Time.deltaTime;
+            dehydrationTimer -= GameManager.Instance.ScaledDeltaTime;
             if (dehydrationTimer <= 0) Die();
         }
         
@@ -216,6 +228,7 @@ public class Carnivorous : Animal, IHasVision
         }
         else if (mateTimer >= mateInterval && age >= minMateAge)
         {
+
             currentState = StateCarnivore.Mature;
             
         }
@@ -391,7 +404,6 @@ public class Carnivorous : Animal, IHasVision
     private void HuntClosestPrey()
     {
         spriteRenderer.color = huntingColor;
-        agent.speed = huntingSpeed;
 
         // Frissítjük a prédák pozícióját (eltávolítjuk a null elemeket)
         spottedPreyPositions = spottedPreyPositions
@@ -442,7 +454,7 @@ public class Carnivorous : Animal, IHasVision
         Debug.Log($"Stopped prey agent: {prey.name}");
         currentTargetAnimal = prey.gameObject; //valamiért újra be kell állítani, mert ha nincs akkor a préda nem tûnik el
         // 10 másodperc után vége az evésnek
-        Invoke(nameof(FinishEating), eatingDuration);
+        Invoke(nameof(FinishEating), eatingDuration / (int)GameManager.Instance.CurrentGameSpeed);
     }
     private void FinishEating()
     {

@@ -982,8 +982,9 @@ MonoBehaviour:
   normalTimeArrow: {fileID: 2800000, guid: 78c989db9af9dfc42bab5b99ed497cae, type: 3}
   doubleTimeArrow: {fileID: 2800000, guid: 585d70e6868ed474681d372cb8baa683, type: 3}
   tripleTimeArrow: {fileID: 2800000, guid: d47e6443a3d3a3e4e8722ddcdc135489, type: 3}
+  testMode: 0
   navMesh: {fileID: 202532414}
-  secondsPerGameHour: 1
+  secondsPerGameHour: 5
 --- !u!4 &138372539
 Transform:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ using System;
 using Random = UnityEngine.Random;
 using UnityEngine.EventSystems;
 using Assets.Scripts.Model.Map;
+using static GameManager;
 
 public class Herbivore : Animal, IHasVision
 {
@@ -104,7 +105,7 @@ public class Herbivore : Animal, IHasVision
 
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        agent.speed = normalSpeed;
+        agent.speed = (int)GameManager.Instance.CurrentGameSpeed * normalSpeed;
         agent.avoidancePriority = Random.Range(1, 99); 
 
         // Initialize timers
@@ -141,10 +142,21 @@ public class Herbivore : Animal, IHasVision
         }
     }
 
+    float baseAcceleration = 4f;
+    float baseAngularSpeed = 120f;
+    void UpdateAgentSpeed()
+    {
+        float sp = normalSpeed;
+        agent.speed = (int)GameManager.Instance.CurrentGameSpeed * sp;
+        agent.acceleration = baseAcceleration * (int)GameManager.Instance.CurrentGameSpeed;
+        agent.angularSpeed = baseAngularSpeed*Mathf.Clamp((int)GameManager.Instance.CurrentGameSpeed,1f,3f);
+    }
+
     private void Update()
     {
         SortByY();
 
+        UpdateAgentSpeed();
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -158,7 +170,7 @@ public class Herbivore : Animal, IHasVision
         if (!beingAttacked && !isMating)
         {
             // Aging
-            age += Time.deltaTime;
+            age += GameManager.Instance.ScaledDeltaTime;  
 
             if (age >= maxAge)
             {
@@ -171,17 +183,17 @@ public class Herbivore : Animal, IHasVision
 
             if (currentState != StateHerbivore.Mating && currentState != StateHerbivore.FindMate)//Mate system
             {
-                mateTimer += Time.deltaTime;
+                mateTimer += GameManager.Instance.ScaledDeltaTime;
             }
 
             if (currentState != StateHerbivore.Eating && currentState != StateHerbivore.SearchFood)            // Hunger system
             {
-                hungerTimer -= Time.deltaTime;
+                hungerTimer -= GameManager.Instance.ScaledDeltaTime;
             }
 
             if (currentState != StateHerbivore.Drinking && currentState != StateHerbivore.SearchWater)// Thirst system
             {
-                thirstTimer -= Time.deltaTime;
+                thirstTimer -= GameManager.Instance.ScaledDeltaTime;
             }
             
 
@@ -189,7 +201,7 @@ public class Herbivore : Animal, IHasVision
 
             if (hungerTimer <= 0)
             {
-                starvationTimer -= Time.deltaTime;
+                starvationTimer -= GameManager.Instance.ScaledDeltaTime;
                 if (starvationTimer <= 0)
                 {
                     Die();
@@ -203,7 +215,7 @@ public class Herbivore : Animal, IHasVision
             // Dehydration handling
             if (thirstTimer <= 0)
             {
-                dehydrationTimer -= Time.deltaTime;
+                dehydrationTimer -= GameManager.Instance.ScaledDeltaTime;
                 if (dehydrationTimer <= 0)
                 {
                     Die();
@@ -278,13 +290,12 @@ public class Herbivore : Animal, IHasVision
 
     private void DecideNextAction()
     {
+        if (!agent.isActiveAndEnabled) return;
         // Set State
         if (moveCoroutine != null)
             return;
         if (hungerTimer <= hungerInterval * 0.3f || thirstTimer <= thirstInterval * 0.3f)
         {
-            if (hungerTimer <= thirstTimer)
-            {
                 if (hungerTimer <= thirstTimer)
                 {
                     currentState = StateHerbivore.SearchFood;
@@ -293,7 +304,6 @@ public class Herbivore : Animal, IHasVision
                 {
                     currentState = StateHerbivore.SearchWater;
                 }
-            }
         }
         else if (age >= minMateAge && mateTimer >= mateInterval) //mating 
         {
@@ -374,7 +384,7 @@ public class Herbivore : Animal, IHasVision
 
             case StateHerbivore.Rest:
                 agent.isStopped = true;
-                Invoke(nameof(ResumeWander), Random.Range(5f, 10f));
+                Invoke(nameof(ResumeWander), Random.Range(5f, 10f)/(int)GameManager.Instance.CurrentGameSpeed);
                 break;
         }
     }
@@ -452,7 +462,7 @@ public class Herbivore : Animal, IHasVision
         Debug.Log($"Stopped mate agent: mate: {mateScript.agent.isStopped} and me: {agent.isStopped}");
         // 5 m�sodperc ut�n v�ge az mate-nek
         currentTargetAnimal = mate.gameObject;
-        Invoke(nameof(FinishMating), mateDuration);
+        Invoke(nameof(FinishMating), mateDuration / (int)GameManager.Instance.CurrentGameSpeed);
     }
     private void FinishMating()
     {
@@ -511,6 +521,7 @@ public class Herbivore : Animal, IHasVision
     private Tile FindClosestFood()
     {
         return exploredTiles
+            .FindAll(t => t != null)
             .FindAll(t => t.Type == ShopType.Tree || t.Type == ShopType.Flowerbed || t.Type == ShopType.Bush)
             .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
             .FirstOrDefault();
@@ -519,6 +530,7 @@ public class Herbivore : Animal, IHasVision
     private Tile FindClosestWater()
     {
         return exploredTiles
+            .FindAll(t => t != null)
             .FindAll(t => t.Type == ShopType.Lake || t.Type == ShopType.River)
             .OrderBy(t => Vector3.Distance(transform.position, t.transform.position))
             .FirstOrDefault();
@@ -526,6 +538,7 @@ public class Herbivore : Animal, IHasVision
 
     private IEnumerator CheckIfReachedDestination(StateHerbivore nextState)
     {
+        if (!agent.isActiveAndEnabled) yield break;
         while (currentTarget != null &&(agent.pathPending ||agent.remainingDistance > agent.stoppingDistance))
         {
             if (currentTarget == null) //
@@ -572,7 +585,7 @@ public class Herbivore : Animal, IHasVision
         currentState = StateHerbivore.Eating;
         agent.isStopped = true;
         Debug.Log($"{name} is eating at {currentTarget.name}");
-        Invoke(nameof(FinishEating), eatingDuration);
+        Invoke(nameof(FinishEating), eatingDuration/(int)GameManager.Instance.CurrentGameSpeed);
     }
 
     private void FinishEating()
@@ -607,7 +620,7 @@ public class Herbivore : Animal, IHasVision
         currentState = StateHerbivore.Drinking;
         agent.isStopped = true;
         Debug.Log(transform.name + " is drinking at " + currentTarget.name);
-        Invoke(nameof(FinishDrinking), drinkingDuration);
+        Invoke(nameof(FinishDrinking), drinkingDuration/(int)GameManager.Instance.CurrentGameSpeed);
     }
 
     private void FinishDrinking()
@@ -631,6 +644,7 @@ public class Herbivore : Animal, IHasVision
 
     private void MoveTowardsHerdOrRandom()
     {
+        if (!agent.isActiveAndEnabled) return;
         if (agent.remainingDistance < 2f) //ez uj
         {
             Herbivore oldestMate = FindOldestSeenMate();
@@ -657,6 +671,11 @@ public class Herbivore : Animal, IHasVision
         }
     }
 
+    void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
     public void MoveRandom()
     {
         Vector3 destination = Vector3.zero;
@@ -676,6 +695,7 @@ public class Herbivore : Animal, IHasVision
         float oldestAge = 0f;
         foreach (var mate in spottedMates.Keys)
         {
+            if (mate == null) continue;
             Herbivore mateScript = mate.GetComponent<Herbivore>();
             if (mateScript != null && mateScript.age > oldestAge)
             {
