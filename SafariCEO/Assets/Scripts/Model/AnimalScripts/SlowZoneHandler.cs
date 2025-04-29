@@ -3,6 +3,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using static Tile;
 
+public class FakeNavMeshAgent : MonoBehaviour
+{
+    public float speed;
+}
 public class SlowZoneHandler : MonoBehaviour
 {
     public float slowedSpeedWater = 0.5f;
@@ -11,9 +15,11 @@ public class SlowZoneHandler : MonoBehaviour
     public float visionRadiusNormal = 5f;
     public float visionRadiusHills = 10f;
 
-    private float normalSpeed;
+    private float normalSpeed = 1f;
     private NavMeshAgent agent;
     private IHasVision visionOwner;
+
+    public float? testSpeedOverride;
 
     private void Start()
     {
@@ -22,28 +28,50 @@ public class SlowZoneHandler : MonoBehaviour
         normalSpeed = 1f;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerEnter2D(Collider2D other)
     {
         Tile tile = other.GetComponent<Tile>();
         if (tile == null) return;
 
+        
         switch (tile.Type)
         {
             case ShopType.Lake:
             case ShopType.River:
-                agent.speed = slowedSpeedWater * (int) GameManager.Instance.CurrentGameSpeed;
-                visionOwner.SetVisionRadius(visionRadiusNormal);
+                float newSpeed = slowedSpeedWater * (int)GameManager.Instance.CurrentGameSpeed;
+                if (agent != null)
+                {
+                    agent.speed = newSpeed;
+                    visionOwner.SetVisionRadius(visionRadiusNormal);
+                }
+                else
+                    testSpeedOverride = newSpeed;
                 break;
 
             case ShopType.Hills:
-                agent.speed = slowedSpeedHills * (int) GameManager.Instance.CurrentGameSpeed;
-                visionOwner.SetVisionRadius(visionRadiusHills);
+
+                newSpeed = slowedSpeedHills * (int)GameManager.Instance.CurrentGameSpeed;
+                if (agent != null)
+                {
+                    agent.speed = newSpeed;
+                    visionOwner.SetVisionRadius(visionRadiusNormal);
+                }
+                else
+                    testSpeedOverride = newSpeed;
                 break;
 
             default:
-                agent.speed = normalSpeed * (int)GameManager.Instance.CurrentGameSpeed;
-                visionOwner.SetVisionRadius(visionRadiusNormal);
+                newSpeed = normalSpeed * (int)GameManager.Instance.CurrentGameSpeed;
+                if (agent != null)
+                {
+                    agent.speed = newSpeed;
+                    visionOwner.SetVisionRadius(visionRadiusNormal);
+                }
+                else
+                    testSpeedOverride = newSpeed;
+
                 break;
         }
+
     }
 }
