@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
         Double = 6,
         Triple = 12
     }
-    public GameSpeed CurrentGameSpeed { get; private set; } = GameSpeed.Normal;
+    public GameSpeed CurrentGameSpeed { get; set; } = GameSpeed.Normal;
 
 
     public GameObject navMesh;
