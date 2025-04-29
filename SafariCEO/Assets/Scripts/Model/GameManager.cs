@@ -98,9 +98,10 @@ public class GameManager : MonoBehaviour
             hoursPassed = value;
             if (dateButton != null)
             {
-                int monthsPassed = hoursPassed / 720; // 30 days * 24 hours
-                int daysPassed = (hoursPassed % 720) / 24;
-                int hours = (hoursPassed % 720) % 24;
+                int yearsPassed = hoursPassed / 8640;
+                int monthsPassed =( hoursPassed % 8640)/ 720; // 30 days * 24 hours
+                int daysPassed = ((hoursPassed % 8640) % 720) / 24;
+                int hours = ((hoursPassed % 8640) % 720) % 24;
 
                 dateButton.text = "Y: "+ yearsPassed.ToString("D2") +
                     "M: " + monthsPassed.ToString("D2") +
