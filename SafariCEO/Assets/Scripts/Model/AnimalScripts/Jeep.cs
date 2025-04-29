@@ -20,7 +20,7 @@ public class Jeep : MonoBehaviour
     private Vector2 safariExit;
     private bool isReturningHome = false;
     public int tourists = 0;
-    float baseSpeed = 1f;
+    float baseSpeed = 2f;
 
     // Vision, Pathfinding
     public float roadVisionRadius = 0.65f;
