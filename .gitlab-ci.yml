@@ -4,7 +4,7 @@ stages:
   - deploy
 
 default:
-  tags: [ unity ]
+  tags: [ otthon ]
 
 variables:
   BUILD_NAME: SafariCEO
