@@ -3,7 +3,7 @@ stages:
   - deploy
 
 default:
-  tags: [ otthon ]
+  tags: [ oraclevm ]
 
 variables:
   BUILD_NAME: SafariCEO
