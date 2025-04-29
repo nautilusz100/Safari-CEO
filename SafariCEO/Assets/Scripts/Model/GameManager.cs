@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
                 int hours = ((hoursPassed % 8640) % 720) % 24;
 
                 dateButton.text = "Y: "+ yearsPassed.ToString("D2") +
-                    "M: " + monthsPassed.ToString("D2") +
+                    " M: " + monthsPassed.ToString("D2") +
                     " D: " + daysPassed.ToString("D2") +
                     " H: " + hours.ToString("D2");
             }
