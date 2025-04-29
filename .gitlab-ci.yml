@@ -44,27 +44,27 @@ get-activation-file-script:
         expire_in: 10 min # Expiring this as artifacts may contain sensitive data and should not be kept public
 
 
-#.test: &test
-#  stage: test
-#  <<: *unity_before_script
-#  <<: *cache
-#  <<: *license
-#  script:
-#    - chmod +x ./ci/test.sh && ./ci/test.sh
-#  artifacts:
-#    when: always
-#    expire_in: 2 weeks
-#  coverage: /<Linecoverage>(.*?)</Linecoverage>/
+.test: &test
+  stage: test
+  <<: *unity_before_script
+  <<: *cache
+  <<: *license
+  script:
+    - chmod +x ./ci/test.sh && ./ci/test.sh
+  artifacts:
+    when: always
+    expire_in: 2 weeks
+  coverage: /<Linecoverage>(.*?)</Linecoverage>/
 
-#test-playmode:
-#  <<: *test
-#  variables:
-#    TEST_PLATFORM: playmode
+test-playmode:
+  <<: *test
+  variables:
+    TEST_PLATFORM: playmode
 
-#test-editmode:
-#  <<: *test
-#  variables:
-#    TEST_PLATFORM: editmode
+test-editmode:
+  <<: *test
+  variables:
+    TEST_PLATFORM: editmode
 
 .build: &build
   stage: build
