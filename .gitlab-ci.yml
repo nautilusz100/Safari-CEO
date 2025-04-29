@@ -1,5 +1,6 @@
-stages:
-  - build_and_test
+stages: 
+  - build
+  - test
   - deploy
 
 variables:
