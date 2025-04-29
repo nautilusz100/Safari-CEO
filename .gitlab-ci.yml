@@ -67,14 +67,13 @@ get-activation-file-script:
 
 .build: &build
   stage: build
-  <<: *unity_before_script
-  <<: *cache
-  <<: *license
+  <<: [*unity_before_script, *cache, *license]  # Mindet egyszerre egyesítjük
   script:
     - chmod +x ./ci/build.sh && ./ci/build.sh
   artifacts:
     paths:
       - $UNITY_DIR/Builds/
+
 
 build-StandaloneWindows64:
   <<: *build
