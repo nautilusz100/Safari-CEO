@@ -283,12 +283,12 @@ public class GameManager : MonoBehaviour
                         Debug.Log("Clicked object: " + hit.collider.gameObject.name);
 
                         Vector2 tilePosition = hit.collider.gameObject.transform.position;
-                        currentMap.ChangeTileToRoad(tilePosition);
                         Tile tile = hit.transform.gameObject.GetComponent<Tile>();
                         if (tile != null)
                         {
                             if (tile.isLocked) return;
                         }
+                        currentMap.ChangeTileToRoad(tilePosition);
                         Money = Money -roadPrice;
                         navMeshSurface.UpdateNavMesh(navMeshSurface.navMeshData);
                     }

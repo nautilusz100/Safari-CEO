@@ -74,9 +74,6 @@ public class Jeep : MonoBehaviour
         agent.speed = Mathf.Clamp((int)GameManager.Instance.CurrentGameSpeed * sp,0.5f,3.5f);
         agent.acceleration = baseAcceleration * (int)GameManager.Instance.CurrentGameSpeed;
         agent.angularSpeed = baseAngularSpeed * Mathf.Clamp((int)GameManager.Instance.CurrentGameSpeed, 1f, 3f);
-
-
-
     }
 
     // Update is called once per frame
