@@ -3,6 +3,9 @@ stages:
   - test
   - deploy
 
+default:
+  tags: [ unity ]
+
 variables:
   BUILD_NAME: SafariCEO
   UNITY_ACTIVATION_FILE: Unity_v2022.3.24f1.alf
