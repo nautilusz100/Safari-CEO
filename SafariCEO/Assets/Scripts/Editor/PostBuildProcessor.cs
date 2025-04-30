@@ -1,9 +1,7 @@
-﻿using System.IO;
-using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor.Callbacks;
+﻿﻿using UnityEditor.Callbacks;
 using UnityEditor;
-
+using System.IO;
+using UnityEngine;
 
 #if UNITY_IOS
 using UnityEditor.iOS.Xcode;
@@ -66,5 +64,4 @@ public static class BuildPostProcess
         File.WriteAllText(plistPath, plist.WriteToString());
     }
 }
-#endif
 #endif
