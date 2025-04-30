@@ -103,7 +103,15 @@ build-WebGL:
   script:
     - chmod +x ./ci/build.sh && ./ci/build.sh
     - echo "=== Build folder contents ==="
+    - BUILD_PATH="SafariCEO/Builds/WebGL"
+    - echo "=== Build Path ==="
+    - echo "$BUILD_PATH"
+    - ls -la "$BUILD_PATH" # Ellenőrzi, hogy létezik-e
+    - echo "=== All files in build folder ==="
     - find "$BUILD_PATH"
+    - mkdir -p public
+    - mv "$BUILD_PATH/*" public/
+
 
 pages:
   image: alpine:latest
