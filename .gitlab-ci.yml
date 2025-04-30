@@ -82,16 +82,16 @@ test-editmode:
     paths:
       - $UNITY_DIR/Builds/
 
-build-StandaloneLinux64:
-  <<: *build
-  variables:
-    BUILD_TARGET: StandaloneLinux64
+#build-StandaloneLinux64:
+#  <<: *build
+#  variables:
+#    BUILD_TARGET: StandaloneLinux64
 
-build-StandaloneOSX:
-  <<: *build
-  image: $IMAGE:$UNITY_VERSION-mac-mono-$IMAGE_VERSION
-  variables:
-    BUILD_TARGET: StandaloneOSX
+#build-StandaloneOSX:
+#  <<: *build
+#  image: $IMAGE:$UNITY_VERSION-mac-mono-$IMAGE_VERSION
+#  variables:
+#    BUILD_TARGET: StandaloneOSX
 
 build-StandaloneWindows64:
   <<: *build
