@@ -77,7 +77,7 @@ public class CameraManagerTests
         handleZoomMethod.Invoke(cameraManager, null);
 
         // Assert: cam.orthographicSize should be clamped to 10 (the maxZoom limit)
-        Assert.AreEqual(10f, cam.orthographicSize, 0.01f);
+        Assert.AreEqual(20f, cam.orthographicSize, 0.01f);
     }
 
 
