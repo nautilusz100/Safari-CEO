@@ -31,4 +31,18 @@ else
   echo "Unexpected exit code $UNITY_EXIT_CODE";
 fi
 
+# Ellenőrizzük, hogy a build mappa tartalmaz-e fájlokat
+echo "=== Listing files in build directory ==="
 ls -la $BUILD_PATH
+
+# Részletes fájlok listázása
+echo "=== Listing all files in build folder ==="
+find $BUILD_PATH
+
+# Ha nem találunk fájlokat, akkor a hibát könnyebben azonosíthatjuk
+if [ ! -d "$BUILD_PATH" ] || [ -z "$(ls -A $BUILD_PATH)" ]; then
+  echo "No files found in build directory $BUILD_PATH"
+else
+  echo "Build completed successfully. Files found in build directory:"
+  ls -R $BUILD_PATH
+fi
