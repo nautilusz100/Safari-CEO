@@ -100,15 +100,19 @@ build-WebGL:
   image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
   variables:
     BUILD_TARGET: WebGL
-
-
+  script:
+    - chmod +x ./ci/build.sh && ./ci/build.sh
+    - echo "=== Build folder contents ==="
+    - find "$BUILD_PATH"
 
 pages:
   image: alpine:latest
   stage: deploy
-  dependencies:
-    - build-WebGL
   script:
+    - echo "=== Current folder ==="
+    - pwd
+    - echo "=== All files ==="
+    - find .
     - mkdir -p public
     - mv SafariCEO/Builds/WebGL/* public/
   artifacts:
