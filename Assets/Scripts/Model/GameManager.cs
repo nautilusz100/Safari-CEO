@@ -379,7 +379,7 @@ public class GameManager : MonoBehaviour
         if(UnityEngine.Random.value < finalSpawnChance && jeepCount > 0)
         {
             int tourists = UnityEngine.Random.Range(1, 5);
-            money += EntryFee * tourists;
+            Money += EntryFee * tourists;
             Visitors += tourists;
             UpdateVisitorCount();
             SpawnJeep(tourists);

@@ -17,7 +17,7 @@ public class CameraManager : MonoBehaviour
     public Vector2 maxBounds;
 
     private float minZoom = 1f;
-    private float maxZoom = 10f;
+    private float maxZoom = 20f;
     private float zoomSpeed = 5f;
 
     void Start()
