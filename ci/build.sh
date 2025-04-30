@@ -17,7 +17,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -customBuildName $BUILD_NAME \
   -customBuildPath $BUILD_PATH \
   -executeMethod BuildCommand.PerformBuild \
-  -logFile /dev/stdout
+  -logFile "$BUILD_PATH/unity_build_log.txt"
 
 UNITY_EXIT_CODE=$?
 
