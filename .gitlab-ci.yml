@@ -101,9 +101,13 @@ build-WebGL:
   variables:
     BUILD_TARGET: WebGL
 
+
+
 pages:
   image: alpine:latest
   stage: deploy
+  dependencies:
+    - build-WebGL
   script:
     - mkdir -p public
     - mv SafariCEO/Builds/WebGL/* public/
@@ -112,8 +116,7 @@ pages:
       - public
   only:
     - master
-
-
+    
 workflow:
   rules:
     - if: $CI_MERGE_REQUEST_ID
