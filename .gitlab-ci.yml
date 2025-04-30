@@ -2,20 +2,19 @@ stages:
   - build_and_test
   - deploy
 
-default:
-  tags: [ unity ]
 
 variables:
   BUILD_NAME: SafariCEO
   UNITY_ACTIVATION_FILE: Unity_v2022.3.24f1.alf
   UNITY_VERSION: "2022.3.24f1"
-  IMAGE: unityci/editor
-  IMAGE_VERSION: "3"
-  UNITY_DIR: "SafariCEO"
-  UNITY_USERNAME: "$UNITY_USERNAME"
-  UNITY_PASSWORD: "$UNITY_PASSWORD"
+  IMAGE: unityci/editor # https://hub.docker.com/r/unityci/editor
+  IMAGE_VERSION: "3" # This will automatically use latest v3.x.x, see https://github.com/game-ci/docker/releases
+  UNITY_DIR: $CI_PROJECT_DIR
 
 image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
+
+default:
+  tags: [ unity ] # set default tags for jobs
 
 .unity_before_script: &unity_before_script
   before_script:
@@ -32,8 +31,13 @@ image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
     - if: '$UNITY_LICENSE != null'
       when: always
 
+# run this job when you need to request a license
+# you may need to follow activation steps from documentation
 get-activation-file:
-  image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
+  # Known unity activation issue in GitLab CI
+  # See: https://gitlab.com/game-ci/unity3d-gitlab-ci-example/-/issues/171
+  # Workaround implemented as: https://gitlab.com/game-ci/unity3d-gitlab-ci-example/-/issues/171#note_974622879 
+  image: $IMAGE:2021.3.4f1-base-1.0.1
   rules:
     - if: '$UNITY_LICENSE == null'
       when: manual
@@ -43,7 +47,7 @@ get-activation-file:
   artifacts:
     paths:
       - $UNITY_ACTIVATION_FILE
-    expire_in: 60 min
+    expire_in: 10 min # Expiring this as artifacts may contain sensitive data and should not be kept public
 
 .test: &test
   stage: build_and_test
@@ -100,35 +104,25 @@ build-WebGL:
   image: $IMAGE:$UNITY_VERSION-webgl-$IMAGE_VERSION
   variables:
     BUILD_TARGET: WebGL
-  script:
-    - chmod +x ./ci/build.sh && ./ci/build.sh
-    - echo "=== Build folder contents ==="
-    - BUILD_PATH="SafariCEO/Builds/WebGL"
-    - echo "=== Build Path ==="
-    - echo "$BUILD_PATH"
-    - ls -la "$BUILD_PATH" # Ellenőrzi, hogy létezik-e
-    - echo "=== All files in build folder ==="
-    - find "$BUILD_PATH"
-    - mkdir -p public
-    - mv "$BUILD_PATH/*" public/
-
-
+  rules:
+    # run only on default branch, as WebGL builds requires more time
+    - if: '$UNITY_LICENSE && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: always
+    - when: never
+    
 pages:
   image: alpine:latest
   stage: deploy
   script:
-    - echo "=== Current folder ==="
-    - pwd
-    - echo "=== All files ==="
-    - find .
-    - mkdir -p public
-    - mv SafariCEO/Builds/WebGL/* public/
+    - mv "$UNITY_DIR/Builds/WebGL/${BUILD_NAME}" public
   artifacts:
     paths:
       - public
-  only:
-    - master
-    
+  rules:
+    - if: '$UNITY_LICENSE && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: always
+    - when: never
+
 workflow:
   rules:
     - if: $CI_MERGE_REQUEST_ID

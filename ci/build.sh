@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -e
+set -x
 
 echo "Building for $BUILD_TARGET"
 
-export BUILD_PATH=$UNITY_DIR/Builds/$BUILD_TARGET/$BUILD_NAME/
+export BUILD_PATH=$UNITY_DIR/Builds/$BUILD_TARGET/
 mkdir -p $BUILD_PATH
 
 ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' unity-editor} \
@@ -17,7 +18,7 @@ ${UNITY_EXECUTABLE:-xvfb-run --auto-servernum --server-args='-screen 0 640x480x2
   -customBuildName $BUILD_NAME \
   -customBuildPath $BUILD_PATH \
   -executeMethod BuildCommand.PerformBuild \
-  -logFile "$BUILD_PATH/unity_build_log.txt"
+  -logFile /dev/stdout
 
 UNITY_EXIT_CODE=$?
 
@@ -31,18 +32,5 @@ else
   echo "Unexpected exit code $UNITY_EXIT_CODE";
 fi
 
-# Ellenőrizzük, hogy a build mappa tartalmaz-e fájlokat
-echo "=== Listing files in build directory ==="
 ls -la $BUILD_PATH
-
-# Részletes fájlok listázása
-echo "=== Listing all files in build folder ==="
-find $BUILD_PATH
-
-# Ha nem találunk fájlokat, akkor a hibát könnyebben azonosíthatjuk
-if [ ! -d "$BUILD_PATH" ] || [ -z "$(ls -A $BUILD_PATH)" ]; then
-  echo "No files found in build directory $BUILD_PATH"
-else
-  echo "Build completed successfully. Files found in build directory:"
-  ls -R $BUILD_PATH
-fi
+[ -n "$(ls -A $BUILD_PATH)" ] # fail job if build folder is empty
