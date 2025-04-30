@@ -111,7 +111,7 @@ build-WebGL:
     - when: never
     
 pages:
-  image: alpine:latest
+  image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
   stage: deploy
   script:
     - mv "$UNITY_DIR/Builds/WebGL/${BUILD_NAME}" public
