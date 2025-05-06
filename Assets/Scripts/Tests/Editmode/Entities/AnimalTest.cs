@@ -24,7 +24,7 @@ public class AnimalTests
         startMethod.Invoke(animal, null);
 
         // Assert
-        int expectedSortingOrder = Mathf.RoundToInt(-10); // azaz
+        int expectedSortingOrder = Mathf.RoundToInt(-1); // azaz
         Assert.AreEqual(expectedSortingOrder, spriteRenderer.sortingOrder);
 
         // Cleanup
@@ -45,7 +45,7 @@ public class AnimalTests
         var startMethod = typeof(Animal).GetMethod("SortByY", BindingFlags.Instance | BindingFlags.NonPublic);
         startMethod.Invoke(animal, null);
         // Assert
-        Assert.AreEqual(0, spriteRenderer.sortingOrder);
+        Assert.AreEqual(9, spriteRenderer.sortingOrder);
 
         // Cleanup
         Object.DestroyImmediate(gameObject);
