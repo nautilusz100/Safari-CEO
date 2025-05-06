@@ -14,6 +14,6 @@ public abstract class Animal : MonoBehaviour
     protected void SortByY()
     {
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 10);
+        spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 10 + 9);
     }
 }

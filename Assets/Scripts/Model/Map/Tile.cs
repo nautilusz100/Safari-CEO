@@ -51,7 +51,7 @@ using UnityEngine;
         void Start()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
-            spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 10 + spriteRenderer.sortingOrder);
+            spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 10);
         }
 
         //anaimal eating
