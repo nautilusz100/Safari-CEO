@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CoverageReport scope="Summary">
+  <Summary>
+    <Generatedon>2025. 05. 11. - 23:08:26</Generatedon>
+    <Parser>MultiReportParser (57x OpenCoverParser)</Parser>
+    <Assemblies>2</Assemblies>
+    <Classes>30</Classes>
+    <Files>29</Files>
+    <Coveredlines>1198</Coveredlines>
+    <Uncoveredlines>2038</Uncoveredlines>
+    <Coverablelines>3236</Coverablelines>
+    <Totallines>5536</Totallines>
+    <Linecoverage>37</Linecoverage>
+    <Coveredbranches>0</Coveredbranches>
+    <Totalbranches>0</Totalbranches>
+    <Coveredmethods>149</Coveredmethods>
+    <Totalmethods>289</Totalmethods>
+    <Methodcoverage>51.5</Methodcoverage>
+  </Summary>
+  <Coverage>
+    <Assembly name="EditMode" classes="11" coverage="99.2" coveredlines="636" coverablelines="641" totallines="1526" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="72" totalmethods="73" methodcoverage="98.6">
+      <Class name="AnimalTests" coverage="100" coveredlines="21" coverablelines="21" totallines="53" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
+      <Class name="CameraManagerTests" coverage="100" coveredlines="59" coverablelines="59" totallines="136" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
+      <Class name="DummySafariMap" coverage="100" coveredlines="2" coverablelines="2" totallines="223" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
+      <Class name="EnablePauseMenuTests" coverage="100" coveredlines="18" coverablelines="18" totallines="48" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
+      <Class name="GameManagerEditModeTests" coverage="100" coveredlines="117" coverablelines="117" totallines="223" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="12" totalmethods="12" methodcoverage="100" />
+      <Class name="JeepTests" coverage="97.4" coveredlines="75" coverablelines="77" totallines="139" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="9" methodcoverage="100" />
+      <Class name="MinimapTests" coverage="100" coveredlines="56" coverablelines="56" totallines="116" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
+      <Class name="SafariMapTests" coverage="100" coveredlines="129" coverablelines="129" totallines="239" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="11" totalmethods="11" methodcoverage="100" />
+      <Class name="SanityTest" coverage="100" coveredlines="3" coverablelines="3" totallines="10" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
+      <Class name="SlowZTest" coverage="91.8" coveredlines="34" coverablelines="37" totallines="90" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="4" methodcoverage="75" />
+      <Class name="TileTests" coverage="100" coveredlines="122" coverablelines="122" totallines="249" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="17" totalmethods="17" methodcoverage="100" />
+    </Assembly>
+    <Assembly name="ModelRef" classes="19" coverage="21.6" coveredlines="562" coverablelines="2595" totallines="4233" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="77" totalmethods="216" methodcoverage="35.6">
+      <Class name="Animal" coverage="100" coveredlines="4" coverablelines="4" totallines="19" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
+      <Class name="Assets.Scripts.Model.Map.Minimap" coverage="100" coveredlines="22" coverablelines="22" totallines="72" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
+      <Class name="Assets.Scripts.Model.Map.SafariMap" coverage="27.6" coveredlines="126" coverablelines="456" totallines="707" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="12" totalmethods="24" methodcoverage="50" />
+      <Class name="CameraManager" coverage="56.5" coveredlines="39" coverablelines="69" totallines="117" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="8" methodcoverage="75" />
+      <Class name="Carnivorous" coverage="7.8" coveredlines="32" coverablelines="410" totallines="611" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="26" methodcoverage="3.8" />
+      <Class name="Draggable" coverage="0" coveredlines="0" coverablelines="80" totallines="160" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
+      <Class name="EnablePauseMenu" coverage="25" coveredlines="2" coverablelines="8" totallines="21" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="2" methodcoverage="50" />
+      <Class name="EndPopUpUiScript" coverage="0" coveredlines="0" coverablelines="29" totallines="60" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
+      <Class name="GameManager" coverage="49.7" coveredlines="166" coverablelines="334" totallines="548" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="31" totalmethods="41" methodcoverage="75.6" />
+      <Class name="GameSettings" coverage="100" coveredlines="1" coverablelines="1" totallines="8" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
+      <Class name="gameUIButtonsManager" coverage="0" coveredlines="0" coverablelines="157" totallines="260" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="16" methodcoverage="0" />
+      <Class name="Herbivore" coverage="6.3" coveredlines="31" coverablelines="485" totallines="718" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="28" methodcoverage="3.5" />
+      <Class name="InspectionManager" coverage="0" coveredlines="0" coverablelines="116" totallines="199" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="11" methodcoverage="0" />
+      <Class name="Jeep" coverage="40.9" coveredlines="75" coverablelines="183" totallines="281" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="10" totalmethods="20" methodcoverage="50" />
+      <Class name="MainMenu" coverage="0" coveredlines="0" coverablelines="109" totallines="185" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="10" methodcoverage="0" />
+      <Class name="PauseMenu" coverage="0" coveredlines="0" coverablelines="45" totallines="84" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
+      <Class name="ShopElement" coverage="0" coveredlines="0" coverablelines="6" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
+      <Class name="SlowZoneHandler" coverage="56.4" coveredlines="22" coverablelines="39" totallines="77" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
+      <Class name="Tile" coverage="100" coveredlines="42" coverablelines="42" totallines="88" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
+    </Assembly>
+  </Coverage>
+</CoverageReport>

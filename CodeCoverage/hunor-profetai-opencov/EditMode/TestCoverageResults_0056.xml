@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CoverageSession xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="0.0.0.0">
+  <Summary numSequencePoints="58" visitedSequencePoints="58" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="4" numClasses="5" visitedMethods="11" numMethods="11" />
+  <Modules>
+    <Module>
+      <Summary numSequencePoints="22" visitedSequencePoints="22" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="2" numClasses="3" visitedMethods="5" numMethods="5" />
+      <ModuleTime>0001-01-01T00:00:00</ModuleTime>
+      <ModuleName>EditMode</ModuleName>
+      <Files>
+        <File uid="1" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Tests/EditMode/Entities/AnimalTest.cs" />
+        <File uid="2" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Tests/EditMode/Entities/JeepTest.cs" />
+        <File uid="3" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Tests/EditMode/Entities/SlowZTest.cs" />
+        <File uid="4" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Tests/EditMode/GameManagerEditTest.cs" />
+        <File uid="5" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Tests/EditMode/Map/MinimapTests.cs" />
+        <File uid="6" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Tests/EditMode/Map/SafariMapTests.cs" />
+        <File uid="7" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Tests/EditMode/Map/TileTests.cs" />
+        <File uid="8" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Tests/EditMode/SanityTest.cs" />
+        <File uid="9" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Tests/EditMode/View/CameraManagerTests.cs" />
+        <File uid="10" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Tests/EditMode/View/EnablePauseMenuTest.cs" />
+      </Files>
+      <Classes>
+        <Class>
+          <Summary numSequencePoints="0" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="1" visitedMethods="0" numMethods="0" />
+          <FullName>GameManagerEditModeTests</FullName>
+          <Methods />
+        </Class>
+        <Class>
+          <Summary numSequencePoints="17" visitedSequencePoints="17" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="1" numClasses="1" visitedMethods="3" numMethods="3" />
+          <FullName>TileTests</FullName>
+          <Methods>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
+              <Summary numSequencePoints="4" visitedSequencePoints="4" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663347</MetadataToken>
+              <Name>System.Void TileTests::Setup()</Name>
+              <FileRef uid="7" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="195731" ordinal="0" offset="0" sl="12" sc="5" el="12" ec="5" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195732" ordinal="0" offset="1" sl="13" sc="9" el="13" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195733" ordinal="0" offset="12" sl="14" sc="9" el="14" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195734" ordinal="0" offset="29" sl="15" sc="5" el="15" ec="5" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
+              <Summary numSequencePoints="3" visitedSequencePoints="3" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663348</MetadataToken>
+              <Name>System.Void TileTests::Teardown()</Name>
+              <FileRef uid="7" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="195735" ordinal="0" offset="0" sl="19" sc="5" el="19" ec="5" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195736" ordinal="0" offset="1" sl="20" sc="9" el="20" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195737" ordinal="0" offset="13" sl="21" sc="5" el="21" ec="5" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
+              <Summary numSequencePoints="10" visitedSequencePoints="10" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663361</MetadataToken>
+              <Name>System.Void TileTests::Tile_Update_WhenFoodDepletedAndTypeTree_BecomesPlains()</Name>
+              <FileRef uid="7" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="195838" ordinal="0" offset="0" sl="217" sc="5" el="217" ec="5" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195839" ordinal="0" offset="1" sl="219" sc="9" el="219" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195840" ordinal="0" offset="12" sl="220" sc="9" el="220" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195841" ordinal="0" offset="18" sl="222" sc="9" el="222" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195842" ordinal="0" offset="31" sl="223" sc="9" el="223" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195843" ordinal="0" offset="43" sl="224" sc="9" el="224" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195844" ordinal="0" offset="80" sl="227" sc="9" el="227" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195845" ordinal="0" offset="103" sl="228" sc="9" el="228" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195846" ordinal="0" offset="117" sl="231" sc="9" el="231" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195847" ordinal="0" offset="129" sl="232" sc="5" el="232" ec="5" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+          </Methods>
+        </Class>
+        <Class>
+          <Summary numSequencePoints="5" visitedSequencePoints="5" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="1" numClasses="1" visitedMethods="2" numMethods="2" />
+          <FullName>TileTests/MockGameManager</FullName>
+          <Methods>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
+              <Summary numSequencePoints="4" visitedSequencePoints="4" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663383</MetadataToken>
+              <Name>System.Void TileTests/MockGameManager::NotifyTileFoodDepleted(UnityEngine.Vector2Int)</Name>
+              <FileRef uid="7" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="195931" ordinal="0" offset="0" sl="244" sc="9" el="244" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195932" ordinal="0" offset="1" sl="245" sc="13" el="245" ec="13" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195933" ordinal="0" offset="8" sl="246" sc="13" el="246" ec="13" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="195934" ordinal="0" offset="15" sl="247" sc="9" el="247" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="true" isStatic="false" isGetter="false" isSetter="false">
+              <Summary numSequencePoints="1" visitedSequencePoints="1" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663384</MetadataToken>
+              <Name>TileTests/MockGameManager::MockGameManager()</Name>
+              <FileRef uid="7" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="195935" ordinal="0" offset="0" sl="240" sc="9" el="240" ec="9" bec="0" bev="0" fileid="7">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="0" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+          </Methods>
+        </Class>
+      </Classes>
+      <TrackedMethods>
+        <TrackedMethod uid="0" token="100663361" name="System.Void TileTests::Tile_Update_WhenFoodDepletedAndTypeTree_BecomesPlains()" strategy="Test" />
+      </TrackedMethods>
+    </Module>
+    <Module>
+      <Summary numSequencePoints="36" visitedSequencePoints="36" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="2" numClasses="2" visitedMethods="6" numMethods="6" />
+      <ModuleTime>0001-01-01T00:00:00</ModuleTime>
+      <ModuleName>ModelRef</ModuleName>
+      <Files>
+        <File uid="11" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/AnimalScripts/Animal.cs" />
+        <File uid="12" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/AnimalScripts/Carnivorous.cs" />
+        <File uid="13" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/AnimalScripts/Herbivore.cs" />
+        <File uid="14" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/AnimalScripts/Jeep.cs" />
+        <File uid="15" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/AnimalScripts/SlowZoneHandler.cs" />
+        <File uid="16" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/GameManager.cs" />
+        <File uid="17" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/GameSettings.cs" />
+        <File uid="18" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/Map/Tile.cs" />
+        <File uid="19" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/ShopElement.cs" />
+        <File uid="20" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/View/CameraManager.cs" />
+        <File uid="21" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/View/Draggable.cs" />
+        <File uid="22" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/View/EnablePauseMenu.cs" />
+        <File uid="23" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/View/EndPopUpUiScript.cs" />
+        <File uid="24" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/View/GameUIButtonsManager.cs" />
+        <File uid="25" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/View/InspectionManager.cs" />
+        <File uid="26" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/View/MainMenu.cs" />
+        <File uid="27" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/View/PauseMenu.cs" />
+        <File uid="28" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/Map/Minimap.cs" />
+        <File uid="29" fullPath="C:/Users/Bali/Desktop/ELTE/24-25_2/SzoftTech/src/hunor-profetai/Assets/Scripts/Model/Map/SafariMap.cs" />
+      </Files>
+      <Classes>
+        <Class>
+          <Summary numSequencePoints="19" visitedSequencePoints="19" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="1" numClasses="1" visitedMethods="1" numMethods="1" />
+          <FullName>GameManager</FullName>
+          <Methods>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="true" isStatic="false" isGetter="false" isSetter="false">
+              <Summary numSequencePoints="19" visitedSequencePoints="19" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663438</MetadataToken>
+              <Name>GameManager::GameManager()</Name>
+              <FileRef uid="16" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="197388" ordinal="0" offset="0" sl="29" sc="5" el="29" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197389" ordinal="0" offset="11" sl="30" sc="5" el="30" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197390" ordinal="0" offset="22" sl="31" sc="5" el="31" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197391" ordinal="0" offset="29" sl="32" sc="5" el="32" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197392" ordinal="0" offset="36" sl="34" sc="5" el="34" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197393" ordinal="0" offset="47" sl="60" sc="5" el="60" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197394" ordinal="0" offset="55" sl="61" sc="5" el="61" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197395" ordinal="0" offset="63" sl="62" sc="5" el="62" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197396" ordinal="0" offset="71" sl="63" sc="5" el="63" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197397" ordinal="0" offset="79" sl="64" sc="5" el="64" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197398" ordinal="0" offset="87" sl="65" sc="5" el="65" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197399" ordinal="0" offset="95" sl="66" sc="5" el="66" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197400" ordinal="0" offset="103" sl="67" sc="5" el="67" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197401" ordinal="0" offset="111" sl="68" sc="5" el="68" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197402" ordinal="0" offset="119" sl="93" sc="5" el="93" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197403" ordinal="0" offset="126" sl="120" sc="55" el="120" ec="55" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197404" ordinal="0" offset="133" sl="126" sc="53" el="126" ec="53" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197405" ordinal="0" offset="141" sl="129" sc="22" el="129" ec="22" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197406" ordinal="0" offset="152" sl="130" sc="5" el="130" ec="5" bec="0" bev="0" fileid="16">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+          </Methods>
+        </Class>
+        <Class>
+          <Summary numSequencePoints="17" visitedSequencePoints="17" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="1" numClasses="1" visitedMethods="5" numMethods="5" />
+          <FullName>Tile</FullName>
+          <Methods>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="false" isStatic="false" isGetter="true" isSetter="false">
+              <Summary numSequencePoints="1" visitedSequencePoints="1" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663441</MetadataToken>
+              <Name>Tile/ShopType Tile::get_Type()</Name>
+              <FileRef uid="18" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="197409" ordinal="0" offset="0" sl="24" sc="32" el="24" ec="32" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="false" isStatic="false" isGetter="false" isSetter="true">
+              <Summary numSequencePoints="1" visitedSequencePoints="1" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663442</MetadataToken>
+              <Name>System.Void Tile::set_Type(Tile/ShopType)</Name>
+              <FileRef uid="18" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="197410" ordinal="0" offset="0" sl="24" sc="37" el="24" ec="37" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
+              <Summary numSequencePoints="6" visitedSequencePoints="6" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663446</MetadataToken>
+              <Name>System.Void Tile::Update()</Name>
+              <FileRef uid="18" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="197438" ordinal="0" offset="0" sl="71" sc="9" el="71" ec="9" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197439" ordinal="0" offset="1" sl="72" sc="13" el="72" ec="13" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197440" ordinal="0" offset="46" sl="73" sc="13" el="73" ec="13" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197441" ordinal="0" offset="47" sl="74" sc="17" el="74" ec="17" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197442" ordinal="0" offset="54" sl="75" sc="13" el="75" ec="13" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197443" ordinal="0" offset="55" sl="76" sc="9" el="76" ec="9" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
+              <Summary numSequencePoints="8" visitedSequencePoints="8" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663447</MetadataToken>
+              <Name>System.Void Tile::BecomePlains()</Name>
+              <FileRef uid="18" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="197444" ordinal="0" offset="0" sl="79" sc="9" el="79" ec="9" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197445" ordinal="0" offset="1" sl="80" sc="13" el="80" ec="13" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197446" ordinal="0" offset="65" sl="81" sc="13" el="81" ec="13" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197447" ordinal="0" offset="80" sl="82" sc="13" el="82" ec="13" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197448" ordinal="0" offset="81" sl="83" sc="17" el="83" ec="17" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197449" ordinal="0" offset="122" sl="84" sc="17" el="84" ec="17" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197450" ordinal="0" offset="134" sl="85" sc="13" el="85" ec="13" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+                <SequencePoint vc="1" uspid="197451" ordinal="0" offset="135" sl="87" sc="9" el="87" ec="9" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+            <Method visited="true" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="100.0" branchCoverage="0" crapScore="0" isConstructor="true" isStatic="false" isGetter="false" isSetter="false">
+              <Summary numSequencePoints="1" visitedSequencePoints="1" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
+              <MetadataToken>100663448</MetadataToken>
+              <Name>Tile::Tile()</Name>
+              <FileRef uid="18" />
+              <SequencePoints>
+                <SequencePoint vc="1" uspid="197452" ordinal="0" offset="0" sl="23" sc="26" el="23" ec="26" bec="0" bev="0" fileid="18">
+                  <TrackedMethodRefs>
+                    <TrackedMethodRef uid="1" vc="1" />
+                  </TrackedMethodRefs>
+                </SequencePoint>
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+          </Methods>
+        </Class>
+      </Classes>
+      <TrackedMethods>
+        <TrackedMethod uid="1" token="100663361" name="System.Void TileTests::Tile_Update_WhenFoodDepletedAndTypeTree_BecomesPlains()" strategy="Test" />
+      </TrackedMethods>
+    </Module>
+  </Modules>
+</CoverageSession>

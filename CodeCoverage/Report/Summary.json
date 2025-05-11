@@ -1,0 +1,54 @@
+{
+  "summary": {
+    "generatedon": "2025-05-11T21:08:26Z",
+    "parser": "MultiReportParser (57x OpenCoverParser)",
+    "assemblies": 2,
+    "classes": 30,
+    "files": 29,
+    "coveredlines": 1198,
+    "uncoveredlines": 2038,
+    "coverablelines": 3236,
+    "totallines": 5536,
+    "linecoverage": 37,
+    "coveredbranches": 0,
+    "totalbranches": 0,
+    "coveredmethods": 149,
+    "totalmethods": 289,
+    "methodcoverage": 51.5
+ },
+  "coverage": {
+    "assemblies": [
+      { "name": "EditMode", "classes": 11, "coverage": 99.2, "coveredlines": 636, "coverablelines": 641, "totallines": 1526, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 98.6, "coveredmethods": 72, "totalmethods": 73, "classesinassembly": [
+        { "name": "AnimalTests", "coverage": 100, "coveredlines": 21, "coverablelines": 21, "totallines": 53, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
+        { "name": "CameraManagerTests", "coverage": 100, "coveredlines": 59, "coverablelines": 59, "totallines": 136, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 8, "totalmethods": 8 },
+        { "name": "DummySafariMap", "coverage": 100, "coveredlines": 2, "coverablelines": 2, "totallines": 223, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 },
+        { "name": "EnablePauseMenuTests", "coverage": 100, "coveredlines": 18, "coverablelines": 18, "totallines": 48, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 3, "totalmethods": 3 },
+        { "name": "GameManagerEditModeTests", "coverage": 100, "coveredlines": 117, "coverablelines": 117, "totallines": 223, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 12, "totalmethods": 12 },
+        { "name": "JeepTests", "coverage": 97.4, "coveredlines": 75, "coverablelines": 77, "totallines": 139, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 9, "totalmethods": 9 },
+        { "name": "MinimapTests", "coverage": 100, "coveredlines": 56, "coverablelines": 56, "totallines": 116, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
+        { "name": "SafariMapTests", "coverage": 100, "coveredlines": 129, "coverablelines": 129, "totallines": 239, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 11, "totalmethods": 11 },
+        { "name": "SanityTest", "coverage": 100, "coveredlines": 3, "coverablelines": 3, "totallines": 10, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 },
+        { "name": "SlowZTest", "coverage": 91.8, "coveredlines": 34, "coverablelines": 37, "totallines": 90, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 75, "coveredmethods": 3, "totalmethods": 4 },
+        { "name": "TileTests", "coverage": 100, "coveredlines": 122, "coverablelines": 122, "totallines": 249, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 17, "totalmethods": 17 } ] },
+      { "name": "ModelRef", "classes": 19, "coverage": 21.6, "coveredlines": 562, "coverablelines": 2595, "totallines": 4233, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 35.6, "coveredmethods": 77, "totalmethods": 216, "classesinassembly": [
+        { "name": "Animal", "coverage": 100, "coveredlines": 4, "coverablelines": 4, "totallines": 19, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 },
+        { "name": "Assets.Scripts.Model.Map.Minimap", "coverage": 100, "coveredlines": 22, "coverablelines": 22, "totallines": 72, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
+        { "name": "Assets.Scripts.Model.Map.SafariMap", "coverage": 27.6, "coveredlines": 126, "coverablelines": 456, "totallines": 707, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 50, "coveredmethods": 12, "totalmethods": 24 },
+        { "name": "CameraManager", "coverage": 56.5, "coveredlines": 39, "coverablelines": 69, "totallines": 117, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 75, "coveredmethods": 6, "totalmethods": 8 },
+        { "name": "Carnivorous", "coverage": 7.8, "coveredlines": 32, "coverablelines": 410, "totallines": 611, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 3.8, "coveredmethods": 1, "totalmethods": 26 },
+        { "name": "Draggable", "coverage": 0, "coveredlines": 0, "coverablelines": 80, "totallines": 160, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 7 },
+        { "name": "EnablePauseMenu", "coverage": 25, "coveredlines": 2, "coverablelines": 8, "totallines": 21, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 50, "coveredmethods": 1, "totalmethods": 2 },
+        { "name": "EndPopUpUiScript", "coverage": 0, "coveredlines": 0, "coverablelines": 29, "totallines": 60, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
+        { "name": "GameManager", "coverage": 49.7, "coveredlines": 166, "coverablelines": 334, "totallines": 548, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 75.6, "coveredmethods": 31, "totalmethods": 41 },
+        { "name": "GameSettings", "coverage": 100, "coveredlines": 1, "coverablelines": 1, "totallines": 8, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
+        { "name": "gameUIButtonsManager", "coverage": 0, "coveredlines": 0, "coverablelines": 157, "totallines": 260, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 16 },
+        { "name": "Herbivore", "coverage": 6.3, "coveredlines": 31, "coverablelines": 485, "totallines": 718, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 3.5, "coveredmethods": 1, "totalmethods": 28 },
+        { "name": "InspectionManager", "coverage": 0, "coveredlines": 0, "coverablelines": 116, "totallines": 199, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 11 },
+        { "name": "Jeep", "coverage": 40.9, "coveredlines": 75, "coverablelines": 183, "totallines": 281, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 50, "coveredmethods": 10, "totalmethods": 20 },
+        { "name": "MainMenu", "coverage": 0, "coveredlines": 0, "coverablelines": 109, "totallines": 185, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 10 },
+        { "name": "PauseMenu", "coverage": 0, "coveredlines": 0, "coverablelines": 45, "totallines": 84, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
+        { "name": "ShopElement", "coverage": 0, "coveredlines": 0, "coverablelines": 6, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
+        { "name": "SlowZoneHandler", "coverage": 56.4, "coveredlines": 22, "coverablelines": 39, "totallines": 77, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
+        { "name": "Tile", "coverage": 100, "coveredlines": 42, "coverablelines": 42, "totallines": 88, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 8, "totalmethods": 8 } ] } ]
+  }
+}
