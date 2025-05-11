@@ -454,7 +454,7 @@ public class GameManager : MonoBehaviour
         if (animalCount < (3+difficultyAdjustment)) return 2;
         if (animalCount < (5+difficultyAdjustment)) return 3;
         if (animalCount < (7+difficultyAdjustment)) return 4;
-        if (animalCount < (10+difficultyAdjustment)) return 5;
+        if (animalCount > (7+difficultyAdjustment)) return 5;
         return 0;
     }
 

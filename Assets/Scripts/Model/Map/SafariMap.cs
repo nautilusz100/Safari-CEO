@@ -51,7 +51,7 @@ namespace Assets.Scripts.Model.Map
         int x_offset = 0; // <- +>
         int y_offset = 0; // v- +^
 
-        public void CreateMap()
+        public virtual void CreateMap()
         {
             x_offset = UnityEngine.Random.Range(-10000, 10000);
             y_offset = UnityEngine.Random.Range(-10000, 10000);

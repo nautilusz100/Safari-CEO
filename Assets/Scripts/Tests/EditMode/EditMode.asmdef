@@ -4,7 +4,10 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "ModelRef"
+        "ModelRef",
+        "Unity.TextMeshPro",
+        "NavMeshPlus",
+        "NavMeshPlusEditor"
     ],
     "includePlatforms": [
         "Editor"
