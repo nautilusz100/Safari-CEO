@@ -703,5 +703,49 @@ namespace Assets.Scripts.Model.Map
             }
         }
 
+
+        public void LoadTiles(List<TileData> tiles)
+        {
+            foreach (TileData tileData in tiles)
+            {
+                int xIndex = Mathf.FloorToInt(tileData.position.x);
+                int yIndex = Mathf.FloorToInt(tileData.position.y);
+                int gridX = xIndex + 2; // eltolás kompenzálása
+                int gridY = yIndex;
+
+                // Ellenőrizzük, hogy az indexek belül vannak-e a grid határain
+                if (gridX >= 0 && gridX < tile_grid.Count && gridY >= 0 && gridY < tile_grid[0].Count)
+                {
+                    GameObject currentTile = tile_grid[gridX][gridY];
+                    if (currentTile != null)
+                    {
+#if UNITY_EDITOR
+                        DestroyImmediate(currentTile);
+#else
+                Destroy(currentTile);
+#endif
+                    }
+
+                    // Enum típus beállítása
+                    Tile.ShopType shopType = (Tile.ShopType)tileData.type;
+
+                    // Új tile létrehozása és beállításai
+                    Vector3 worldPosition = new Vector3(xIndex, 0, yIndex);
+                    GameObject newTile = InstantiateTileOfType(shopType, worldPosition);
+                    newTile.transform.parent = transform; // vagy valamilyen tile container object
+                    Tile tileComponent = newTile.GetComponent<Tile>();
+                    if (tileComponent == null)
+                        tileComponent = newTile.AddComponent<Tile>();
+                    tileComponent.Type = shopType;
+
+                    tile_grid[gridX][gridY] = newTile;
+                }
+                else
+                {
+                    Debug.LogWarning($"Tile position ({gridX},{gridY}) kívül esik a tile_grid méretén!");
+                }
+            }
+            return;
+        }
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using SimpleFileBrowser;
 using System.Collections;
+using System.IO;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -92,7 +94,8 @@ public class MainMenu : MonoBehaviour
         {
             Debug.Log("No difficulty selected!");
         }
-        else {
+        else
+        {
             GameSettings.SelectedDifficulty = selectedDifficulty;
             SceneManager.LoadScene("Game");
         }
@@ -100,17 +103,26 @@ public class MainMenu : MonoBehaviour
     }
     private void OnLoadButtonClick()
     {
-        #if UNITY_EDITOR
-        string path = EditorUtility.OpenFilePanel("Select a file", "", "saf");
+#if UNITY_EDITOR
+        Debug.Log("OnLoadButtonClick called");
+        string path = EditorUtility.OpenFilePanel("Select a file", "", "json");
+        Debug.Log("Path after OpenFilePanel: " + path);  // Logoljuk a path-ot
+
         if (!string.IsNullOrEmpty(path))
         {
             Debug.Log("Selected file: " + path);
-            // LoadGameFromFile(path);
+            LoadSettings.LoadPath = path;
+            SceneManager.LoadScene("Game"); // Betöltjük a Game jelenetet
         }
-        #else
-        StartCoroutine(ShowLoadDialog());
-        #endif
+        else
+        {
+            Debug.LogWarning("No file selected or path is empty");
+        }
+#else
+    StartCoroutine(ShowLoadDialog());
+#endif
     }
+
 
     private IEnumerator ShowLoadDialog()
     {
@@ -121,7 +133,8 @@ public class MainMenu : MonoBehaviour
             if (paths.Length > 0)
             {
                 Debug.Log("Selected file: " + paths[0]);
-                // LoadGameFromFile(paths[0]);
+                LoadSettings.LoadPath = paths[0];
+                SceneManager.LoadScene("Game"); // Betöltjük a Game jelenetet
             }
         }, () => Debug.Log("File selection canceled"), SimpleFileBrowser.FileBrowser.PickMode.Files);
 
@@ -132,11 +145,11 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Quit");
         //ExitMenu?.Invoke(this, EventArgs.Empty);
-        #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-        #else
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
             Application.Quit();
-        #endif
+#endif
 
     }
 

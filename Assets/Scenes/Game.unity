@@ -973,6 +973,8 @@ MonoBehaviour:
   scoreText: {fileID: 1167427206}
   visitorCount: {fileID: 422866491}
   jeepCountText: {fileID: 245993401}
+  parkName: {fileID: 161574667}
+  gameUIButtonsManager: {fileID: 711214708}
   visitorTimer: 0
   jeepCount: 0
   totalJeepCount: 0
@@ -986,6 +988,21 @@ MonoBehaviour:
   testMode: 0
   navMesh: {fileID: 202532414}
   secondsPerGameHour: 5
+  isLoadedGame: 0
+  loadedSave:
+    gameManager:
+      money: 0
+      jeepCount: 0
+      time: 0
+      difficulty: 0
+      howManyCarnivores: 0
+      howManyHerbivores: 0
+      parkName: 
+      entryFee: 0
+      satisfaction: 0
+      visitorCount: 0
+    tiles: []
+    animals: []
 --- !u!4 &138372539
 Transform:
   m_ObjectHideFlags: 0
