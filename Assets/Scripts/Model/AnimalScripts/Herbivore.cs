@@ -83,8 +83,8 @@ public class Herbivore : Animal, IHasVision
     private float stuckCheckInterval = 5f; // Check every 2 seconds
     private float minDistanceDelta = 0.5f; // Must move at least this much
 
-    private float baseAcceleration = 4f;
-    private float baseAngularSpeed = 120f;
+    float baseAcceleration = 4f;
+    float baseAngularSpeed = 120f;
 
     /// <summary>
     /// Initializes the herbivore's properties and sets up the NavMeshAgent.

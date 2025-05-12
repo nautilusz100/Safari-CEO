@@ -6,7 +6,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-
+/// <summary>
+/// Represents a Jeep in the game. The Jeep can move around the map, detect animals, and traverse roads.
+/// </summary>
 public class Jeep : MonoBehaviour
 {
     // general
@@ -15,7 +17,8 @@ public class Jeep : MonoBehaviour
     private GameObject inspection;
 
     public int id = 0;
-    
+
+    // safari entry and exit points
     private Vector2 safariEntry;
     private Vector2 safariExit;
     private bool isReturningHome = false;
@@ -26,8 +29,8 @@ public class Jeep : MonoBehaviour
     public float roadVisionRadius = 0.65f;
     public float animalVisionRadius = 2f;
     public Vector2 destinationTilePos;
-    
 
+    // Road Traversing
     private Dictionary<Tile, int> traversedRoads = new Dictionary<Tile, int>();
     [SerializeField]private List<Tile> detectedRoads = new List<Tile>();
     [SerializeField]private List<Animal> detectedAnimals = new List<Animal>();
@@ -37,6 +40,8 @@ public class Jeep : MonoBehaviour
     private float stuckTimer = 0f;
     private float stuckCheckInterval = 2f; // Check every 2 seconds
     private float minDistanceDelta = 0.5f; // Must move at least this much
+    private float baseAcceleration = 2f;
+    private float baseAngularSpeed = 60f;
 
     void OnDestroy()
     {
@@ -47,16 +52,18 @@ public class Jeep : MonoBehaviour
     {
         inspection = GameObject.FindWithTag("InspectionWindow");
 
+        // Set the initial position of the Jeep
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.autoBraking = false;
         agent.avoidancePriority = Random.Range(1, 99);
 
+        // Set the initial position of the Jeep
         safariEntry = new Vector2(37.5f, 39.5f);
         safariExit = new Vector2(42.5f, 39.5f);
-        
 
+        // Set the initial position of the Jeep
         InvokeRepeating("DetectAnimals", 0, 0.25f);
         InvokeRepeating("CheckIfStuck", stuckCheckInterval, stuckCheckInterval);
     }
@@ -66,8 +73,9 @@ public class Jeep : MonoBehaviour
         gameManager = manager;
     }
 
-    float baseAcceleration = 2f;
-    float baseAngularSpeed = 60f;
+    /// <summary>
+    /// Updates the speed of the NavMeshAgent based on the current game speed.
+    /// </summary>
     void UpdateAgentSpeed()
     {
         float sp = 0.5f;
@@ -92,7 +100,9 @@ public class Jeep : MonoBehaviour
     {
         inspection.GetComponent<InspectionManager>().Display(tourists,id);
     }
-
+    /// <summary>
+    /// Checks if the Jeep is stuck by comparing its current position with the last recorded position.
+    /// </summary>
     private void CheckIfStuck()
     {
         if (gameObject == null) return;
@@ -101,11 +111,9 @@ public class Jeep : MonoBehaviour
         if (distanceMoved < minDistanceDelta)
         {
             stuckTimer += stuckCheckInterval;
-            Debug.Log("Jeep might be stuck... (" + stuckTimer + "s)");
 
             if (stuckTimer >= 6f) // Stuck for 6 seconds total
             {
-                Debug.LogWarning("Jeep confirmed stuck! Killing...");
                 gameManager.totalJeepCount--;
                 KillJeep();
             }
@@ -118,7 +126,9 @@ public class Jeep : MonoBehaviour
             lastPosition = transform.position;
     }
 
-
+    /// <summary>
+    /// Handles the movement of the Jeep. If the Jeep is not moving towards a destination, it will find a new tile to move to.
+    /// </summary>
     private void Movement()
     {
         if (!agent.pathPending && agent.remainingDistance < 0.1f)
@@ -133,7 +143,9 @@ public class Jeep : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Checks if the Jeep has reached home. If it has, it notifies the GameManager and destroys the Jeep.
+    /// </summary>
     private void HasReachedHome()
     {
         bool isAtHome = Vector2.Distance(transform.position, safariEntry) < 0.5f;
@@ -160,7 +172,6 @@ public class Jeep : MonoBehaviour
         bool isAtExit = Vector2.Distance(transform.position, safariExit) < 0.5f;
         if (isAtExit)
         {
-            Debug.Log("Jeep has reached the exit");
             isReturningHome = true;
             tourists = 0;
             agent.SetDestination(safariEntry);
@@ -172,7 +183,10 @@ public class Jeep : MonoBehaviour
         Vector2 offset = new Vector2(Random.Range(-0.05f,0.05f), 0.5f);
         return position + offset;
     }
-
+    /// <summary>
+    /// Gets a new destination tile for the Jeep to move to. It selects the tile with the least number of traversals.
+    /// </summary>
+    /// <returns></returns>
     private Tile GetNewDestinationTile()
     {
         if (detectedRoads.Count == 0)
@@ -210,7 +224,6 @@ public class Jeep : MonoBehaviour
 
     private void KillJeep()
     {
-        Debug.Log("Jeep has been killed");
 
         #if UNITY_EDITOR
             // In EditMode, use DestroyImmediate to prevent the warning
@@ -246,7 +259,9 @@ public class Jeep : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Detects animals within the animal vision radius and adds them to the detectedAnimals list.
+    /// </summary>
     private void DetectAnimals()
     {
         if (gameObject == null) return;
@@ -259,15 +274,6 @@ public class Jeep : MonoBehaviour
                 detectedAnimals.Add(animal);
             }
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, roadVisionRadius);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, animalVisionRadius);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
