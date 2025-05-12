@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Assets.Scripts.Model.Map
 {
     public class SafariMap : MonoBehaviour
     {
-        public Dictionary<int, GameObject> tileset { get; set;  }
+        public Dictionary<int, GameObject> tileset { get; set; }
         Dictionary<int, GameObject> tile_groups;
         public GameObject prefab_plains;
         public GameObject prefab_tree;
@@ -93,11 +94,11 @@ namespace Assets.Scripts.Model.Map
                                     tileComponentBuilding.Type = Tile.ShopType.MainBuilding; // Set type to main building
                                     tile_grid[x][y] = building;
                                 }
-                                #if UNITY_EDITOR
+#if UNITY_EDITOR
                                 DestroyImmediate(currentTile);
-                                #else
+#else
                                  Destroy(currentTile);
-                                #endif
+#endif
                                 count++;
                             }
                         }
@@ -128,11 +129,11 @@ namespace Assets.Scripts.Model.Map
                     GameObject newTile = InstantiateTileOfType(Tile.ShopType.Plains, currentTile.transform.position);
                     newTile.transform.parent = currentTile.transform.parent;
                     tile_grid[tilePosition.x][tilePosition.y] = newTile;
-                    #if UNITY_EDITOR
-                                        DestroyImmediate(currentTile);
-                    #else
+#if UNITY_EDITOR
+                    DestroyImmediate(currentTile);
+#else
                                                      Destroy(currentTile);
-                    #endif
+#endif
                     Debug.Log("Tile replaced with plains at: " + tilePosition);
                 }
 
@@ -157,11 +158,11 @@ namespace Assets.Scripts.Model.Map
                     GameObject newTile = InstantiateTileOfType(newType, currentTile.transform.position);
                     newTile.transform.parent = currentTile.transform.parent;
                     tile_grid[tilePosition.x][tilePosition.y] = newTile; // Frissítjük a gridet
-                    #if UNITY_EDITOR
-                                        DestroyImmediate(currentTile);
-                    #else
+#if UNITY_EDITOR
+                    DestroyImmediate(currentTile);
+#else
                                                      Destroy(currentTile);
-                    #endif
+#endif
                     //originalTileTypes.Remove(tilePosition);
                 }
                 else if (currentTile != null && newType == tileComponent.Type)
@@ -169,11 +170,11 @@ namespace Assets.Scripts.Model.Map
                     GameObject newTile = InstantiateTileOfType(Tile.ShopType.Plains, currentTile.transform.position);
                     newTile.transform.parent = currentTile.transform.parent;
                     tile_grid[tilePosition.x][tilePosition.y] = newTile;
-                    #if UNITY_EDITOR
-                                        DestroyImmediate(currentTile);
-                    #else
+#if UNITY_EDITOR
+                    DestroyImmediate(currentTile);
+#else
                                                      Destroy(currentTile);
-                    #endif
+#endif
 
                 }
             }
@@ -214,11 +215,11 @@ namespace Assets.Scripts.Model.Map
                                 tile_grid[tilePosition.x][tilePosition.y] = restoredTile; // Frissítjük a gridet
                                 originalTileTypes.Remove(tilePosition); // Eredeti típus eltávolítása
                             }
-                            #if UNITY_EDITOR
-                                                        DestroyImmediate(currentTile);
-                            #else
+#if UNITY_EDITOR
+                            DestroyImmediate(currentTile);
+#else
                                                              Destroy(currentTile);
-                            #endif
+#endif
                         }
                         else
                         {
@@ -241,11 +242,11 @@ namespace Assets.Scripts.Model.Map
                                 roadTileComponent.isLocked = true; // Ha zárva van, akkor beállítjuk
                             }
 
-                            #if UNITY_EDITOR
-                                                        DestroyImmediate(currentTile);
-                            #else
+#if UNITY_EDITOR
+                            DestroyImmediate(currentTile);
+#else
                                                              Destroy(currentTile);
-                            #endif
+#endif
                             tile_grid[tilePosition.x][tilePosition.y] = roadTile; // Frissítjük a gridet
 
                             // Frissítjük a környező tile-okat is
@@ -703,5 +704,77 @@ namespace Assets.Scripts.Model.Map
             }
         }
 
+
+        public void LoadTiles(List<TileData> tiles)
+        {
+            foreach (TileData tileData in tiles)
+            {
+                Vector2 vector = new Vector2(tileData.position.x, tileData.position.y);
+                int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
+                int yIndex = Mathf.FloorToInt(vector.y); // Lefelé kerekítés az y koordinátán
+                if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid[0].Count && !(xIndex == 37 && yIndex == 38) && !(xIndex == 42 && yIndex == 38))
+                {
+
+                    Vector2Int tilePosition = new Vector2Int(xIndex + 2, yIndex); // Kerekített indexek
+                    GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y]; // Aktuális tile
+
+
+                    Tile tileComponent = currentTile.GetComponent<Tile>();
+                    Tile.ShopType newType = Tile.ShopType.Plains;
+                    newType = (Tile.ShopType)tileData.type;
+                    if (currentTile != null &&  tileComponent.Type != Tile.ShopType.MainBuilding)
+                    {
+                        Debug.Log("Tile component load: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: " + tilePosition);
+                        if (newType == Tile.ShopType.Road)
+                        {
+                            if (!originalTileTypes.ContainsKey(tilePosition))
+                            {
+                                originalTileTypes[tilePosition] = Tile.ShopType.Plains; // Eredeti típus mentése
+                            }
+
+                            // Új út tile létrehozása
+                            GameObject roadTile = Instantiate(RoadChange(tilePosition), currentTile.transform.position, Quaternion.identity);
+                            roadTile.transform.parent = currentTile.transform.parent;
+
+                            Tile roadTileComponent = roadTile.GetComponent<Tile>();
+                            if (roadTileComponent == null)
+                                roadTileComponent = roadTile.AddComponent<Tile>();
+                            roadTileComponent.Type = Tile.ShopType.Road; // Beállítjuk a típusát "Road"-ra
+                            /*
+                            if (isLockedTile)
+                            {
+                                roadTileComponent.isLocked = true; // Ha zárva van, akkor beállítjuk
+                            }*/
+
+#if UNITY_EDITOR
+                            DestroyImmediate(currentTile);
+#else
+                                                             Destroy(currentTile);
+#endif
+                            tile_grid[tilePosition.x][tilePosition.y] = roadTile; // Frissítjük a gridet
+
+                            // Frissítjük a környező tile-okat is
+                            UpdateSurroundingRoads(tilePosition);
+                        } else
+                        {
+                            GameObject newTile = InstantiateTileOfType(newType, currentTile.transform.position);
+                            newTile.transform.parent = gameObject.transform;//valami az utakkal van
+                            tile_grid[tilePosition.x][tilePosition.y] = newTile; // Frissítjük a gridet
+                            newTile.gameObject.GetComponent<Tile>().FoodAmount = tileData.foodAmount;
+#if UNITY_EDITOR
+                            DestroyImmediate(currentTile);
+#else
+                                                     Destroy(currentTile);
+#endif
+                        }
+
+
+
+                    }
+                }
+            }
+
+
+        }
     }
 }

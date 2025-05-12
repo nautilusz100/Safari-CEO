@@ -97,6 +97,11 @@ public class Carnivorous : Animal, IHasVision
         mateTimer = 0;
         maxAge = Random.Range(maxAge * 0.8f, maxAge * 1.2f);
 
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.Animals.Add(gameObject);
+        }
+
         InvokeRepeating(nameof(DecideNextAction), 0f, 1f);
         InvokeRepeating(nameof(UpdateVision), 0f, 0.3f);
         InvokeRepeating(nameof(CheckIfStuck), stuckCheckInterval, stuckCheckInterval);
@@ -606,6 +611,12 @@ public class Carnivorous : Animal, IHasVision
     private void Die()
     {
         Debug.Log($"{name} died at age {age}.");
+        //for saving
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.Animals.Remove(gameObject);
+        }
         Destroy(gameObject);
+
     }
 }

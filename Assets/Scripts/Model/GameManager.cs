@@ -12,6 +12,8 @@ using System.Net;
 using UnityEngine.UIElements;
 using static Draggable;
 using Assets.Scripts.Model.Map;
+using System.IO;
+using System.Linq;
 //https://www.flaticon.com/free-icons/next icons credit - Flaticon
 
 //fuuS
@@ -24,7 +26,13 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI visitorCount;
     public TextMeshProUGUI jeepCountText;
-    
+    public TMP_InputField parkName;
+    [SerializeField] private GameObject fox_prefab;
+    [SerializeField] private GameObject lion_prefab;
+    [SerializeField] private GameObject zebra_prefab;
+    [SerializeField] private GameObject giraffe_prefab;
+    [SerializeField] private gameUIButtonsManager gameUIButtonsManager;
+
     // Jeep & Tourist related information
     private float visitorInterval = 5f; // Time in seconds between each visitor
     public float visitorTimer = 0f; // Timer to track the interval
@@ -130,8 +138,33 @@ public class GameManager : MonoBehaviour
     private float timeAccumulator = 0f;
     public float ScaledDeltaTime { get; private set; }
 
+    //for saving
+    public List<GameObject> Animals { get; set; } = new List<GameObject>();
+    public bool isLoadedGame = false;
+    public SaveData loadedSave;
+
+    
+
     // Singleton GameManager
+
     void Start()
+    {
+
+        if (testMode) return;
+
+        if (LoadSettings.IsLoadRequested)
+        {
+            loadedStart();
+            LoadSettings.LoadPath = null; // Kiürítjük, hogy ne töltsön újra véletlenül
+            Debug.Log("GameManager started. Instance: " + Instance.GetInstanceID());
+        }
+        else
+            NormalStart();
+
+    }
+
+
+    void NormalStart()
     {
         if (testMode) return; //For testing classes that refer to gamemanager
         scoreText.text = "$" + EntryFee.ToString();
@@ -187,8 +220,79 @@ public class GameManager : MonoBehaviour
         visitorTimer = visitorInterval;
         Visitors = 0;
         UpdateVisitorCount();
+    }
+    private void loadedStart()
+    {
+        NormalStart();
+        string path = LoadSettings.LoadPath;
+        if (!File.Exists(path))
+        {
+            Debug.LogError("Fájl nem található: " + path);
+            return;
+        }
+
+        string json = File.ReadAllText(path);
+        loadedSave = JsonUtility.FromJson<SaveData>(json);
+        isLoadedGame = true;
+
+        // Mentett adatokat alkalmazzuk
+
+
+        // Map adatok alkalmazása
+        currentMap.LoadTiles(loadedSave.tiles);
+        LoadAnimals(loadedSave.animals);
+
+        Invoke(nameof(ApplyLoadedGameData), 0.1f); // késleltetett hívás, hogy betöltsön a UI
+
+    }
+
+
+    public void ApplyLoadedGameData()
+    {
+        SaveData save = loadedSave;
+        // GameManager értékek beállítása
+        Money = save.gameManager.money;
+        jeepCount = save.gameManager.jeepCount;
+        TimePassed = save.gameManager.time;
 
         
+        if (gameUIButtonsManager != null)
+        {
+            gameUIButtonsManager.UpdateParkNamePreview(save.gameManager.parkName);
+        }
+        else
+        {
+            Debug.LogWarning("Nem található GameUIButtonsManager példány.");
+        }
+
+        switch (save.gameManager.difficulty)
+        {
+            case 0:
+                gameDifficulty = Difficulty.Easy;
+                break;
+            case 1:
+                gameDifficulty = Difficulty.Medium;
+                break;
+            case 2:
+                gameDifficulty = Difficulty.Hard;
+                break;
+            default:
+                gameDifficulty = Difficulty.None;
+                break;
+        }
+        EntryFee = save.gameManager.entryFee;
+        satisfaction = save.gameManager.satisfaction;
+        Visitors = save.gameManager.visitorCount;
+        CurrentCarnivorousCount = save.gameManager.howManyCarnivores;
+        CurrentHerbivoresCount = save.gameManager.howManyHerbivores;
+
+
+
+        // UI frissítése
+        scoreText.text = "$" + EntryFee.ToString();
+        visitorTimer = visitorInterval;
+        UpdateJeepCount();
+        UpdateVisitorCount();
     }
 
     private void SetDifficulty()
@@ -542,6 +646,117 @@ public class GameManager : MonoBehaviour
                 speedButton.style.backgroundImage = tripleTimeArrow;
                 speedButton.style.unitySliceScale = 6;
                 break;
+        }
+    }
+    public string SaveGame()
+    {
+        SaveData save = new SaveData();
+
+        // GameManager adatainak mentése
+        save.gameManager = new GameManagerData
+        {
+            money = Money,
+            jeepCount = jeepCount,
+            time = TimePassed,
+            difficulty = (int)gameDifficulty,
+            howManyCarnivores = CurrentCarnivorousCount,
+            howManyHerbivores = CurrentHerbivoresCount,
+            parkName = parkName.text,
+            entryFee = EntryFee,
+            satisfaction = satisfaction,
+            visitorCount = Visitors
+        };
+
+        // Map mentése
+        save.tiles = new List<TileData>();
+
+        for (int y = 0; y < currentMap.tile_grid.Count; y++)
+        {
+            for (int x = 0; x < currentMap.tile_grid[y].Count; x++)
+            {
+                GameObject tileObj = currentMap.tile_grid[y][x];
+                Tile tileScript = tileObj.GetComponent<Tile>();
+
+                save.tiles.Add(new TileData
+                {
+                    position = tileObj.transform.position,
+                    type = (int)tileScript.Type,
+                    foodAmount = tileScript.FoodAmount
+                });
+            }
+        }
+
+
+        save.animals = Animals.Select(animal =>
+        {
+            Herbivore herb = animal.GetComponent<Herbivore>();
+            Carnivorous carn = animal.GetComponent<Carnivorous>();
+
+            string animalType = animal.tag; // Pl. "Lion", "Fox" stb.
+
+            if (herb != null)
+            {
+                return new AnimalData
+                {
+                    animalType = animalType,
+                    position = animal.transform.position,
+                    age = herb.age,
+                };
+            }
+            else if (carn != null)
+            {
+                return new AnimalData
+                {
+                    animalType = animalType,
+                    position = animal.transform.position,
+                    age = carn.age,
+                };
+            }
+            else
+            {
+                Debug.LogWarning("Ismeretlen állat típus: " + animal.name);
+                return null; // vagy dobj kivételt, ha ez hiba
+            }
+        }).Where(a => a != null).ToList();
+
+
+        return JsonUtility.ToJson(save, true);
+    }
+
+
+    private void LoadAnimals(List<AnimalData> animals)
+    {
+        foreach (AnimalData animalData in animals)
+        {
+            GameObject animalPrefab = null;
+            switch (animalData.animalType)
+            {
+                case "Fox":
+                    animalPrefab = fox_prefab;
+                    break;
+                case "Lion":
+                    animalPrefab = lion_prefab;
+                    break;
+                case "Giraffe":
+                    animalPrefab = giraffe_prefab;
+                    break;
+                case "Zebra":
+                    animalPrefab = zebra_prefab;
+                    break;
+                default:
+                    Debug.LogWarning("Ismeretlen állat típus: " + animalData.animalType);
+                    continue; // Skip this animal if type is unknown
+            }
+            GameObject newAnimal = Instantiate(animalPrefab, animalData.position, Quaternion.identity);
+            Animals.Add(newAnimal);
+            if (newAnimal.TryGetComponent<Herbivore>(out Herbivore herbivore))
+            {
+                herbivore.age = animalData.age;
+            }
+            else if (newAnimal.TryGetComponent<Carnivorous>(out Carnivorous carnivorous))
+            {
+                carnivorous.age = animalData.age;
+            }
         }
     }
 

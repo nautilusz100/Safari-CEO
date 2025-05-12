@@ -13,7 +13,7 @@ public class gameUIButtonsManager : MonoBehaviour
     private Button animalButton;
     private Button jeepAndRoadButton;
     private Button parkStatButton;
-    [SerializeField] private TMP_InputField parkNameInputField;
+    [SerializeField] public TMP_InputField parkNameInputField;
 
     private ShopTypes currentShopType = ShopTypes.NONE;
     public ShopTypes CurrentShopType { get { return currentShopType; } }

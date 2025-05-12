@@ -128,6 +128,11 @@ public class Herbivore : Animal, IHasVision
 
         moveCoroutine = null;
 
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.Animals.Add(gameObject);
+        }
+
         //InvokeRepeating("DecideNextAction", 0f, 2f);
         InvokeRepeating(nameof(UpdateVision), 0f, 0.5f);
         InvokeRepeating(nameof(CheckIfStuck), stuckCheckInterval, stuckCheckInterval);
@@ -713,6 +718,12 @@ public class Herbivore : Animal, IHasVision
     private void Die()
     {
         Debug.Log($"{name} died at age {age}.");
+        //for saving
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.Animals.Remove(gameObject);
+        }
         Destroy(gameObject);
+
     }
 }
