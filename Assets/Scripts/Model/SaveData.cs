@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class is used to save the game data.
+/// </summary>
 [System.Serializable]
 public class SaveData
 {
@@ -9,7 +12,9 @@ public class SaveData
     public List<TileData> tiles;
     public List<AnimalData> animals;
 }
-
+/// <summary>
+/// This class is used to save the game manager data.
+/// </summary>
 [System.Serializable]
 public class GameManagerData
 {
@@ -24,7 +29,9 @@ public class GameManagerData
     public float satisfaction;
     public int visitorCount;
 }
-
+/// <summary>
+/// This class is used to save the tile data.
+/// <summary>
 [System.Serializable]
 public class TileData
 {
@@ -33,7 +40,9 @@ public class TileData
     public int foodAmount;
 
 }
-
+/// <summary>
+/// AnimalData class is used to save the animal data.
+/// <summary>
 [System.Serializable]
 public class AnimalData
 {

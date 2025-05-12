@@ -45,6 +45,8 @@ public class MinimapTests
         safariMap = safariMapObj.AddComponent<SafariMap>();
         safariMap.map_dimensions = new Vector2Int(100, 100);
         minimap.safariMap = safariMap;
+
+
     }
 
     [TearDown]

@@ -13,6 +13,9 @@ using System.IO;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// PauseMenu class handles the pause menu functionality.
+/// </summary>
 public class PauseMenu : MonoBehaviour
 {
     private UIDocument uIDocument;
@@ -46,14 +49,18 @@ public class PauseMenu : MonoBehaviour
         }
         exitButton.clickable.clicked += OnExitButtonClick;
     }
-
+    /// <summary>
+    /// Exits the game and returns to the main menu.
+    /// </summary>
     private void OnExitButtonClick()
     {
         ExitMenu?.Invoke(this, EventArgs.Empty);
         SceneManager.LoadScene("MainMenu");
     }
 
-
+    /// <summary>
+    /// Saves the game state to a file.
+    /// </summary>
     private void OnSaveButtonClick()
     {
 #if UNITY_EDITOR
@@ -67,7 +74,9 @@ public class PauseMenu : MonoBehaviour
         StartCoroutine(ShowSaveDialog());
 #endif
     }
-
+    /// <summary>
+    /// Shows a file save dialog to save the game state.
+    /// </summary>
     private IEnumerator ShowSaveDialog()
     {
         SimpleFileBrowser.FileBrowser.SetFilters(false, new SimpleFileBrowser.FileBrowser.Filter("Save Files", ".json"));

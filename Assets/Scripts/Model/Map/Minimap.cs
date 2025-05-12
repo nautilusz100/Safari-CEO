@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// Minimap class for displaying a minimap in the game.
+/// <summary>
+
 namespace Assets.Scripts.Model.Map
 {
     public class Minimap : MonoBehaviour
     {
+        //public beacuse of testing
         public Camera mainCamera; // A fõ kamera
         public RectTransform minimapFrame; // A fehér téglalap (UI)
         public Camera minimapCamera; // A minimap kamerája
         public SafariMap safariMap;
         public RectTransform minimapUI;
-        float mapSize;
+        private float mapSize;
 
         private void Start()
         {

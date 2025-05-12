@@ -10,6 +10,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Windows;
 
+
+/// <summary>
+/// Manages the inspection of game objects in the scene.
+/// </summary>
 public class InspectionManager : MonoBehaviour
 {
 
@@ -41,6 +45,9 @@ public class InspectionManager : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Handles the click event on a game object.
+    /// </summary>
     private void OnClick(RaycastHit2D hit)
     {
         string title = hit.transform.gameObject.name;
@@ -72,12 +79,16 @@ public class InspectionManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Closes the inspection window.
+    /// </summary>
     public void CloseWindow()
     {
         window.SetActive(false);
     }
-
+    /// <summary>
+    /// Focuses the camera on the selected game object.
+    /// </summary>
     public void Focus()
     {
         if (selected != null)
@@ -85,7 +96,9 @@ public class InspectionManager : MonoBehaviour
             cameraManager.JumpTo(selected.transform.position);
         }
     }
-
+    /// <summary>
+    /// Handles the sell action for the selected game object.
+    /// </summary>
     public void Sell()
     {
         if (selected != null)
@@ -101,7 +114,11 @@ public class InspectionManager : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Displays the inspection window for a Jeep.
+    /// </summary>
+    /// <param name="tourists"></param>
+    /// <param name="id"></param>
     public void Display(int tourists, int id)
     {
         title.text = "Jeep "+id.ToString();
@@ -113,7 +130,9 @@ public class InspectionManager : MonoBehaviour
         jeepSelect.SetActive(true);
         selected = null;
     }
-
+    /// <summary>
+    /// Updates the statistics displayed in the inspection window based on the selected game object.
+    /// </summary>
     public void UpdateStats()
     {
         if (selected != null)
@@ -167,7 +186,10 @@ public class InspectionManager : MonoBehaviour
 
         }
     }
-
+    /// <summary>
+    /// Displays the inspection window for an animal.
+    /// </summary>
+    /// <param name="select"></param>
     public void Display(GameObject select)
     {
         natureSelect.SetActive(false);
@@ -181,7 +203,11 @@ public class InspectionManager : MonoBehaviour
         animalImage.sprite = selected.GetComponent<SpriteRenderer>().sprite;
         UpdateStats();
     }
-
+    /// <summary>
+    /// Displays the inspection window for a nature tile.
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="select"></param>
     public void Display(string title, GameObject select)
     {
 
