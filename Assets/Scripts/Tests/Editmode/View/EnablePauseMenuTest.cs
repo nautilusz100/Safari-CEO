@@ -38,7 +38,7 @@ public class EnablePauseMenuTests
         Assert.IsFalse(pauseMenuObject.activeSelf, "Pause menu should start inactive");
 
         // Act: toggle using the actual method
-        var toggleMethod = typeof(PauseMenuController).GetMethod("TogglePauseMenu", BindingFlags.Instance | BindingFlags.NonPublic);
+        var toggleMethod = typeof(EnablePauseMenu).GetMethod("TogglePauseMenu", BindingFlags.Instance | BindingFlags.NonPublic);
         toggleMethod.Invoke(enablePauseMenuComponent, null);
 
         // Assert: should now be active
