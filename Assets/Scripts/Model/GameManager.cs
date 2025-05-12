@@ -231,6 +231,11 @@ public class GameManager : MonoBehaviour
 
         // Mentett adatokat alkalmazzuk
         ApplyLoadedGameData(loadedSave);
+
+        // Map adatok alkalmazása
+        currentMap.LoadTiles(loadedSave.tiles);
+        //currentMap.LoadAnimals(loadedSave.animals);
+
     }
     public void ApplyLoadedGameData(SaveData save)
     {
@@ -275,6 +280,7 @@ public class GameManager : MonoBehaviour
         // UI frissítése
         scoreText.text = "$" + EntryFee.ToString();
         visitorTimer = visitorInterval;
+        UpdateJeepCount();
         UpdateVisitorCount();
     }
 
