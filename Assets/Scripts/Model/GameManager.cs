@@ -391,7 +391,7 @@ public class GameManager : MonoBehaviour
                         Tile tile = hit.transform.gameObject.GetComponent<Tile>();
                         if (tile != null)
                         {
-                            if (tile.isLocked) return;
+                            if (tile.IsLocked) return;
                         currentMap.ChangeTileToRoad(tilePosition);
                         }
                         Money = Money -roadPrice;
@@ -408,7 +408,7 @@ public class GameManager : MonoBehaviour
                     Tile tile = hit.transform.gameObject.GetComponent<Tile>();
                     if (tile != null)
                     {
-                        if (tile.isLocked) return;
+                        if (tile.IsLocked) return;
                     }
                     int price = 0;
 

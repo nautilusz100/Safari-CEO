@@ -22,7 +22,7 @@ public class CameraManagerTests
         safari = new GameObject();
         map = safari.AddComponent<SafariMap>();
         map.map_dimensions = new Vector2(100, 100);
-        cameraManager.map = map;
+        cameraManager.Map = map;
 
         // Use Reflection to call protected Start() method
         MethodInfo startMethod = typeof(CameraManager).GetMethod("Start", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -96,8 +96,8 @@ public class CameraManagerTests
         clampPositionMethod.Invoke(cameraManager, null);
 
         // Assert the camera's position is now within the bounds
-        Assert.GreaterOrEqual(cameraObject.transform.position.x, cameraManager.minBounds.x);
-        Assert.GreaterOrEqual(cameraObject.transform.position.y, cameraManager.minBounds.y);
+        Assert.GreaterOrEqual(cameraObject.transform.position.x, cameraManager.MinBounds.x);
+        Assert.GreaterOrEqual(cameraObject.transform.position.y, cameraManager.MinBounds.y);
     }
 
     [Test]

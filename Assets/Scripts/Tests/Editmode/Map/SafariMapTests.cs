@@ -234,6 +234,6 @@ public class SafariMapTests
         GameObject tile = safariMap.tile_grid[82][80];
         Tile tileComponent = tile.GetComponent<Tile>();
 
-        Assert.IsTrue(tileComponent.isLocked, "Locked tile should prevent road change.");
+        Assert.IsTrue(tileComponent.IsLocked, "Locked tile should prevent road change.");
     }
 }

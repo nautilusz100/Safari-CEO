@@ -21,9 +21,6 @@ public class EnablePauseMenuTests
         pauseMenuObject = new GameObject("PauseMenu");
         enablePauseMenuComponent.enablePauseMenu = pauseMenuObject;
 
-        // Initialize with Start
-        var startMethod = typeof(EnablePauseMenu).GetMethod("Start", BindingFlags.Instance | BindingFlags.NonPublic);
-        startMethod.Invoke(enablePauseMenuComponent, null);
     }
 
     [TearDown]
@@ -36,13 +33,20 @@ public class EnablePauseMenuTests
     [Test]
     public void TogglePauseMenu_TogglesActiveState()
     {
-        // Initial state: active
+        // Set initial state
         pauseMenuObject.SetActive(false);
-        Assert.IsFalse(pauseMenuObject.activeSelf, "Pause menu should be deactivated after first toggle");
+        Assert.IsFalse(pauseMenuObject.activeSelf, "Pause menu should start inactive");
+
+        // Act: toggle using the actual method
+        var toggleMethod = typeof(PauseMenuController).GetMethod("TogglePauseMenu", BindingFlags.Instance | BindingFlags.NonPublic);
+        toggleMethod.Invoke(enablePauseMenuComponent, null);
+
+        // Assert: should now be active
+        Assert.IsTrue(pauseMenuObject.activeSelf, "Pause menu should be active after toggle");
 
         // Toggle again
-        pauseMenuObject.SetActive(true);
-        Assert.IsTrue(pauseMenuObject.activeSelf, "Pause menu should be activated after second toggle");
+        toggleMethod.Invoke(enablePauseMenuComponent, null);
+        Assert.IsFalse(pauseMenuObject.activeSelf, "Pause menu should be inactive after second toggle");
     }
 
 }
