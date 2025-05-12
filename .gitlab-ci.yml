@@ -14,7 +14,7 @@ variables:
 image: $IMAGE:$UNITY_VERSION-base-$IMAGE_VERSION
 
 default:
-  tags: [ otthon ] # set default tags for jobs
+  tags: [ unity ] # set default tags for jobs
 
 .unity_before_script: &unity_before_script
   before_script:
