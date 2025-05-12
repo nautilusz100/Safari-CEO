@@ -36,7 +36,6 @@ public class EndPopUpUiScript : MonoBehaviour
         exitButton = uIDocumentEndPopUp.rootVisualElement.Q<Button>("QuitButton");
         if (exitButton == null)
         {
-
             return; // Exit if the button is not found
         }
 

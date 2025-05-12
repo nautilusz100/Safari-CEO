@@ -77,7 +77,6 @@ public class gameUIButtonsManager : MonoBehaviour
 
         // Hook up all buttons from the UI document
         natureButton = uIDocument.rootVisualElement.Q<Button>("natureButton");
-
         if (natureButton == null) { return; }
         natureButton.clickable.clicked += OnNautreButtonClick;
 
