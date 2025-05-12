@@ -407,7 +407,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u200B"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5cff5ea7e2c037e408b734adcde88093, type: 2}
   m_sharedMaterial: {fileID: 4001464842778422448, guid: 5cff5ea7e2c037e408b734adcde88093, type: 2}
@@ -974,6 +974,10 @@ MonoBehaviour:
   visitorCount: {fileID: 422866491}
   jeepCountText: {fileID: 245993401}
   parkName: {fileID: 161574667}
+  fox_prefab: {fileID: 5312220684229478086, guid: e60b4e0337056ff41bc9d76418fac555, type: 3}
+  lion_prefab: {fileID: 5312220684229478086, guid: 6b82723cd67f0eb42b7c1f534a12d5ae, type: 3}
+  zebra_prefab: {fileID: 5855485762125835324, guid: a62b6cfd17c4ae540897ef614a0dcdbc, type: 3}
+  giraffe_prefab: {fileID: 5855485762125835324, guid: abe507b1e91a5834bb0a6dc6ac6aeab1, type: 3}
   gameUIButtonsManager: {fileID: 711214708}
   visitorTimer: 0
   jeepCount: 0

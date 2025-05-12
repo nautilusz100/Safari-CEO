@@ -27,8 +27,11 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI visitorCount;
     public TextMeshProUGUI jeepCountText;
     public TMP_InputField parkName;
+    [SerializeField] private GameObject fox_prefab;
+    [SerializeField] private GameObject lion_prefab;
+    [SerializeField] private GameObject zebra_prefab;
+    [SerializeField] private GameObject giraffe_prefab;
     [SerializeField] private gameUIButtonsManager gameUIButtonsManager;
-
 
     // Jeep & Tourist related information
     private float visitorInterval = 5f; // Time in seconds between each visitor
@@ -140,10 +143,13 @@ public class GameManager : MonoBehaviour
     public bool isLoadedGame = false;
     public SaveData loadedSave;
 
+    
+
     // Singleton GameManager
 
     void Start()
     {
+
         if (testMode) return;
 
         if (LoadSettings.IsLoadRequested)
@@ -230,21 +236,26 @@ public class GameManager : MonoBehaviour
         isLoadedGame = true;
 
         // Mentett adatokat alkalmazzuk
-        ApplyLoadedGameData(loadedSave);
+
 
         // Map adatok alkalmazása
         currentMap.LoadTiles(loadedSave.tiles);
-        //currentMap.LoadAnimals(loadedSave.animals);
+        LoadAnimals(loadedSave.animals);
+
+        Invoke(nameof(ApplyLoadedGameData), 0.1f); // késleltetett hívás, hogy betöltsön a UI
 
     }
-    public void ApplyLoadedGameData(SaveData save)
+
+
+    public void ApplyLoadedGameData()
     {
+        SaveData save = loadedSave;
         // GameManager értékek beállítása
         Money = save.gameManager.money;
         jeepCount = save.gameManager.jeepCount;
         TimePassed = save.gameManager.time;
-        //nev az idk
-        /*
+
+        
         if (gameUIButtonsManager != null)
         {
             gameUIButtonsManager.UpdateParkNamePreview(save.gameManager.parkName);
@@ -252,7 +263,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("Nem található GameUIButtonsManager példány.");
-        }*/
+        }
 
         switch (save.gameManager.difficulty)
         {
@@ -710,6 +721,43 @@ public class GameManager : MonoBehaviour
 
 
         return JsonUtility.ToJson(save, true);
+    }
+
+
+    private void LoadAnimals(List<AnimalData> animals)
+    {
+        foreach (AnimalData animalData in animals)
+        {
+            GameObject animalPrefab = null;
+            switch (animalData.animalType)
+            {
+                case "Fox":
+                    animalPrefab = fox_prefab;
+                    break;
+                case "Lion":
+                    animalPrefab = lion_prefab;
+                    break;
+                case "Giraffe":
+                    animalPrefab = giraffe_prefab;
+                    break;
+                case "Zebra":
+                    animalPrefab = zebra_prefab;
+                    break;
+                default:
+                    Debug.LogWarning("Ismeretlen állat típus: " + animalData.animalType);
+                    continue; // Skip this animal if type is unknown
+            }
+            GameObject newAnimal = Instantiate(animalPrefab, animalData.position, Quaternion.identity);
+            Animals.Add(newAnimal);
+            if (newAnimal.TryGetComponent<Herbivore>(out Herbivore herbivore))
+            {
+                herbivore.age = animalData.age;
+            }
+            else if (newAnimal.TryGetComponent<Carnivorous>(out Carnivorous carnivorous))
+            {
+                carnivorous.age = animalData.age;
+            }
+        }
     }
 
 }
