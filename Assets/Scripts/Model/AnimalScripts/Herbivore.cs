@@ -86,14 +86,7 @@ public class Herbivore : Animal, IHasVision
     {
         //debugging
         uuid = Guid.NewGuid().ToString();
-        diet = Diet.Herbivore;
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer == null)
-        {
-            Debug.LogError("SpriteRenderer component missing!");
-            enabled = false;
-            return;
-        }
+        DietType = Diet.Herbivore;
 
         agent = GetComponent<NavMeshAgent>();
         if (agent == null)
@@ -620,7 +613,6 @@ public class Herbivore : Animal, IHasVision
 
     private void StartDrinking()
     {
-        spriteRenderer.color = drinkingColor;
 
         currentState = StateHerbivore.Drinking;
         agent.isStopped = true;
@@ -630,7 +622,6 @@ public class Herbivore : Animal, IHasVision
 
     private void FinishDrinking()
     {
-        spriteRenderer.color = restingColor;
 
         thirstTimer = thirstInterval;
         currentTarget = null;
@@ -643,8 +634,6 @@ public class Herbivore : Animal, IHasVision
     {
         agent.isStopped = false;
         currentState = StateHerbivore.Wander;
-
-        spriteRenderer.color = normalColor;
     }
 
     private void MoveTowardsHerdOrRandom()

@@ -200,7 +200,7 @@ namespace Assets.Scripts.Model.Map
                         if (tileComponent != null && tileComponent.Type == Tile.ShopType.Road)
                         {
 
-                            if (tileComponent.isLocked)
+                            if (tileComponent.IsLocked)
                             {
                                 Debug.Log("Tile is locked, cannot change to road");
                                 return;
@@ -239,7 +239,7 @@ namespace Assets.Scripts.Model.Map
                             roadTileComponent.Type = Tile.ShopType.Road; // Beállítjuk a típusát "Road"-ra
                             if (isLockedTile)
                             {
-                                roadTileComponent.isLocked = true; // Ha zárva van, akkor beállítjuk
+                                roadTileComponent.IsLocked = true; // Ha zárva van, akkor beállítjuk
                             }
 
 #if UNITY_EDITOR
@@ -328,7 +328,7 @@ namespace Assets.Scripts.Model.Map
         private void UpdateRoadTile(Vector2Int tilePosition)
         {
             GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y];
-            bool currentTileLock = currentTile.GetComponent<Tile>().isLocked;
+            bool currentTileLock = currentTile.GetComponent<Tile>().IsLocked;
 
             if (currentTile != null)
             {
@@ -339,7 +339,7 @@ namespace Assets.Scripts.Model.Map
                 if (roadTileComponent == null)
                     roadTileComponent = newRoadTile.AddComponent<Tile>();
                 roadTileComponent.Type = Tile.ShopType.Road;
-                roadTileComponent.isLocked = currentTileLock; // Beállítjuk a zárást
+                roadTileComponent.IsLocked = currentTileLock; // Beállítjuk a zárást
                 tile_grid[tilePosition.x][tilePosition.y] = newRoadTile;
             }
         }

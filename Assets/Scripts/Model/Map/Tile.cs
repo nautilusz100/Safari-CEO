@@ -1,6 +1,10 @@
 using UnityEngine;
 
-    public class Tile : MonoBehaviour
+/// <summary>
+/// Represents a tile on the map with different terrain or object types, such as trees or hills.
+/// Tiles can hold food, change state, and notify the game manager when food is depleted.
+/// </summary>
+public class Tile : MonoBehaviour
     {
         private SpriteRenderer spriteRenderer;
 
@@ -24,13 +28,14 @@ using UnityEngine;
         public ShopType Type { get; set; }
 
 
-        [SerializeField] public int FoodAmount;
-        public bool isLocked;
+        public int FoodAmount { get; set; }
+        public bool IsLocked { get; set; }
 
         void Awake()
         {
             Type = initialType;
-            switch (Type)
+        // Initialize food amount based on tile type
+        switch (Type)
             {
                 case ShopType.Tree:
                     FoodAmount = 10;
@@ -45,16 +50,20 @@ using UnityEngine;
                     FoodAmount = 0;
                     break;
             }
-            isLocked = false;
+            IsLocked = false;
         }
 
         void Start()
         {
+            // Set sorting order based on Y position for visual layering
             spriteRenderer = GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = Mathf.RoundToInt(-transform.position.y * 10);
         }
 
-        //anaimal eating
+        /// <summary>
+        /// Reduces food amount when consumed by an animal or other entity.
+        /// </summary>
+
         public void ConsumeFood(int amount)
         {
             if (FoodAmount <= 0) return;
@@ -69,12 +78,15 @@ using UnityEngine;
         }
         private void Update()
         {
+            // Automatically convert food-producing tiles to plains when depleted
             if (FoodAmount <= 0 && (ShopType.Tree == Type || ShopType.Bush == Type || ShopType.Flowerbed == Type))
             {
                 BecomePlains();
             }
         }
-
+        /// <summary>
+        /// Notifies the game manager that this tile's food has been depleted and should revert to plains.
+        /// </summary>
         void BecomePlains()
         {
             Debug.Log("Tile food depleted, becoming plains at pos: x: " + transform.position.x + transform.position.y);

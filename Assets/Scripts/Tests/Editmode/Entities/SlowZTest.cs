@@ -60,18 +60,18 @@ public class SlowZTest
         // Act
         handler.OnTriggerEnter2D(collider2D);
         // Assert
-        Assert.AreEqual(handler.slowedSpeedHills, handler.testSpeedOverride);
+        Assert.AreEqual(handler.SlowedSpeedHills, handler.TestSpeedOverride);
 
 
         otherTile.Type = Tile.ShopType.River;
         handler.OnTriggerEnter2D(collider2D);
-        Assert.AreEqual(handler.slowedSpeedWater, handler.testSpeedOverride);
+        Assert.AreEqual(handler.SlowedSpeedWater, handler.TestSpeedOverride);
         otherTile.Type = Tile.ShopType.Lake;
         handler.OnTriggerEnter2D(collider2D);
-        Assert.AreEqual(handler.slowedSpeedWater, handler.testSpeedOverride);
+        Assert.AreEqual(handler.SlowedSpeedWater, handler.TestSpeedOverride);
         otherTile.Type = Tile.ShopType.Road;
         handler.OnTriggerEnter2D(collider2D);
-        Assert.AreEqual(1f, handler.testSpeedOverride);
+        Assert.AreEqual(1f, handler.TestSpeedOverride);
         //Assert.AreEqual(0f, visionMock.LastSetRadius);
     }
 

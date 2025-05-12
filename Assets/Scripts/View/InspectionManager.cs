@@ -139,10 +139,10 @@ public class InspectionManager : MonoBehaviour
                 string state;
                 string diet;
 
-                if (anim.diet == Animal.Diet.Carnivore)
+                if (anim.DietType == Animal.Diet.Carnivore)
                 {
                     Carnivorous carn = selected.GetComponent<Carnivorous>();
-                    diet = carn.diet.ToString();
+                    diet = carn.DietType.ToString();
                     age = Mathf.FloorToInt(carn.age / 100);
                     hunger = Mathf.RoundToInt((1 - carn.hungerTimer / carn.hungerInterval)*100);
                     thirst = Mathf.RoundToInt((1 - carn.thirstTimer / carn.thirstInterval) * 100);
@@ -153,7 +153,7 @@ public class InspectionManager : MonoBehaviour
                 else
                 {
                     Herbivore herb = selected.GetComponent<Herbivore>();
-                    diet = herb.diet.ToString();
+                    diet = herb.DietType.ToString();
                     age = Mathf.FloorToInt(herb.age / 100);
                     hunger = Mathf.RoundToInt((1 - herb.hungerTimer / herb.hungerInterval)*100);
                     thirst = Mathf.RoundToInt((1 - herb.thirstTimer / herb.thirstInterval)*100);

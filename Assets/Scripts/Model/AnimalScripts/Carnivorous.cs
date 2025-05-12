@@ -85,7 +85,7 @@ public class Carnivorous : Animal, IHasVision
         uuid = Guid.NewGuid().ToString();
         spriteRenderer = GetComponent<SpriteRenderer>();
         agent = GetComponent<NavMeshAgent>();
-        diet = Diet.Carnivore;
+        DietType = Diet.Carnivore;
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.speed = (int)GameManager.Instance.CurrentGameSpeed * normalSpeed;

@@ -26,11 +26,11 @@ public class TileTests
         // "Awake" után várható értékeket kézzel állítjuk be
         tile.Type = Tile.ShopType.Tree;
         tile.FoodAmount = 10;
-        tile.isLocked = false;
+        tile.IsLocked = false;
 
         Assert.AreEqual(Tile.ShopType.Tree, tile.Type);
         Assert.AreEqual(10, tile.FoodAmount);
-        Assert.IsFalse(tile.isLocked);
+        Assert.IsFalse(tile.IsLocked);
     }
 
     [Test]
@@ -38,11 +38,11 @@ public class TileTests
     {
         tile.Type = Tile.ShopType.Bush;
         tile.FoodAmount = 6;
-        tile.isLocked = false;
+        tile.IsLocked = false;
 
         Assert.AreEqual(Tile.ShopType.Bush, tile.Type);
         Assert.AreEqual(6, tile.FoodAmount);
-        Assert.IsFalse(tile.isLocked);
+        Assert.IsFalse(tile.IsLocked);
     }
 
     [Test]
@@ -50,11 +50,11 @@ public class TileTests
     {
         tile.Type = Tile.ShopType.Plains;
         tile.FoodAmount = 0;
-        tile.isLocked = false;
+        tile.IsLocked = false;
 
         Assert.AreEqual(Tile.ShopType.Plains, tile.Type);
         Assert.AreEqual(0, tile.FoodAmount);
-        Assert.IsFalse(tile.isLocked);
+        Assert.IsFalse(tile.IsLocked);
     }
 
     [Test]
