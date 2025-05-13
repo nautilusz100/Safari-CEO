@@ -18,7 +18,12 @@ public class EnablePauseMenu : MonoBehaviour
         // Toggle pause menu visibility when Escape key is pressed
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            enablePauseMenu.SetActive(!enablePauseMenu.activeSelf);
+            TogglePauseMenu();
         }
+    }
+
+    private void TogglePauseMenu()
+    {
+        enablePauseMenu.SetActive(!enablePauseMenu.activeSelf);
     }
 }
