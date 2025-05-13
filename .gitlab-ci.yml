@@ -65,6 +65,7 @@ test-playmode:
   <<: *test
   variables:
     TEST_PLATFORM: playmode
+  timeout: 10 minutes
 
 test-editmode:
   <<: *test

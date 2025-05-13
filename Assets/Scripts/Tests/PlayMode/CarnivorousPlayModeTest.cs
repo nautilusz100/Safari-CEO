@@ -379,7 +379,7 @@ public class CarnivorousPlayModeTests
         Assert.IsNull(currentTargetTile);
     }
 
-    [UnityTest, Ignore("")]
+    [UnityTest, Ignore("Slow")]
     public IEnumerator Carnivorous_UpdateVision_ShouldDetectNearbyEntities()
     {
         // Proper collider setup
