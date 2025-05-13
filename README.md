@@ -7,3 +7,10 @@ A térkép rendelkezik, dombokkal, növényekkel és tavakkal amelyeket a parkig
 A parknak bevétele állatok eladásából és túristákból adódik. A parkigazgatónak van lehetősége utakat építeni a térképen keresztül és Jeepeket vásárolni a túristák számára.
 
 **Hogyan nyerhetünk?** A játékot akkor nyerjük meg, ha nehézségi szinttől függően 3, 6 vagy 12 egymát követő hónapon keresztül a park statisztikái, mind elérnek egy küszöbértéket. Viszont, vesztésre is van lehetőség, abban az esetben ha csődbe megyünk vagy kipusztul az összes állat.
+
+## Részfeladatok
+- Minimap
+- 2,5D
+- Perzisztencia
+- Terepakadályok
+- Térkép generálás
