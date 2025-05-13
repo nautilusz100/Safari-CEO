@@ -3921,11 +3921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3502f13a4f7e01d4aa78f7c252f795d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  jumpSpeed: 7
-  map: {fileID: 337380334}
-  minBounds: {x: 0, y: 0}
-  maxBounds: {x: 0, y: 0}
+  Map: {fileID: 337380334}
 --- !u!81 &776654302
 AudioListener:
   m_ObjectHideFlags: 0

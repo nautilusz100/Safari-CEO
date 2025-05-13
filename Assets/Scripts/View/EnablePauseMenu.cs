@@ -15,7 +15,12 @@ public class EnablePauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            enablePauseMenu.SetActive(!enablePauseMenu.activeSelf);
+            TogglePauseMenu();
         }
+    }
+
+    private void TogglePauseMenu()
+    {
+        enablePauseMenu.SetActive(!enablePauseMenu.activeSelf);
     }
 }
