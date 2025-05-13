@@ -26,9 +26,7 @@ public class CameraManagerPlayModeTests
 
 
         safariMap.map_dimensions = new Vector2(100, 100);
-        typeof(CameraManager)
-            .GetField("map", BindingFlags.Instance | BindingFlags.Public)
-            .SetValue(cameraManager, safariMap);
+        cameraManager.Map = safariMap;
 
         yield return null; // Wait a frame so Start() runs
     }
