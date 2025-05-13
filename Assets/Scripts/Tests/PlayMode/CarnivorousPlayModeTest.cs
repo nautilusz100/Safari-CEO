@@ -59,7 +59,7 @@ public class CarnivorousPlayModeTests
         return positions;
     }
 
-    [SetUp]
+    [UnitySetUp]
     public void SetUp()
     {
         // Create proper NavMesh
