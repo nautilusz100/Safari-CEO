@@ -21,10 +21,10 @@ public class ShopElementTests
 
         var shopElement = new ShopElement(image, nameText, priceText);
 
-        Assert.AreEqual(image, shopElement.itemImage);
-        Assert.AreEqual(nameText, shopElement.itemName);
-        Assert.AreEqual(priceText, shopElement.itemPrice);
-        Assert.AreEqual("Test Item", shopElement.itemName.text);
-        Assert.AreEqual("99", shopElement.itemPrice.text);
+        Assert.AreEqual(image, shopElement.ItemImage);
+        Assert.AreEqual(nameText, shopElement.ItemName);
+        Assert.AreEqual(priceText, shopElement.ItemPrice);
+        Assert.AreEqual("Test Item", shopElement.ItemName.text);
+        Assert.AreEqual("99", shopElement.ItemPrice.text);
     }
 }

@@ -16,10 +16,14 @@ using System.IO;
 using System.Linq;
 //https://www.flaticon.com/free-icons/next icons credit - Flaticon
 
-//fuuS
+
+/// <summary>
+/// GameManager is a singleton class that manages the game state, including the map, animals, visitors, and game speed.
+/// </summary>
 
 public class GameManager : MonoBehaviour
 {
+
     public static GameManager Instance;
     private SafariMap currentMap;
     public SafariMap safariMapPrefab;
@@ -99,6 +103,7 @@ public class GameManager : MonoBehaviour
         }
     }
     public bool testMode = false;
+    /// UI elements
     public int TimePassed
     {
         get => hoursPassed;
@@ -127,7 +132,7 @@ public class GameManager : MonoBehaviour
     }
     public GameSpeed CurrentGameSpeed { get; set; } = GameSpeed.Normal;
 
-
+    // UI elements
     public GameObject navMesh;
     private NavMeshSurface navMeshSurface;
 
@@ -146,7 +151,6 @@ public class GameManager : MonoBehaviour
     
 
     // Singleton GameManager
-
     void Start()
     {
 
@@ -154,16 +158,17 @@ public class GameManager : MonoBehaviour
 
         if (LoadSettings.IsLoadRequested)
         {
-            loadedStart();
+            LoadedStart();
             LoadSettings.LoadPath = null; // Kiürítjük, hogy ne töltsön újra véletlenül
-            Debug.Log("GameManager started. Instance: " + Instance.GetInstanceID());
         }
         else
             NormalStart();
 
     }
 
-
+    /// <summary>
+    /// Initializes the game manager, sets up the map, nav mesh, and UI elements.
+    /// </summary>
     void NormalStart()
     {
         if (testMode) return; //For testing classes that refer to gamemanager
@@ -173,7 +178,7 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        // Ha van már térkép, akkor töröljük
+        // If the game is loaded, we don't want to create a new map
         if (currentMap != null)
         {
             Destroy(currentMap.gameObject);
@@ -181,11 +186,12 @@ public class GameManager : MonoBehaviour
 
         currentMap = safariMapPrefab;
         navMeshSurface = navMesh.GetComponent<NavMeshSurface>();
-        // Térkép generálása
+        // Map generation
         currentMap.CreateMap();
-        // NavMesh generálása
+        // NavMesh generation
         navMeshSurface.BuildNavMesh();
 
+        // UI initialization
         var uiDocument = uiGameObject.GetComponent<UIDocument>();
         var root = uiDocument.rootVisualElement;
         moneyLabel = root.Q<Label>("MoneyLabel");
@@ -198,7 +204,6 @@ public class GameManager : MonoBehaviour
         {
             gameDifficulty = Difficulty.Easy; // Default difficulty
         }
-        Debug.Log("Difficulty from static: " + gameDifficulty);
         // Set the initial difficulty
         SetDifficulty();
 
@@ -215,30 +220,28 @@ public class GameManager : MonoBehaviour
         HasWon = false;
         HasLost = false;
 
+        // Set the initial money and entry fee
         EntryFee = 50;
         scoreText.text = "$" + EntryFee.ToString();
         visitorTimer = visitorInterval;
         Visitors = 0;
         UpdateVisitorCount();
     }
-    private void loadedStart()
+    /// <summary>
+    /// Loads the game from a saved file.
+    /// </summary>
+    private void LoadedStart()
     {
         NormalStart();
         string path = LoadSettings.LoadPath;
-        if (!File.Exists(path))
-        {
-            Debug.LogError("Fájl nem található: " + path);
-            return;
-        }
 
         string json = File.ReadAllText(path);
         loadedSave = JsonUtility.FromJson<SaveData>(json);
         isLoadedGame = true;
 
-        // Mentett adatokat alkalmazzuk
 
 
-        // Map adatok alkalmazása
+        // Map data load
         currentMap.LoadTiles(loadedSave.tiles);
         LoadAnimals(loadedSave.animals);
 
@@ -246,7 +249,9 @@ public class GameManager : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// Applies the loaded game data to the game manager.
+    /// </summary>
     public void ApplyLoadedGameData()
     {
         SaveData save = loadedSave;
@@ -255,16 +260,14 @@ public class GameManager : MonoBehaviour
         jeepCount = save.gameManager.jeepCount;
         TimePassed = save.gameManager.time;
 
-        
+
+        // Set the game name
         if (gameUIButtonsManager != null)
         {
             gameUIButtonsManager.UpdateParkNamePreview(save.gameManager.parkName);
         }
-        else
-        {
-            Debug.LogWarning("Nem található GameUIButtonsManager példány.");
-        }
 
+        // Set the game difficulty
         switch (save.gameManager.difficulty)
         {
             case 0:
@@ -280,6 +283,7 @@ public class GameManager : MonoBehaviour
                 gameDifficulty = Difficulty.None;
                 break;
         }
+        // Set the game settings from the loaded game
         EntryFee = save.gameManager.entryFee;
         satisfaction = save.gameManager.satisfaction;
         Visitors = save.gameManager.visitorCount;
@@ -288,7 +292,7 @@ public class GameManager : MonoBehaviour
 
 
 
-        // UI frissítése
+        // UI update
         scoreText.text = "$" + EntryFee.ToString();
         visitorTimer = visitorInterval;
         UpdateJeepCount();
@@ -297,6 +301,7 @@ public class GameManager : MonoBehaviour
 
     private void SetDifficulty()
     {
+        // Set the difficulty based on the selected difficulty level
         switch (gameDifficulty)
         {
             case Difficulty.Easy:
@@ -325,11 +330,17 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// Notifies the game manager that food on a tile has been depleted.
+    /// </summary>
+    /// <param name="pos"></param>
     public virtual void  NotifyTileFoodDepleted(Vector2Int pos)
     {
         currentMap.ReplaceTileWithPlains(pos);
     }
-
+    /// <summary>
+    /// Checks the winning conditions of the game.
+    /// </summary>
     private void WinningConditionCheck()
     {
         if (HasWon) return; // ha már nyertél, nem ellenőrzünk többször
@@ -356,7 +367,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Updates the game state every frame.
+    /// </summary>
     void Update()
     {
         if (testMode) return;
@@ -384,9 +397,7 @@ public class GameManager : MonoBehaviour
 
                     if (hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Tiles") && Money >= roadPrice)
                     {
-                        // Debug message for the clicked object
-                        Debug.Log("Clicked object: " + hit.collider.gameObject.name);
-
+                        // Option: Change tile nature
                         Vector2 tilePosition = hit.collider.gameObject.transform.position;
                         Tile tile = hit.transform.gameObject.GetComponent<Tile>();
                         if (tile != null)
@@ -424,21 +435,17 @@ public class GameManager : MonoBehaviour
                             price = treePrice;
                             break;
                         default:
-                            Debug.Log("Invalid building type");
                             return;
                     }
 
                     if (Money < price)
                     {
-                        Debug.Log("Not enough money for " + IsBuilding);
                         return;
                     }
                     Money -= price;
 
                     if (hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Tiles"))
                     {
-                        // Debug message for the clicked object
-                        Debug.Log("Clicked object: " + hit.collider.gameObject.name);
 
                         // Option: Change tile nature
                         Vector2 tilePosition = hit.collider.gameObject.transform.position;
@@ -452,6 +459,7 @@ public class GameManager : MonoBehaviour
         }
         else if (IsBuilding == Tile.ShopType.Jeep && Money >= jeepPrice)
         {
+            // Left click event
             jeepCount++;
             UpdateJeepCount();
             totalJeepCount++;
@@ -461,17 +469,21 @@ public class GameManager : MonoBehaviour
 
         if(visitorTimer > 0f)
         {
+            // Decrease the timer
             visitorTimer -= ScaledDeltaTime;
         }
         else
         {
+            // Reset the timer
             visitorTimer = visitorInterval;
             AttemptVisitorSpawn();
         }
 
         WinningConditionCheck(); // Check for winning conditions
     }
-
+    /// <summary>
+    /// Attempts to spawn a visitor based on the current game state.
+    /// </summary>
     private void AttemptVisitorSpawn()
     {
         float baseSpawnChance = 0.5f;
@@ -480,7 +492,8 @@ public class GameManager : MonoBehaviour
         float reviewBonus = satisfaction == 0 ? 1 : satisfaction / 5f;
         float finalSpawnChance = baseSpawnChance * (1f - feePenalty) * reviewBonus;
 
-        if(UnityEngine.Random.value < finalSpawnChance && jeepCount > 0)
+        // Adjust spawn chance based on game difficulty
+        if (UnityEngine.Random.value < finalSpawnChance && jeepCount > 0)
         {
             int tourists = UnityEngine.Random.Range(1, 5);
             Money += EntryFee * tourists;
@@ -489,7 +502,10 @@ public class GameManager : MonoBehaviour
             SpawnJeep(tourists);
         }
     }
-
+    /// <summary>
+    /// Spawns a jeep with a specified number of tourists.
+    /// </summary>
+    /// <param name="tourists"></param>
     private void SpawnJeep(int tourists)
     {
         // Spawn a new Jeep
@@ -500,11 +516,13 @@ public class GameManager : MonoBehaviour
         UpdateJeepCount();
         jeep.GetComponent<Jeep>().id = totalJeepCount - jeepCount;
     }
-
+    /// <summary>
+    /// Notifies the game manager that a jeep has returned home.
+    /// </summary>
+    /// <param name="animalCount"></param>
+    /// <param name="differentAnimals"></param>
     public void JeepIsHome(int animalCount, int differentAnimals)
     {
-        Debug.Log(differentAnimals + " different animals seen by the visitor.");
-        Debug.Log("Visitor seen this many animals: " + animalCount);
         // Review calculation
         int review = CalculateReview(animalCount, differentAnimals);
         if (satisfaction == 0)
@@ -519,12 +537,18 @@ public class GameManager : MonoBehaviour
         UpdateJeepCount();
 
     }
-
+    /// <summary>
+    /// Calculates the review score based on the number of animals seen and the game difficulty.
+    /// </summary>
+    /// <param name="animalCount"></param>
+    /// <param name="differentAnimals"></param>
+    /// <returns></returns>
     private int CalculateReview(int animalCount, int differentAnimals)
     {
         int difficultyAdjustment = 0;
 
-        switch(differentAnimals)
+        // Adjust the animal count based on the number of different animals seen
+        switch (differentAnimals)
         {
             case 1:
                 animalCount = (int)(animalCount * 0.5);
@@ -540,7 +564,7 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
-
+        // Adjust the review score based on the game difficulty
         switch (gameDifficulty)
         {
             case Difficulty.Easy:
@@ -553,7 +577,7 @@ public class GameManager : MonoBehaviour
             difficultyAdjustment = 5;
             break;
         }
-
+        // Calculate the review score based on the number of animals seen
         if (animalCount < (1+difficultyAdjustment)) return 1;
         if (animalCount < (3+difficultyAdjustment)) return 2;
         if (animalCount < (5+difficultyAdjustment)) return 3;
@@ -562,22 +586,16 @@ public class GameManager : MonoBehaviour
         return 0;
     }
 
-
-    // útépítési mód engedélyezése
-
     public void EnableRoadBuilding()
     {
         IsBuilding = Tile.ShopType.Road;
     }
-
-    // Útépítési mód letiltása
     public void DisableRoadBuilding()
     {
         IsBuilding = Tile.ShopType.None;
     }
     public void PriceIncrease()
     { 
-        Debug.Log("PriceIncrease");
         EntryFee++;
         scoreText.text = "$" + EntryFee.ToString();
     }
@@ -611,6 +629,9 @@ public class GameManager : MonoBehaviour
                 return int.MaxValue; // unknown type
         }
     }
+    /// <summary>
+    ///  Changes the game speed when the speed button is clicked.
+    /// </summary>
     private void ChangeSpeed()
     {
         switch (CurrentGameSpeed)
@@ -627,6 +648,9 @@ public class GameManager : MonoBehaviour
         }
         UpdateSpeedButton();
     }
+    /// <summary>
+    /// Updates the speed button icon based on the current game speed.
+    /// </summary>
     private void UpdateSpeedButton()
     {
         if (speedButton == null) return;
@@ -648,6 +672,10 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// Saves the game data to a JSON string.
+    /// </summary>
+    /// <returns></returns>
     public string SaveGame()
     {
         SaveData save = new SaveData();
@@ -714,8 +742,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Ismeretlen állat típus: " + animal.name);
-                return null; // vagy dobj kivételt, ha ez hiba
+                return null;
             }
         }).Where(a => a != null).ToList();
 
@@ -723,7 +750,10 @@ public class GameManager : MonoBehaviour
         return JsonUtility.ToJson(save, true);
     }
 
-
+    /// <summary>
+    /// Loads the animals from a list of AnimalData.
+    /// </summary>
+    /// <param name="animals"></param>
     private void LoadAnimals(List<AnimalData> animals)
     {
         foreach (AnimalData animalData in animals)
@@ -744,7 +774,6 @@ public class GameManager : MonoBehaviour
                     animalPrefab = zebra_prefab;
                     break;
                 default:
-                    Debug.LogWarning("Ismeretlen állat típus: " + animalData.animalType);
                     continue; // Skip this animal if type is unknown
             }
             GameObject newAnimal = Instantiate(animalPrefab, animalData.position, Quaternion.identity);

@@ -9,7 +9,9 @@ using System.IO;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
+/// <summary>
+/// This class represents the main menu of the game.
+/// </summary>
 
 public class MainMenu : MonoBehaviour
 {
@@ -22,24 +24,18 @@ public class MainMenu : MonoBehaviour
     private Button hardButton;
     private Difficulty selectedDifficulty = Difficulty.None;
 
-    /*
-    public event EventHandler LoadGame;
-    public event EventHandler ExitMenu;
-    */
 
     void Start()
     {
         uIDocument = GetComponent<UIDocument>();
         if (uIDocument == null)
         {
-            Debug.LogError("UIDocument component not found.");
             return;
         }
 
         startButton = uIDocument.rootVisualElement.Q<Button>("MenuStartButton");
         if (startButton == null)
         {
-            Debug.LogError("Start Button not found.");
             return;
         }
         startButton.clickable.clicked += OnStartButtonClick;
@@ -47,7 +43,6 @@ public class MainMenu : MonoBehaviour
         loadButton = uIDocument.rootVisualElement.Q<Button>("MenuLoadButton");
         if (loadButton == null)
         {
-            Debug.LogError("Load Button not found.");
             return;
         }
         loadButton.clickable.clicked += OnLoadButtonClick;
@@ -55,7 +50,7 @@ public class MainMenu : MonoBehaviour
         exitButton = uIDocument.rootVisualElement.Q<Button>("MenuExitButton");
         if (exitButton == null)
         {
-            Debug.LogError("Exit Button not found.");
+
             return;
         }
         exitButton.clickable.clicked += OnExitButtonClick;
@@ -63,7 +58,6 @@ public class MainMenu : MonoBehaviour
         easyButton = uIDocument.rootVisualElement.Q<Button>("MenuEasyButton");
         if (easyButton == null)
         {
-            Debug.LogError("Easy Button not found.");
             return;
         }
         easyButton.clickable.clicked += OnEasyButtonClick;
@@ -71,7 +65,6 @@ public class MainMenu : MonoBehaviour
         mediumButton = uIDocument.rootVisualElement.Q<Button>("MenuMediumButton");
         if (mediumButton == null)
         {
-            Debug.LogError("Medium Button not found.");
             return;
         }
         mediumButton.clickable.clicked += OnMediumButtonClick;
@@ -79,20 +72,20 @@ public class MainMenu : MonoBehaviour
         hardButton = uIDocument.rootVisualElement.Q<Button>("MenuHardButton");
         if (hardButton == null)
         {
-            Debug.LogError("Hard Button not found.");
             return;
         }
         hardButton.clickable.clicked += OnHardButtonClick;
     }
 
 
-
+    /// <summary>
+    /// Start the game with the selected difficulty.
+    /// </summary>
     private void OnStartButtonClick()
     {
 
         if (selectedDifficulty == Difficulty.None)
         {
-            Debug.Log("No difficulty selected!");
         }
         else
         {
@@ -101,28 +94,26 @@ public class MainMenu : MonoBehaviour
         }
 
     }
+    /// <summary>
+    /// Load a game from a file.
+    /// </summary>>
     private void OnLoadButtonClick()
     {
 #if UNITY_EDITOR
-        Debug.Log("OnLoadButtonClick called");
         string path = EditorUtility.OpenFilePanel("Select a file", "", "json");
-        Debug.Log("Path after OpenFilePanel: " + path);  // Logoljuk a path-ot
 
         if (!string.IsNullOrEmpty(path))
         {
-            Debug.Log("Selected file: " + path);
             LoadSettings.LoadPath = path;
             SceneManager.LoadScene("Game"); // Betöltjük a Game jelenetet
-        }
-        else
-        {
-            Debug.LogWarning("No file selected or path is empty");
         }
 #else
     StartCoroutine(ShowLoadDialog());
 #endif
     }
-
+    /// <summary>
+    /// Load a game from a file using SimpleFileBrowser.
+    /// </summary>
 
     private IEnumerator ShowLoadDialog()
     {
@@ -132,7 +123,6 @@ public class MainMenu : MonoBehaviour
         {
             if (paths.Length > 0)
             {
-                Debug.Log("Selected file: " + paths[0]);
                 LoadSettings.LoadPath = paths[0];
                 SceneManager.LoadScene("Game"); // Betöltjük a Game jelenetet
             }
@@ -141,10 +131,11 @@ public class MainMenu : MonoBehaviour
         yield return null;
     }
 
+    /// <summary>
+    /// Exit the game.
+    /// </summary>
     private void OnExitButtonClick()
     {
-        Debug.Log("Quit");
-        //ExitMenu?.Invoke(this, EventArgs.Empty);
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -152,13 +143,17 @@ public class MainMenu : MonoBehaviour
 #endif
 
     }
-
+    /// <summary>
+    /// Set the selected difficulty to Easy.
+    /// </summary>
     private void OnEasyButtonClick()
     {
         selectedDifficulty = Difficulty.Easy;
         SetSelectedButton(easyButton);
     }
-
+    /// <summary>
+    /// Set the selected difficulty to Medium.
+    /// </summary>
     private void OnMediumButtonClick()
     {
         selectedDifficulty = Difficulty.Medium;
@@ -170,7 +165,9 @@ public class MainMenu : MonoBehaviour
         selectedDifficulty = Difficulty.Hard;
         SetSelectedButton(hardButton);
     }
-
+    /// <summary>
+    /// Set the selected button and update the UI accordingly.
+    /// </summary>
     private void SetSelectedButton(Button selectedButton)
     {
         easyButton.RemoveFromClassList("difficultybuttonSelected");

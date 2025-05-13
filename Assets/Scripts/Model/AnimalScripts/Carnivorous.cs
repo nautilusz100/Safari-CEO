@@ -10,16 +10,13 @@ using static Herbivore;
 using static Tile;
 using Random = UnityEngine.Random;
 
+/// <summary>
+/// Represents a carnivorous animal in the game.
+/// </summary>
+
 public class Carnivorous : Animal, IHasVision
 {
     // Debugging
-    private SpriteRenderer spriteRenderer;
-    public Color normalColor = Color.white;
-    public Color restingColor = Color.blue;
-    public Color eatingColor = Color.green;
-    public Color drinkingColor = Color.cyan;
-    public Color searchingColor = Color.yellow;
-    public Color huntingColor = Color.red;
     public string uuid;
 
     // Movement parameters
@@ -55,23 +52,24 @@ public class Carnivorous : Animal, IHasVision
     private List<Tile> exploredTiles = new List<Tile>();
     private Dictionary<GameObject, Vector3> spottedPreyPositions = new Dictionary<GameObject, Vector3>();
     private Dictionary<GameObject, Vector3> spottedMates = new Dictionary<GameObject, Vector3>();
-
+    // State machine
     public enum StateCarnivore { Wander, SearchFood, SearchWater, Eating, Drinking, Hunt, Rest, Mature, FindMate, Mating }
     private StateCarnivore currentState = StateCarnivore.Wander;
-
+    
     public StateCarnivore CurrentState { get { return currentState; }}
 
-    //épen aktuális célpontok
+    // Actual target
     private GameObject currentTargetAnimal;
     private Tile currentTargetTile;
 
-    // mating
+    // For mating
     private float mateDuration = 5f;
     private float minMateAge = 80f;
     public float mateTimer = 0f;
     public float mateInterval = 100f;
     public bool isMating;
 
+    // prefabs
     public GameObject lionPrefab;
     public GameObject foxPrefab;
 
@@ -105,20 +103,21 @@ public class Carnivorous : Animal, IHasVision
         mateTimer = 0;
         maxAge = Random.Range(maxAge * 0.8f, maxAge * 1.2f);
 
+        // Set the initial position of the animal
         if (GameManager.Instance != null)
         {
             GameManager.Instance.Animals.Add(gameObject);
         }
-
+        // Invoke methods for periodic updates
         InvokeRepeating(nameof(DecideNextAction), 0f, 1f);
         InvokeRepeating(nameof(UpdateVision), 0f, 0.3f);
         InvokeRepeating(nameof(CheckIfStuck), stuckCheckInterval, stuckCheckInterval);
 
     }
 
+
     private void OnClick()
     {
-        Debug.Log("Clicked");
         GameObject inspection = GameObject.FindWithTag("InspectionWindow");
         if (inspection != null)
         {
@@ -128,6 +127,10 @@ public class Carnivorous : Animal, IHasVision
 
     float baseAcceleration = 4f;
     float baseAngularSpeed = 120f;
+
+    /// <summary>
+    /// Updates the speed of the NavMeshAgent based on the current game speed.
+    /// </summary>
     void UpdateAgentSpeed()
     {
         if (testMode) return;
@@ -137,6 +140,9 @@ public class Carnivorous : Animal, IHasVision
         agent.angularSpeed = baseAngularSpeed * Mathf.Clamp((int)GameManager.Instance.CurrentGameSpeed, 1f, 3f);
     }
 
+    /// <summary>
+    /// Updates the animal's state and checks for user input.
+    /// </summary>
     private void Update()
     {
         UpdateAgentSpeed();
@@ -155,10 +161,8 @@ public class Carnivorous : Animal, IHasVision
         if (currentState == StateCarnivore.Hunt && currentTargetAnimal != null)
         {
             // Ha a préda elég közel van (3 egység)
-            Debug.Log($"Distance to prey: {Vector3.Distance(transform.position, currentTargetAnimal.transform.position)}");
             if (Vector3.Distance(transform.position, currentTargetAnimal.transform.position) < 1f)
             {
-                Debug.Log("Prey caught via distance check!");
                 StartEating(currentTargetAnimal.transform);
                 
             }
@@ -199,7 +203,9 @@ public class Carnivorous : Animal, IHasVision
     {
         visionRadius = radius;
     }
-
+    /// <summary>
+    /// Updates the vision of the animal by checking for nearby objects within the vision radius.
+    /// </summary>
     private void UpdateVision()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, visionRadius);
@@ -214,7 +220,6 @@ public class Carnivorous : Animal, IHasVision
                 Vector3 preyPosition = prey.transform.position;
 
                 spottedPreyPositions[prey] = preyPosition;
-                Debug.Log($"Spotted prey: {prey.name} at {preyPosition}"); 
                 
             }
             if (hit.CompareTag(this.tag))
@@ -230,7 +235,9 @@ public class Carnivorous : Animal, IHasVision
                 exploredTiles.Add(tile);
         }
     }
-
+    /// <summary>
+    /// Decides the next action for the animal based on its current state and needs.
+    /// </summary>
     private void DecideNextAction()
     {
         if (hungerTimer <= hungerInterval * 0.2f && spottedPreyPositions.Count > 0)
@@ -255,12 +262,10 @@ public class Carnivorous : Animal, IHasVision
             switch (currentState)
             {
                 case StateCarnivore.Wander:
-                    spriteRenderer.color = normalColor;
                     MoveTowardsHerdOrRandom();
                     break;
 
                 case StateCarnivore.SearchFood:
-                    spriteRenderer.color = searchingColor;
                     if (spottedPreyPositions.Count > 0) //ha látott már állatot
                     {
                         currentState = StateCarnivore.Hunt;
@@ -270,7 +275,6 @@ public class Carnivorous : Animal, IHasVision
                     break;
 
                 case StateCarnivore.SearchWater:
-                    spriteRenderer.color = searchingColor;
                     SearchForWater();
                     break;
 
@@ -280,7 +284,6 @@ public class Carnivorous : Animal, IHasVision
                     Invoke(nameof(ResumeWander), Random.Range(3f, 7f));
                     break;
                 case StateCarnivore.Mature:
-                    spriteRenderer.color = searchingColor;
                     if (spottedMates.Count > 0)
                     {
                         currentState = StateCarnivore.FindMate;
@@ -290,10 +293,11 @@ public class Carnivorous : Animal, IHasVision
                     break;
             }
     }
-
+    /// <summary>
+    /// Finds the closest mate within the vision radius and initiates mating if conditions are met.
+    /// </summary>
     private void FindClosestMate()
     {
-        spriteRenderer.color = Color.magenta;
         spottedMates = spottedMates
         .Where(p => p.Key != null)
         .ToDictionary(p => p.Key, p => p.Key.transform.position);
@@ -313,7 +317,6 @@ public class Carnivorous : Animal, IHasVision
         if (closestMate.Key != null && Vector3.Distance(transform.position, closestMate.Value) < 1f &&
             age >= minMateAge && mateTimer >= mateInterval && !closestMate.Key.GetComponent<Carnivorous>().isMating) //ha mature
         {
-            Debug.Log($"Try mate  (by mate closest): {closestMate.Key.name} pos: {closestMate.Value}");
             StartMating(closestMate.Key.transform);
         }
         else if (closestMate.Key != null)        // K�l�nben k�vetj�k
@@ -323,7 +326,10 @@ public class Carnivorous : Animal, IHasVision
         //Debug.Log($"Closest mate: {closestMate.Key.name} at {closestMate.Value}");
 
     }
-
+    /// <summary>
+    /// Starts the mating process with the specified mate.
+    /// </summary>
+    /// <param name="mate"></param>
     private void StartMating(Transform mate)
     {
         if (mate == null) return;
@@ -336,11 +342,9 @@ public class Carnivorous : Animal, IHasVision
             return;
         }
 
-        Debug.Log($"Started mating with: {mate.name}");
 
         // Állapotbeállítások
         currentState = StateCarnivore.Mating;
-        spriteRenderer.color = Color.magenta;
 
         // kezdem�nyez� meg�ll�t�sa
         if (!testMode)
@@ -370,12 +374,14 @@ public class Carnivorous : Animal, IHasVision
         currentTargetAnimal = mate.gameObject;
         Invoke(nameof(FinishMating), mateDuration);
     }
+    /// <summary>
+    /// Ends the mating process and spawns a new animal.
+    /// </summary>
     private void FinishMating()
     {
 
         if (currentTargetAnimal != null)
         {
-            Debug.Log($"Finished mating: {currentTargetAnimal.name}");
             // T�rs statok resetel�se
             Carnivorous targetScript = currentTargetAnimal.GetComponent<Carnivorous>();
 
@@ -383,7 +389,6 @@ public class Carnivorous : Animal, IHasVision
             targetScript.mateTimer = 0f; //mate timer reset
             if (!testMode)targetScript.agent.isStopped = false; //mate agent is stopped
             targetScript.currentState = StateCarnivore.Rest; //mate agent is stopped
-            targetScript.spriteRenderer.color = targetScript.normalColor; //mate agent is stopped
 
             Vector3 randomOffset = Random.insideUnitCircle * 1f;
             Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
@@ -405,10 +410,6 @@ public class Carnivorous : Animal, IHasVision
                 // Létrehozzuk az új állatot a megadott pozícióban
                 Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             }
-            else
-            {
-                Debug.LogWarning("Missing prefab for spawn!");
-            }
         }
 
         // Kezdemm�nyez� statok resetel�se
@@ -417,14 +418,11 @@ public class Carnivorous : Animal, IHasVision
         currentState = StateCarnivore.Rest;
         mateTimer = 0f;
         currentTargetAnimal = null;
-
-        spriteRenderer.color = normalColor;
     }
+
 
     private void HuntClosestPrey()
     {
-
-        spriteRenderer.color = huntingColor;
 
         // Frissítjük a prédák pozícióját (eltávolítjuk a null elemeket)
         spottedPreyPositions = spottedPreyPositions
@@ -445,7 +443,6 @@ public class Carnivorous : Animal, IHasVision
         // Ha a préda túl közel van (3 egységnél közelebb), megtámadjuk
         if (closestPrey.Key != null && Vector3.Distance(transform.position, closestPrey.Value) < 1f)
         {
-            Debug.Log($"Attacking prey (by hunt closest): {closestPrey.Key.name}");
             StartEating(closestPrey.Key.transform);
         }
         // Különben követjük
@@ -459,11 +456,8 @@ public class Carnivorous : Animal, IHasVision
     {
         if (prey == null) return;
 
-        Debug.Log($"Started eating prey: {prey.name}");
-
         // Állapotbeállítások
         currentState = StateCarnivore.Eating;
-        spriteRenderer.color = eatingColor;
 
         Herbivore herbivore = prey.GetComponent<Herbivore>();
         if (!testMode)
@@ -484,11 +478,10 @@ public class Carnivorous : Animal, IHasVision
     {
         if (currentTargetAnimal != null)
         {
-            Debug.Log($"Finished eating prey: {currentTargetAnimal.name}");
             Destroy(currentTargetAnimal); // Préda megsemmisítése
         }
 
-        // Visszaállítások
+        // Back to normal state
         hungerTimer = hungerInterval;
         currentTargetAnimal = null;
         currentState = StateCarnivore.Rest;
@@ -512,7 +505,10 @@ public class Carnivorous : Animal, IHasVision
         }
         else MoveTowardsHerdOrRandom();
     }
-
+    /// <summary>
+    /// Checks if the animal has reached the water tile.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator CheckIfReachedWater()
     {
 
@@ -530,7 +526,6 @@ public class Carnivorous : Animal, IHasVision
 
     private void StartDrinking()
     {
-        spriteRenderer.color = drinkingColor;
         currentState = StateCarnivore.Drinking;
         if (!testMode)
             agent.isStopped = true;
@@ -539,7 +534,6 @@ public class Carnivorous : Animal, IHasVision
         dehydrationTimer = dehydrationTime;
 
         currentState = StateCarnivore.Rest;
-        spriteRenderer.color = restingColor;
         currentTargetTile = null;
     }
     private void ResumeWander()
@@ -551,9 +545,10 @@ public class Carnivorous : Animal, IHasVision
         }
         agent.isStopped = false;
         currentState = StateCarnivore.Wander;
-        spriteRenderer.color = normalColor;
     }
-
+    /// <summary>
+    /// Moves the animal towards the closest herd member or a random position if no herd member is found.
+    /// </summary>
     private void MoveTowardsHerdOrRandom()
     {
 
@@ -582,7 +577,10 @@ public class Carnivorous : Animal, IHasVision
             }
         }
     }
-
+    /// <summary>
+    /// Finds the oldest seen mate from the spotted mates list.
+    /// </summary>
+    /// <returns></returns>
     private Carnivorous FindOldestSeenMate()
     {
         GameObject oldestMate = null;
@@ -624,11 +622,9 @@ public class Carnivorous : Animal, IHasVision
         if (distanceMoved < minDistanceDelta)
         {
             stuckTimer += stuckCheckInterval;
-            Debug.Log("Animal might be stuck... (" + stuckTimer + "s)");
 
             if (stuckTimer >= 20f) // Stuck for 6 seconds total
             {
-                Debug.LogWarning("Animal confirmed stuck! Moving...");
                 MoveRandom();
             }
         }
@@ -642,7 +638,6 @@ public class Carnivorous : Animal, IHasVision
 
     private void Die()
     {
-        Debug.Log($"{name} died at age {age}.");
         //for saving
         if (GameManager.Instance != null)
         {

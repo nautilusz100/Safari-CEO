@@ -8,6 +8,9 @@ using UnityEngine.UIElements;
 
 namespace Assets.Scripts.Model.Map
 {
+    /// <summary>
+    ///  Manages the map generation and tile placement for the safari game.
+    /// </summary>
     public class SafariMap : MonoBehaviour
     {
         public Dictionary<int, GameObject> tileset { get; set; }
@@ -52,6 +55,9 @@ namespace Assets.Scripts.Model.Map
         int x_offset = 0; // <- +>
         int y_offset = 0; // v- +^
 
+        /// <summary>
+        /// Creates the map by generating the terrain and placing the main building.
+        /// </summary>
         public virtual void CreateMap()
         {
             x_offset = UnityEngine.Random.Range(-10000, 10000);
@@ -59,6 +65,9 @@ namespace Assets.Scripts.Model.Map
             GenerateMap();
             GenerateMainBuilding();
         }
+        /// <summary>
+        /// Generates the main building on the map.
+        /// </summary>
         private void GenerateMainBuilding()
         {
             // Iterate through the grid to place buildings
@@ -115,9 +124,12 @@ namespace Assets.Scripts.Model.Map
             ChangeTileToRoad(new Vector2(42, 38), true);
         }
 
+        /// <summary>
+        /// Replaces the tile at the given vector with a plains tile.
+        /// </summary>
+        /// <param name="vector"></param>
         public void ReplaceTileWithPlains(Vector2 vector)
         {
-            Debug.Log("Replacing with plains at: " + vector);
             int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
             int yIndex = Mathf.FloorToInt(vector.y);
             if (xIndex >= -2 && xIndex < tile_grid.Count && yIndex >= 0 && yIndex < tile_grid[0].Count)
@@ -134,13 +146,16 @@ namespace Assets.Scripts.Model.Map
 #else
                                                      Destroy(currentTile);
 #endif
-                    Debug.Log("Tile replaced with plains at: " + tilePosition);
                 }
 
             }
         }
 
-
+        /// <summary>
+        /// Changes the tile type at the given vector to the specified tile type.
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="whichTileType"></param>
         internal void ChangeTileNature(Vector2 vector, Tile.ShopType whichTileType)
         {
             int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
@@ -154,7 +169,6 @@ namespace Assets.Scripts.Model.Map
                 newType = whichTileType;
                 if (currentTile != null && newType != tileComponent.Type && !(tileComponent.Type == Tile.ShopType.River || tileComponent.Type == Tile.ShopType.Lake || tileComponent.Type == Tile.ShopType.Hills || tileComponent.Type == Tile.ShopType.MainBuilding))
                 {
-                    Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: " + tilePosition);
                     GameObject newTile = InstantiateTileOfType(newType, currentTile.transform.position);
                     newTile.transform.parent = currentTile.transform.parent;
                     tile_grid[tilePosition.x][tilePosition.y] = newTile; // Frissítjük a gridet
@@ -179,7 +193,11 @@ namespace Assets.Scripts.Model.Map
                 }
             }
         }
-
+        /// <summary>
+        /// Changes the tile at the given vector to a road tile.
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="isLockedTile"></param>
         public void ChangeTileToRoad(Vector2 vector, bool isLockedTile = false)
         {
             int xIndex = Mathf.FloorToInt(vector.x); // Lefelé kerekítés az x koordinátán
@@ -194,7 +212,6 @@ namespace Assets.Scripts.Model.Map
                 if (currentTile != null)
                 {
                     Tile tileComponent = currentTile.GetComponent<Tile>(); // A tile komponens beszerzése
-                    Debug.Log("Tile component: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: " + tilePosition);
                     if (tileComponent != null && !(tileComponent.Type == Tile.ShopType.River || tileComponent.Type == Tile.ShopType.Lake || tileComponent.Type == Tile.ShopType.Hills || tileComponent.Type == Tile.ShopType.MainBuilding))
                     {
                         if (tileComponent != null && tileComponent.Type == Tile.ShopType.Road)
@@ -202,7 +219,6 @@ namespace Assets.Scripts.Model.Map
 
                             if (tileComponent.IsLocked)
                             {
-                                Debug.Log("Tile is locked, cannot change to road");
                                 return;
                             }
 
@@ -253,15 +269,15 @@ namespace Assets.Scripts.Model.Map
                             UpdateSurroundingRoads(tilePosition);
                         }
                     }
-                    else
-                    {
-                        Debug.Log("Tile is river or lake or hills");
-                    }
 
                 }
             }
         }
-
+        /// <summary>
+        /// Changes the road tile based on the surrounding tiles.
+        /// </summary>
+        /// <param name="tilePosition"></param>
+        /// <returns></returns>
         private GameObject RoadChange(Vector2Int tilePosition)
         {
             // Kiszámítjuk a szomszédos tile-ok pozícióit
@@ -274,7 +290,6 @@ namespace Assets.Scripts.Model.Map
             bool downTile = IsRoad(down) || IsMainBuilding(down);
             bool leftTile = IsRoad(left) || IsMainBuilding(left);
             bool rightTile = IsRoad(right) || IsMainBuilding(right);
-            Debug.Log("Road u: " + upTile + " d" + downTile + " l" + leftTile + " r" + rightTile);
             // Új út prefab kiválasztása a szomszédos tile-ok alapján
             GameObject selectedPrefab = prefab_road1010; // Alapértelmezett prefab
             if (upTile && downTile && leftTile && rightTile)
@@ -324,7 +339,10 @@ namespace Assets.Scripts.Model.Map
             if (IsRoad(right))
                 UpdateRoadTile(right);
         }
-
+        /// <summary>
+        /// Updates the road tile at the given position.
+        /// </summary>
+        /// <param name="tilePosition"></param>
         private void UpdateRoadTile(Vector2Int tilePosition)
         {
             GameObject currentTile = tile_grid[tilePosition.x][tilePosition.y];
@@ -434,6 +452,13 @@ namespace Assets.Scripts.Model.Map
             return (false, new Vector2Int(0, 0));
         }
 
+        /// <summary>
+        /// Generates a river starting from a given position, with a maximum length and width.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="maxLength"></param>
+        /// <param name="width"></param>
+        /// <returns></returns>
         List<Vector2Int> GenerateRiver(Vector2Int start, int maxLength, int width)
         {
             List<Vector2Int> riverTiles = new List<Vector2Int>();
@@ -704,7 +729,10 @@ namespace Assets.Scripts.Model.Map
             }
         }
 
-
+        /// <summary>
+        /// Loads the tiles from a list of TileData objects.
+        /// </summary>
+        /// <param name="tiles"></param>
         public void LoadTiles(List<TileData> tiles)
         {
             foreach (TileData tileData in tiles)
@@ -724,7 +752,6 @@ namespace Assets.Scripts.Model.Map
                     newType = (Tile.ShopType)tileData.type;
                     if (currentTile != null &&  tileComponent.Type != Tile.ShopType.MainBuilding)
                     {
-                        Debug.Log("Tile component load: " + (tileComponent != null ? tileComponent.Type.ToString() : "null") + " at position: " + tilePosition);
                         if (newType == Tile.ShopType.Road)
                         {
                             if (!originalTileTypes.ContainsKey(tilePosition))
