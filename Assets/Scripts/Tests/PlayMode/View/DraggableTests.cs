@@ -17,7 +17,7 @@ public class DraggableTests
     private GameManager fakeGameManager;
     private GameObject eventSystem;
 
-    [SetUp]
+    [UnitySetUp]
     public void SetUp()
     {
 

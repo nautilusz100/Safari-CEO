@@ -38,7 +38,7 @@ public class HerbivorePlayModeTest
         method.Invoke(instance, parameters);
     }
 
-    [SetUp]
+    [UnitySetUp]
     public void SetUp()
     {
         // Create complete mock GameManager
