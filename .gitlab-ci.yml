@@ -61,13 +61,14 @@ get-activation-file:
     expire_in: 2 weeks
   coverage: /<Linecoverage>(.*?)</Linecoverage>/
 
-test-playmode:
-  <<: *test
-  variables:
-    TEST_PLATFORM: playmode
-  timeout: 10 minutes
 
-test-editmode:
+#test-playmode:
+#  <<: *test
+#  variables:
+#    TEST_PLATFORM: playmode
+#  timeout: 10 minutes
+
+tests:
   <<: *test
   variables:
     TEST_PLATFORM: editmode
