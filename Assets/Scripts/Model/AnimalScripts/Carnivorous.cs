@@ -49,6 +49,7 @@ public class Carnivorous : Animal, IHasVision
     public bool testMode = false;
 
     private NavMeshAgent agent;
+    private SpriteRenderer spriteRenderer;
     private List<Tile> exploredTiles = new List<Tile>();
     private Dictionary<GameObject, Vector3> spottedPreyPositions = new Dictionary<GameObject, Vector3>();
     private Dictionary<GameObject, Vector3> spottedMates = new Dictionary<GameObject, Vector3>();
@@ -279,7 +280,6 @@ public class Carnivorous : Animal, IHasVision
                     break;
 
                 case StateCarnivore.Rest:
-                    spriteRenderer.color = restingColor;
                     if (!testMode) agent.isStopped = true;
                     Invoke(nameof(ResumeWander), Random.Range(3f, 7f));
                     break;
@@ -485,7 +485,6 @@ public class Carnivorous : Animal, IHasVision
         hungerTimer = hungerInterval;
         currentTargetAnimal = null;
         currentState = StateCarnivore.Rest;
-        spriteRenderer.color = restingColor;
         if (!testMode)
             agent.isStopped = false;
     }
