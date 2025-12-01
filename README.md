@@ -100,6 +100,7 @@ I contributed to all major phases of the project, including design, implementati
 
 <img width="1919" height="1078" alt="image" src="https://github.com/user-attachments/assets/ae15b415-66c7-4bd6-a217-c07c1f0e331a" />
 
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/f9b896e6-60e3-4fb1-bda8-9314b2814e43" />
 
 
 ---
