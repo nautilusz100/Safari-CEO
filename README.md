@@ -104,6 +104,15 @@ I contributed to all major phases of the project, including design, implementati
 
 
 ---
+## Play Online (WebGL Build)
+
+You can try the game directly in your browser using the link below:
+
+ **[Play Safari CEO (WebGL Build)](https://hunor-profetai-0d50aa.szofttech.gitlab-pages.hu/)**
+
+> **Note:** This WebGL link may not remain available permanently, depending on the hosting service.  
+> For the best experience, run the game in **full-screen mode**, as the UI and camera are optimized for large displays.
+
 
 ## License
 
