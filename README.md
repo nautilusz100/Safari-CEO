@@ -3,7 +3,7 @@
 **Safari CEO** is a single-player business management and simulation game built in Unity.  
 The player acts as the director of an African wildlife park and must maintain, expand, and successfully operate the safari using limited starting capital and available land. The game includes three difficulty levels, each affecting resource management, animal behavior, and park progression.
 
-## 🎮 Game Overview
+## Game Overview
 
 The world features procedurally generated **terrain** with hills, vegetation, and lakes, all of which can be placed or modified by the player.  
 Animals fall into two functional groups:
@@ -17,7 +17,7 @@ The park’s revenue comes from:
 - **Animal sales**
 - **Tourism**, including jeep tours and road-building across the terrain
 
-### 🏆 Win & Lose Conditions
+### Win & Lose Conditions
 
 **Win condition:** maintain all park metrics above required thresholds for  
 **3, 6, or 12 consecutive months** (depending on difficulty).
@@ -27,7 +27,7 @@ The park’s revenue comes from:
 
 ---
 
-## ✨ Main Game Features
+## Main Game Features
 
 - 2.5D environment  
 - Save/load persistence  
@@ -38,7 +38,7 @@ The park’s revenue comes from:
 
 ---
 
-## 👨‍💻 Development & Team
+## Development & Team
 
 The game was developed using **Scrum methodology** by a **3-member team** with a dedicated Scrum Master.
 
@@ -46,12 +46,12 @@ The game was developed using **Scrum methodology** by a **3-member team** with a
 
 I contributed to all major phases of the project, including design, implementation, and testing:
 
-#### 🎨 **Design Contributions**
+#### **Design Contributions**
 - Created the **use-case diagram **  
 - Designed the **GUI wireframe**  
 - Participated in creating the **class diagram** and architectural structure  
 
-#### 🧠 **Gameplay & Logic**
+#### **Gameplay & Logic**
 - Implemented core gameplay logic:
   - nature building  
   - road-building system  
@@ -60,7 +60,7 @@ I contributed to all major phases of the project, including design, implementati
 - Performed clean code refactoring  
 - Added consistent **code documentation and comments** during final development
 
-#### 🎮 **User Interface (entirely developed by me)**  
+#### **User Interface (entirely developed by me)**  
 - Designed and implemented the **entire main menu UI**  
 - Designed and implemented the **game UI**  
   - HUD elements  
@@ -68,7 +68,7 @@ I contributed to all major phases of the project, including design, implementati
   - gameplay UI interactions  
 - Connected UI elements to core gameplay logic
 
-#### 🧪 **Technical Implementation**
+#### **Technical Implementation**
 - Created test scripts for gameplay systems  
 - Contributed to the persistence/save-load system  
 - Integrated features across the architecture  
@@ -77,7 +77,7 @@ I contributed to all major phases of the project, including design, implementati
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Unity**, **C#**, Scriptable Objects  
 - 2.5D rendering pipeline  
@@ -88,12 +88,19 @@ I contributed to all major phases of the project, including design, implementati
 
 ---
 
-## 📷 Screenshots
+## Screenshots
 
+<img width="1918" height="1077" alt="Képernyőkép 2025-12-01 174925" src="https://github.com/user-attachments/assets/5ad789bd-7d6e-42f7-a1f4-bd49a07bbda8" />
+
+<img width="1919" height="1079" alt="Képernyőkép 2025-12-01 174939" src="https://github.com/user-attachments/assets/bbad47a6-b509-424d-bc4e-8e88ad634dbf" />
+
+<img width="1919" height="1077" alt="Képernyőkép 2025-12-01 175020" src="https://github.com/user-attachments/assets/474cd8fb-b801-4771-a070-605713698b5d" />
+
+<img width="1919" height="1078" alt="Képernyőkép 2025-12-01 175119" src="https://github.com/user-attachments/assets/27e1eea7-1113-45b2-9845-999fc14c28ac" />
 
 
 ---
 
-## 📄 License
+## License
 
 This project is released under the **MIT License**.
