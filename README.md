@@ -47,7 +47,7 @@ The game was developed using **Scrum methodology** by a **3-member team** with a
 I contributed to all major phases of the project, including design, implementation, and testing:
 
 #### **Design Contributions**
-- Created the **use-case diagram **  
+- Created the **use-case diagram**  
 - Designed the **GUI wireframe**  
 - Participated in creating the **class diagram** and architectural structure  
 
@@ -60,8 +60,8 @@ I contributed to all major phases of the project, including design, implementati
 - Performed clean code refactoring  
 - Added consistent **code documentation and comments** during final development
 
-#### **User Interface (entirely developed by me)**  
-- Designed and implemented the **entire main menu UI**  
+#### **User Interface**  
+- Designed and implemented the **entire main menu UI** (entirely developed by me) 
 - Designed and implemented the **game UI**  
   - HUD elements  
   - panels, buttons  
@@ -70,7 +70,7 @@ I contributed to all major phases of the project, including design, implementati
 
 #### **Technical Implementation**
 - Created test scripts for gameplay systems  
-- Contributed to the persistence/save-load system  
+- Contributed to the persistence/save-load system  (entirely developed by me) 
 - Integrated features across the architecture  
 - Worked with **CI/CD pipelines** on GitLab  
 - Delivered sprint demos and participated in Scrum ceremonies
