@@ -84,7 +84,6 @@ I contributed to all major phases of the project, including design, implementati
 - GitLab CI/CD  
 - Agile / Scrum  
 - UML (use-case diagram, class diagram)  
-- Wireframing tools (Figma / hand-drawn sketches)
 
 ---
 
