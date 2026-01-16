@@ -121,12 +121,18 @@ Implemented behaviors include:
 ---
 ## Play Online (WebGL Build)
 
-You can try the game directly in your browser using the link below:
+You can try the game directly in your browser using the link below.
 
- **[Play Safari CEO (WebGL Build)](https://hunor-profetai-0d50aa.szofttech.gitlab-pages.hu/)**
+**WebGL Limitation & Recommendation**
+
+For the best experience, it is recommended to **download and run the game locally**.  
+Due to **WebGL platform limitations**, the **save/load system is only fully supported in the desktop version**.
+
+**[Play Safari CEO (WebGL Build)](https://hunor-profetai-0d50aa.szofttech.gitlab-pages.hu/)**
 
 > **Note:** This WebGL link may not remain available permanently, depending on the hosting service.  
-> For the best experience, run the game in **full-screen mode**, as the UI and camera are optimized for large displays.
+> For optimal gameplay, run the game in **full-screen mode**, as the UI and camera are optimized for large displays.
+
 
 
 ## License
