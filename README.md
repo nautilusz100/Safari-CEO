@@ -55,13 +55,29 @@ I contributed to all major phases of the project, including design, implementati
 - Implemented core gameplay logic:
   - nature building  
   - road-building system  
-  - animal behavior scripts  
   - resource & needs management  
 - Performed clean code refactoring  
 - Added consistent **code documentation and comments** during final development
 
+#### **Animal Behavior & AI System**
+
+I was responsible for the design and implementation of the majority of the animal behavior scripts.
+
+The game features a modular and extensible **animal behavior system** designed to simulate realistic wildlife dynamics.
+
+Each animal is driven by internal states such as **hunger, thirst, energy, and age**, which directly influence its decisions and actions.
+
+Implemented behaviors include:
+- **Movement and path selection** influenced by terrain difficulty (tile cost system), with final pathfinding handled by Unity’s **NavMeshAgent**
+- **Hunting behavior** for predators and herd-based movement for herbivores
+- **Eating and drinking** using nearby environmental resources
+- **Resting and energy regeneration**
+- **Aging and natural death**
+- **Reproduction and population growth**
+- **Survival-oriented decision making**, prioritizing basic needs
+
 #### **User Interface**  
-- Designed and implemented the **entire main menu UI** (entirely developed by me) 
+- Designed and implemented the **entire main menu UI** (fully implemented by me)
 - Designed and implemented the **game UI**  
   - HUD elements  
   - panels, buttons  
@@ -70,9 +86,9 @@ I contributed to all major phases of the project, including design, implementati
 
 #### **Technical Implementation**
 - Created test scripts for gameplay systems  
-- Contributed to the persistence/save-load system  (entirely developed by me) 
+- Contributed to the persistence/save-load system (implemented independently)
 - Integrated features across the architecture  
-- Worked with **CI/CD pipelines** on GitLab  
+- Worked with **CI/CD pipelines** on GitLab
 - Delivered sprint demos and participated in Scrum ceremonies
 
 ---
